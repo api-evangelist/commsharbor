@@ -1,0 +1,37 @@
+generated: '2026-09-05'
+method: probed
+source: https://commsharbor.com/mcp
+name: CommsHarbor MCP Server
+description: >-
+  Official hosted MCP server for CommsHarbor transactional email, permission-based marketing, CRM,
+  and multi-tenant governance. Streamable HTTP transport, JSON-RPC 2.0, protocol version 2024-11-05.
+  An anonymous tools/list returns the full 141-tool schema (saved verbatim to
+  mcp/commsharbor-mcp-tools.json); the MCP shares the same API handlers as the REST surface, and
+  every tool name is the operationId of its backing REST operation. Authenticated calls carry a
+  bearer session or scoped organization API key, with X-Organization-Id resolving the active tenant.
+  The server publishes its own card at GET /mcp and an Ed25519 MCP-registry verification key at
+  /.well-known/mcp-registry-auth.
+deployment:
+  mode: remote
+  endpoint: https://commsharbor.com/mcp
+  auth: api-key
+  verified: probed
+server:
+  name: CommsHarbor
+  version: 2d690e87
+  transport: streamable-http
+  protocol_version: '2024-11-05'
+  tool_count: 141
+x-evidence:
+  fetched: '2026-09-05'
+  card_url: https://commsharbor.com/mcp
+  card_status: 200
+  tools_list:
+    method: POST tools/list (anonymous JSON-RPC 2.0)
+    status: 200
+    tools_returned: 141
+    saved: mcp/commsharbor-mcp-tools.json
+  registry_auth:
+    url: https://commsharbor.com/.well-known/mcp-registry-auth
+    status: 200
+tools_file: mcp/commsharbor-mcp-tools.json

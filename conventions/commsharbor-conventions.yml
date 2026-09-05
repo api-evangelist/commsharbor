@@ -1,0 +1,108 @@
+generated: '2026-09-05'
+method: searched
+source: https://commsharbor.com/openapi.json + https://commsharbor.com/llms.txt + https://commsharbor.com/api/
+name: CommsHarbor API conventions
+description: >-
+  Cross-cutting request/response semantics of the CommsHarbor API, read from the provider's own
+  OpenAPI 3.1, llms.txt agent guide, and the machine-readable /api/ index. The MCP server shares the
+  same handlers, so every convention here applies to both surfaces.
+auth:
+  style: bearer
+  detail: >-
+    Authorization: Bearer with either a human session token or a scoped organization API key. A
+    session acts on an organization via the X-Organization-Id header; an API key determines its own
+    organization and rejects a conflicting header. Distinct auth modes exist for public endpoints,
+    platform administrators (explicit grant, never implied by tenant ownership), Amazon SNS
+    callbacks (signature-verified), signed no-login preference capabilities, and prepaid credit
+    tokens (Bearer cred_... or X-Credito, a bearer of balance rather than an account).
+  permissions:
+    - messages:send
+    - template:write
+    - campaign:write
+idempotency:
+  coverage: partial
+  mechanism: Idempotency-Key request header, required (not optional) on the operations that carry it
+  scope:
+    - post_api_messages
+    - commsharbor_message_send
+    - commsharbor_campaign_launch
+    - commsharbor_contact_import_confirm
+    - commsharbor_marketing_smoke
+    - commsharbor_billing_purchase
+  semantics: >-
+    An equivalent replay returns the same delivery/import (response flag `replayed: true`) and never
+    produces a second message or Queue job; the same key with a different payload answers 409 before
+    any quota or queue work. Domain registration (commsharbor_domain_create) is idempotent by
+    resource semantics without a key: asking twice does not provision twice. 6 of 79 mutating
+    operations carry the header - the money/dispatch operations (sends, campaign launch, import
+    confirm, billing purchase); ordinary CRUD writes have no replay protection.
+reversibility:
+  grade: verified
+  note: >-
+    Reversal paths exist for the highest-consequence actions, and the erasure window is stated by
+    the provider. A queued transactional send is NOT recallable once dispatched - suppression only
+    prevents future sends.
+  surfaces:
+    - action: organization erasure (commsharbor_deletion_schedule)
+      reversal: commsharbor_deletion_cancel
+      window: within the seven-day grace period before erasure executes
+      evidence: https://commsharbor.com/llms.txt ("Erasure ... waits seven days"; "Cancel a scheduled erasure while it is still inside the grace period")
+    - action: campaign launch (commsharbor_campaign_launch)
+      reversal: commsharbor_campaign_update (pause / resume / cancel a campaign that already launched)
+      window: while the campaign outbox is still draining; no fixed time window stated
+      evidence: https://commsharbor.com/openapi.json (PATCH campaigns summary)
+    - action: organization-wide marketing
+      reversal: commsharbor_messaging_settings_update (pause and safely resume marketing)
+      window: any time; resume requires a healthy reputation observation
+      evidence: https://commsharbor.com/llms.txt
+    - action: API key issuance (commsharbor_api_key_create)
+      reversal: commsharbor_api_key_revoke
+      window: immediate - "It stops working immediately, not at the next cache expiry"
+      evidence: https://commsharbor.com/openapi.json
+    - action: transactional message send (commsharbor_message_send)
+      reversal: none - email cannot be recalled after dispatch; dead-letter replay recovers failures, it does not undo sends
+      window: n/a
+      evidence: https://commsharbor.com/llms.txt
+dry_run:
+  supported: partial
+  detail: >-
+    Template preview (commsharbor_template_preview) compiles and renders a draft without saving or
+    publishing; contact import returns a safe preview before anything is imported and only the
+    separate confirm enqueues it; domain smoke and marketing-smoke queue one controlled message to a
+    server-side QA recipient that the caller can never choose.
+pagination:
+  style: cursor
+  request_params: [cursor, limit]
+  response_fields: [items, next_cursor]
+  detail: next_cursor is null when there are no more pages; used across 29 list surfaces.
+error_envelope:
+  format: json-description
+  detail: >-
+    Error responses are declared per status code with prose semantics in the contract; no RFC 9457
+    application/problem+json envelope. Distinctive semantics: cross-tenant IDs answer the same 404
+    as a missing record (the API never confirms existence in another tenant); 409 covers
+    idempotency-key payload conflicts and suppressed recipients; 402 is a live x402 payment
+    challenge on billing purchase and credit top-up.
+rate_limit_signaling:
+  headers: []
+  detail: >-
+    No X-RateLimit-*/RateLimit headers documented. Capacity is quota-shaped: send responses carry a
+    capacity object (remaining, global_remaining, hard_cap) and 429 means the organization's
+    entitlement or the global bootstrap cap of 1,000 real recipients per month is exhausted.
+versioning:
+  scheme: continuous
+  detail: >-
+    No URL or header versioning; the deployed build hash (e.g. 2d690e87) is exposed as the OpenAPI
+    info.version, the /api/health build field, and the MCP server version. Published template
+    versions are immutable and content-hashed.
+tracing:
+  detail: No documented request-id header; the audit trail is an append-only organization-scoped resource.
+data_retention:
+  - contact import/export files expire after seven days; durable audit and row-level results remain
+  - tenant data exports are retained for seven days
+  - erasure retains only pseudonymous financial and audit evidence
+cross_links:
+  errors: errors/commsharbor-problem-types.yml
+  lifecycle: lifecycle/commsharbor-lifecycle.yml
+  authentication: authentication/commsharbor-authentication.yml
+  rate_limits: rate-limits/commsharbor-rate-limits.yml

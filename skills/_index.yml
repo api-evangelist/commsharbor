@@ -1,0 +1,20 @@
+generated: '2026-09-05'
+method: generated
+source: openapi/commsharbor-openapi.json + https://commsharbor.com/llms.txt
+note: >-
+  Packaged agent skills for the CommsHarbor API's marquee flows, grounded in real operationIds from
+  the provider's OpenAPI (all operation names verified against the contract). The provider publishes
+  no skills of its own; its hosted MCP server exposes the same operations as 141 tools.
+skills:
+  - name: commsharbor-send-transactional-email
+    file: skills/commsharbor-send-transactional-email.md
+    description: Send one idempotent transactional email and confirm its delivery.
+  - name: commsharbor-verify-sending-domain
+    file: skills/commsharbor-verify-sending-domain.md
+    description: Register, DKIM-verify and smoke-test a sending domain against live SES and DNS.
+  - name: commsharbor-launch-marketing-campaign
+    file: skills/commsharbor-launch-marketing-campaign.md
+    description: Launch a permission-based campaign exactly once, from consent to reconciliation.
+  - name: commsharbor-import-contacts-with-consent
+    file: skills/commsharbor-import-contacts-with-consent.md
+    description: Preview, confirm exactly once, and repair a consent-declared contact CSV import.

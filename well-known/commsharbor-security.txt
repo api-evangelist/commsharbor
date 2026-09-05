@@ -1,0 +1,4 @@
+Contact: mailto:contato@commsharbor.com
+Expires: 2027-09-05T00:00:00Z
+Preferred-Languages: en, pt
+Canonical: https://commsharbor.com/.well-known/security.txt

@@ -1,0 +1,88 @@
+generated: '2026-09-05'
+method: derived
+source: openapi/commsharbor-openapi.json (https://commsharbor.com/openapi.json)
+format: json
+note: 'Derived from the per-operation 4xx/5xx declarations across 151 operations. No RFC 9457 problem+json envelope;
+  errors are status-code plus prose semantics. Notable house rules: another tenant''s ID answers the same 404 as
+  a missing record; 409 covers Idempotency-Key payload conflicts and suppressed recipients; 402 is a live x402 payment
+  challenge (Base network, USDC) on billing purchases and prepaid credit top-ups; 429 is quota exhaustion against
+  the organization entitlement or the global bootstrap cap, not a request-rate limit.'
+problem_types:
+- status: 400
+  title: Bad request
+  occurrences: 53
+  semantics:
+  - A field is invalid, or a referenced record does not exist here.
+  - A filter field outside the allowlist.
+  - A required field is missing, or a referenced record does not exist here.
+  - CSV too large, unparseable, or missing the consent declaration.
+  - Empty name.
+  - Invalid field or unknown block type.
+- status: 401
+  title: Unauthenticated
+  occurrences: 140
+  semantics:
+  - Bad signature.
+  - No session, no API key, or the credential does not resolve to this organization.
+  - No session, or the session expired.
+  - No session.
+  - No token, or unknown token.
+  - Wrong operator token.
+- status: 402
+  title: Payment required (x402 challenge)
+  occurrences: 2
+  semantics:
+  - Payment required — the body carries `accepts[]`. This is the normal answer while live checkout is disabled.
+  - Unpaid — the body carries the x402 `accepts[]`.
+- status: 403
+  title: Forbidden
+  occurrences: 131
+  semantics:
+  - Bad signature, or a TopicArn other than the configured one.
+  - The identity is valid but lacks the required role or scope for this operation.
+  - This person has no platform grant.
+- status: 404
+  title: Not found (tenant-blind)
+  occurrences: 134
+  semantics:
+  - File outside the bundle.
+  - Name outside the four published.
+  - The resource does not exist in this organization. Another tenant's ID answers the same 404 — the API never confirms
+    that it exists elsewhere.
+  - Unknown or expired capability.
+  - Unknown, expired or already used invitation.
+- status: 409
+  title: Conflict
+  occurrences: 18
+  semantics:
+  - Already launched, marketing paused for the organization, or no eligible recipients.
+  - An erasure is already scheduled.
+  - Editing content after launch, or resuming while marketing is paused for the organization.
+  - Key reused with a different payload, or the recipient is suppressed.
+  - Resuming while the risk that caused the pause is still observed.
+  - The audience is a saved segment and has no manual membership.
+- status: 410
+  title: Gone
+  occurrences: 2
+  semantics:
+  - It expired after seven days.
+  - The file expired. Its audit record still exists.
+- status: 413
+  title: Payload too large
+  occurrences: 1
+  semantics:
+  - Above the size limit.
+- status: 429
+  title: Capacity exhausted
+  occurrences: 6
+  semantics:
+  - No capacity left for this organization, or the global monthly cap was reached.
+  - No capacity left.
+  - Not enough capacity for the frozen recipient set.
+  - Too many attempts.
+  - Too many codes requested for this address.
+- status: 503
+  title: Service unavailable
+  occurrences: 1
+  semantics:
+  - Worker without METRICS_TOKEN configured.

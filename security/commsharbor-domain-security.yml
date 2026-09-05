@@ -1,0 +1,15 @@
+generated: '2026-09-05'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: commsharbor.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Nov 27 08:14:51 2026 GMT
+  hsts: false
+domains:
+- domain: commsharbor.com
+  dnssec: false
+  caa: []
+  spf: false
+  dmarc: false

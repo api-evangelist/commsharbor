@@ -1,0 +1,66 @@
+generated: '2026-09-05'
+method: derived
+source: https://commsharbor.com/openapi.json + probed well-known/discovery documents
+note: >-
+  Asserted from the provider's own contract and documents fetched 2026-09-05. Domain-standard
+  signature for the email-marketing market: RFC 8058 one-click unsubscribe is declared in the
+  contract itself (commsharbor_preference_unsubscribe consumes the form-encoded
+  List-Unsubscribe=One-Click POST mail clients send), alongside live DKIM/DMARC/custom MAIL FROM
+  observation on sending domains.
+conformance:
+  - id: rfc8058-one-click-unsubscribe
+    conforms: true
+    evidence: >-
+      operationId commsharbor_preference_unsubscribe - "Apply an RFC 8058 one-click unsubscribe,
+      idempotently. This is the endpoint mail clients call from the List-Unsubscribe-Post header,
+      which is why the body is form-encoded" (https://commsharbor.com/openapi.json)
+  - id: rfc9116-security-txt
+    conforms: true
+    evidence: https://commsharbor.com/.well-known/security.txt (200, Contact + Expires + Canonical)
+  - id: rfc9727-api-catalog
+    conforms: true
+    evidence: >-
+      https://commsharbor.com/.well-known/api-catalog (200) - a real linkset with service-desc and
+      service-doc anchors for the API and the MCP; served as text/plain rather than
+      application/linkset+json
+  - id: apisjson
+    conforms: true
+    evidence: https://commsharbor.com/apis.json (200, specificationVersion 0.19, also at /.well-known/apis.json)
+  - id: llms-txt
+    conforms: true
+    evidence: https://commsharbor.com/llms.txt and /llms-full.txt (200)
+  - id: mcp
+    conforms: true
+    evidence: >-
+      https://commsharbor.com/mcp - streamable HTTP, JSON-RPC 2.0, protocol version 2024-11-05,
+      141 tools returned by an anonymous tools/list; Ed25519 registry key at
+      /.well-known/mcp-registry-auth
+  - id: x402
+    conforms: true
+    evidence: >-
+      GET /api/billing (200, public): payment.provider x402, mode live, network base (chain 8453),
+      USDC asset, facilitator https://facilitator.payai.network; POST billing purchases and
+      POST /api/credito answer 402 challenges
+  - id: idempotency
+    conforms: true
+    evidence: >-
+      Mandatory Idempotency-Key header on sends, campaign launch, import confirm and billing
+      purchase; replays return the same resource (replayed flag), payload mismatch answers 409
+      (partial coverage - 6 of 79 mutating operations; see conventions/)
+  - id: pagination
+    conforms: true
+    evidence: cursor + limit request parameters with items/next_cursor responses across 29 list operations
+  - id: rfc9457
+    conforms: false
+    evidence: no application/problem+json anywhere in the contract; errors are status codes with prose semantics
+  - id: oauth2
+    conforms: false
+    evidence: bearer sessions and scoped API keys only; /.well-known/oauth-authorization-server 404
+  - id: oidc
+    conforms: false
+    evidence: /.well-known/openid-configuration 404
+  - id: dkim-dmarc-spf-observation
+    conforms: true
+    evidence: >-
+      commsharbor_domain_verify observes SES, DKIM, DMARC and custom MAIL FROM state live and stores
+      what was seen; domain active state is only ever granted from these observations

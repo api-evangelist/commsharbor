@@ -1,0 +1,33 @@
+generated: '2026-09-05'
+method: searched
+source: https://commsharbor.com/llms.txt + https://commsharbor.com/openapi.json + https://commsharbor.com/api/billing
+name: CommsHarbor testing and rehearsal surface
+note: >-
+  No separate sandbox environment or test-mode key prefix exists; rehearsal is built into the
+  production API as controlled, non-destructive operations. Access is invite-only during bootstrap
+  and the free 30-day trial (1 domain, 1,000 contacts, 5,000 sends) is the de facto test tier. The
+  gated homologation path that can grant test entitlement is server-side only and not publicly
+  callable (GET /api/billing reports homolog: false, dev_gate: false).
+modes:
+  test_vs_live: none - one production environment; entitlements and the global bootstrap cap bound the blast radius
+rehearsal_tools:
+  - name: domain smoke test
+    operation: commsharbor_domain_smoke
+    detail: >-
+      Queues one controlled smoke message to the server-side QA recipient. The request never accepts
+      a recipient address - the controlled destination is a server-side secret, so a smoke can never
+      email a real customer.
+  - name: marketing smoke test
+    operation: commsharbor_marketing_smoke
+    detail: Same controlled-recipient rule for the permission-based marketing path; requires Idempotency-Key.
+  - name: template preview
+    operation: commsharbor_template_preview
+    detail: Compiles and safely renders a draft without saving or publishing anything.
+  - name: contact import preview
+    operation: commsharbor_contact_import_preview
+    detail: >-
+      Uploading a consent-declared CSV returns a safe preview before anything is imported; only the
+      separate confirm call (mandatory Idempotency-Key) enqueues the import, exactly once.
+  - name: idempotent replay
+    operation: post_api_messages / commsharbor_message_send
+    detail: Replaying a send with the same Idempotency-Key returns the same delivery with replayed=true and produces no second message.

@@ -1,12 +1,33 @@
 name: CommsHarbor
-description: >-
-  Transactional email and permission-based marketing infrastructure with tenant isolation, deliverability tracking, CRM,
-  and multi-tenant governance. Self-describes as an agent-first HTTP API with a hosted MCP server.
+description: Transactional email and permission-based marketing infrastructure with tenant isolation, deliverability
+  tracking, CRM, and multi-tenant governance. Self-describes as an agent-first HTTP API with a hosted MCP server.
 url: https://raw.githubusercontent.com/api-evangelist/commsharbor/refs/heads/main/apis.yml
+image: https://commsharbor.com/icon.svg
 created: '2026-09-05'
 modified: '2026-09-05'
 specificationVersion: '0.21'
 tags:
+- Email
+- Transactional Email
+- Email Marketing
+- Communications
+- Messaging
+- Deliverability
+- CRM
+- Multi-tenant SaaS
+- Agent-native
+- MCP
+- Web3 payments
+- x402
+apis:
+- name: CommsHarbor API
+  description: REST/HTTP API (OpenAPI 3.1) for transactional email, deliverability, sending domains, permission-based
+    marketing, CRM, and multi-tenancy governance across 96 paths. Cross-linked with a hosted MCP server and llms.txt
+    agent documentation.
+  humanURL: https://commsharbor.com/api/
+  baseURL: https://commsharbor.com
+  image: https://commsharbor.com/icon.svg
+  tags:
   - Email
   - Transactional Email
   - Email Marketing
@@ -19,43 +40,81 @@ tags:
   - MCP
   - Web3 payments
   - x402
-apis:
-  - name: CommsHarbor API
-    description: >-
-      REST/HTTP API (OpenAPI 3.1) for transactional email, deliverability, sending domains, permission-based marketing,
-      CRM, and multi-tenancy governance across 96 paths. Cross-linked with a hosted MCP server and llms.txt agent
-      documentation.
-    humanURL: https://commsharbor.com/api/
-    baseURL: https://commsharbor.com
-    tags:
-      - Email
-      - Transactional Email
-      - Email Marketing
-      - Communications
-      - Messaging
-      - Deliverability
-      - CRM
-      - Multi-tenant SaaS
-      - Agent-native
-      - MCP
-      - Web3 payments
-      - x402
-    properties:
-      - type: OpenAPI
-        url: https://commsharbor.com/openapi.json
-      - type: Documentation
-        url: https://commsharbor.com/api/
-      - type: LLMsTxt
-        url: https://commsharbor.com/llms.txt
-      - type: LLMsTxt
-        url: https://commsharbor.com/llms-full.txt
-      - type: MCPServer
-        url: https://commsharbor.com/mcp
+  properties:
+  - type: OpenAPI
+    url: https://commsharbor.com/openapi.json
+  - type: Documentation
+    url: https://commsharbor.com/api/
+  - type: LLMsTxt
+    url: https://commsharbor.com/llms.txt
+  - type: LLMsTxt
+    url: https://commsharbor.com/llms-full.txt
+  - type: MCPServer
+    url: https://commsharbor.com/mcp
+  - type: MCPServer
+    url: mcp/commsharbor-mcp.yml
+  - type: OpenAPI
+    url: openapi/commsharbor-openapi.json
+  - type: ToolCrosswalk
+    url: mcp/commsharbor-tool-crosswalk.yml
+  - type: Overlay
+    url: overlays/commsharbor-openapi-overlay.yaml
+  - type: ErrorCatalog
+    url: errors/commsharbor-problem-types.yml
+  - type: DataModel
+    url: data-model/commsharbor-data-model.yml
+  - type: Sandbox
+    url: sandbox/commsharbor-sandbox.yml
+  - type: Webhooks
+    url: asyncapi/commsharbor-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/commsharbor-rate-limits.yml
+  - type: X-APIsJson
+    url: https://commsharbor.com/apis.json
 maintainers:
-  - FN: CommsHarbor
-    url: mailto:contato@commsharbor.com
-generated:
+- FN: CommsHarbor
+  email: contato@commsharbor.com
+  url: https://commsharbor.com/
+x-generated:
   by: apis.io/add
   model: claude-opus-4-8
   confidence: 97
   at: '2026-09-05T11:49:20.514Z'
+common:
+- type: Website
+  url: https://commsharbor.com
+- type: Authentication
+  url: authentication/commsharbor-authentication.yml
+- type: VulnerabilityDisclosure
+  url: security/commsharbor-vulnerability-disclosure.yml
+- type: DomainSecurity
+  url: security/commsharbor-domain-security.yml
+- type: Security
+  url: security/commsharbor-vulnerability-disclosure.yml
+- type: WellKnown
+  url: well-known/commsharbor-well-known.yml
+- type: SecurityTxt
+  url: well-known/commsharbor-security.txt
+- type: Conformance
+  url: conformance/commsharbor-conformance.yml
+- type: Conventions
+  url: conventions/commsharbor-conventions.yml
+- type: Idempotency
+  url: conventions/commsharbor-conventions.yml
+- type: Lifecycle
+  url: lifecycle/commsharbor-lifecycle.yml
+- type: Plans
+  url: plans/commsharbor-plans-pricing.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: TermsOfService
+  url: https://commsharbor.com/terms
+- type: PrivacyPolicy
+  url: https://commsharbor.com/privacy
+- type: Login
+  url: https://commsharbor.com/app
+x-enrichment:
+  date: '2026-09-05'
+  status: enriched
+  artifacts_added: 26
+  pass: local-v3

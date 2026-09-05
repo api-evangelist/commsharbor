@@ -1,0 +1,12 @@
+generated: '2026-09-05'
+method: searched
+source: registry.npmjs.org search + pypi.org + github.com search + https://commsharbor.com/llms.txt
+package_count: 0
+note: >-
+  No first-party client libraries exist as of 2026-09-05: npm search for "commsharbor" returns 0
+  packages, pypi.org/simple/commsharbor/ answers 404, and a GitHub repository search finds only the
+  API Evangelist catalog repo. This is by design rather than neglect - the provider's own docs steer
+  consumption straight over HTTP (every llms-full.txt endpoint carries a runnable curl example) and
+  through the hosted MCP server, with one-click MCP install deeplinks for Cursor and VS Code on the
+  homepage instead of SDK downloads.
+packages: []

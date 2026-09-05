@@ -1,0 +1,48 @@
+generated: '2026-09-05'
+method: probed
+source: https://commsharbor.com/api/billing
+note: >-
+  Read from the provider's public machine-readable billing catalog (GET /api/billing, 200,
+  unauthenticated, catalog version 1). Access is currently invite-only and live checkout is
+  disabled: a purchase request answers a standard x402 payment challenge (network base, chain 8453,
+  USDC, facilitator facilitator.payai.network, mode live). Nothing auto-renews, and a global
+  bootstrap hard cap of 1,000 real recipients per month prevails over every entitlement. A separate
+  x402 prepaid credit token (POST /api/credito) debits usage on any API of the house.
+plan_count: 3
+checkout_live: false
+invite_only: true
+auto_renew: false
+global_recipient_hard_cap_per_month: 1000
+payment:
+  provider: x402
+  network: base
+  chain_id: 8453
+  asset: USDC
+  facilitator: https://facilitator.payai.network
+plans:
+  - name: Trial
+    price: 0
+    currency: USD
+    period: 30 days
+    included:
+      sending_domains: 1
+      contacts: 1000
+      sends: 5000
+    detail: One organization trial per verified owner.
+  - name: Pass
+    price: 15
+    currency: USD
+    period: 30 days
+    included:
+      sending_domains: 2
+      contacts: 5000
+      sends: 20000
+    detail: Never auto-renews.
+  - name: Top-up
+    price: 10
+    currency: USD
+    period: valid 365 days
+    included:
+      sends: 10000
+    requires: an active Pass
+    detail: Additional sends on top of an active pass.

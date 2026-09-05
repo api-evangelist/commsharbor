@@ -1,0 +1,62 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the CommsHarbor OpenAPI
+  version: 1.0.0
+x-provenance:
+  generated: '2026-09-05'
+  method: generated
+  source: openapi/commsharbor-openapi.json (https://commsharbor.com/openapi.json, fetched 2026-09-05)
+extends: openapi/commsharbor-openapi.json
+actions:
+  - target: $.info
+    update:
+      contact:
+        name: CommsHarbor
+        email: contato@commsharbor.com
+        url: https://commsharbor.com/
+      termsOfService: https://commsharbor.com/terms
+      x-privacy-policy: https://commsharbor.com/privacy
+  - target: $.info
+    update:
+      x-agent-surfaces:
+        mcp: https://commsharbor.com/mcp
+        llms-txt: https://commsharbor.com/llms.txt
+        api-catalog: https://commsharbor.com/.well-known/api-catalog
+        apis-json: https://commsharbor.com/apis.json
+        okf: https://commsharbor.com/okf/index.md
+  - target: $.info
+    update:
+      x-idempotency:
+        coverage: partial
+        header: Idempotency-Key
+        operations:
+          - post_api_messages
+          - commsharbor_message_send
+          - commsharbor_campaign_launch
+          - commsharbor_contact_import_confirm
+          - commsharbor_marketing_smoke
+          - commsharbor_billing_purchase
+  - target: $.info
+    update:
+      x-payments:
+        protocol: x402
+        network: base
+        chain_id: 8453
+        asset: USDC
+        note: POST billing purchases and POST /api/credito answer live 402 challenges while checkout is off.
+  - target: $.tags
+    update:
+      - name: identity
+        description: Auth, profiles, organizations, members, invitations, API keys, audit.
+      - name: deliverability
+        description: Sending domains, SES/DKIM/DMARC verification, deliveries, feedback events.
+      - name: messaging
+        description: Idempotent transactional sends and versioned templates.
+      - name: marketing
+        description: Consent, preferences, one-click unsubscribe, audiences, campaigns, suppressions.
+      - name: crm
+        description: Tenant CRM (contacts, companies, pipelines, deals, activities, tasks) and platform CRM.
+      - name: billing
+        description: Entitlements, x402 purchases, prepaid credit.
+      - name: events
+        description: HMAC-signed webhooks, delivery attempts, dead-letter replay.

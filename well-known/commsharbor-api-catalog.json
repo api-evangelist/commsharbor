@@ -1,0 +1,76 @@
+{
+  "linkset": [
+    {
+      "anchor": "https://commsharbor.com/.well-known/api-catalog",
+      "item": [
+        {
+          "href": "https://commsharbor.com/api/"
+        },
+        {
+          "href": "https://commsharbor.com/mcp"
+        }
+      ],
+      "describedby": [
+        {
+          "href": "https://commsharbor.com/apis.json",
+          "type": "application/json",
+          "title": "APIs.json"
+        }
+      ]
+    },
+    {
+      "anchor": "https://commsharbor.com/api/",
+      "service-desc": [
+        {
+          "href": "https://commsharbor.com/openapi.json",
+          "type": "application/json",
+          "title": "OpenAPI 3"
+        }
+      ],
+      "service-doc": [
+        {
+          "href": "https://commsharbor.com/llms.txt",
+          "type": "text/plain",
+          "title": "Guia para agentes de IA"
+        },
+        {
+          "href": "https://commsharbor.com/llms-full.txt",
+          "type": "text/plain",
+          "title": "Referência completa da API"
+        },
+        {
+          "href": "https://commsharbor.com/okf/index.md",
+          "type": "text/markdown",
+          "title": "Bundle OKF"
+        }
+      ]
+    },
+    {
+      "anchor": "https://commsharbor.com/mcp",
+      "service-desc": [
+        {
+          "href": "https://commsharbor.com/mcp",
+          "type": "application/json",
+          "title": "MCP (streamable HTTP)"
+        }
+      ],
+      "service-doc": [
+        {
+          "href": "https://commsharbor.com/llms.txt",
+          "type": "text/plain",
+          "title": "Guia para agentes de IA"
+        },
+        {
+          "href": "https://commsharbor.com/llms-full.txt",
+          "type": "text/plain",
+          "title": "Referência completa da API"
+        },
+        {
+          "href": "https://commsharbor.com/okf/index.md",
+          "type": "text/markdown",
+          "title": "Bundle OKF"
+        }
+      ]
+    }
+  ]
+}

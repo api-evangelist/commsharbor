@@ -1,0 +1,48 @@
+generated: '2026-09-05'
+method: searched
+source: openapi/commsharbor-openapi.json
+docs: https://commsharbor.com/api/
+summary:
+  types:
+  - http
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  description: Human session or scoped organization API key. Organization identity remains explicit.
+  sources:
+  - openapi/commsharbor-openapi.json
+auth_modes:
+  note: >-
+    The machine-readable API index (GET /api/, 200) documents eleven per-endpoint auth modes beyond
+    the single bearer scheme the OpenAPI declares. API keys are organization-scoped with named
+    permissions; keys cannot manage credentials or membership, and platform access is a separate
+    explicit grant never implied by tenant ownership. Keys and webhook secrets are revealed exactly
+    once at creation; revocation is immediate.
+  modes:
+    - name: none
+      detail: Public endpoint. No tenant data is returned.
+    - name: session
+      detail: Bearer session or secure session cookie. No organization is implied.
+    - name: organization
+      detail: Session plus X-Organization-Id membership, or a scoped API key that determines the organization (and rejects a conflicting header).
+    - name: organization_template_write
+      detail: Active organization identity with template:write permission.
+    - name: organization_messages_send
+      detail: Active organization identity with messages:send permission. Idempotency-Key is mandatory.
+    - name: organization_campaign_write
+      detail: Active organization identity with campaign:write permission. Campaign launches require Idempotency-Key.
+    - name: organization_admin
+      detail: Human organization member with the required role; API keys cannot manage credentials or membership.
+    - name: platform_admin
+      detail: Session with an explicit platform_roles grant. Tenant ownership does not grant platform access.
+    - name: aws_sns
+      detail: Amazon SNS signature, regional certificate URL and the exact configured TopicArn. Never accepts a user credential.
+    - name: preference_capability
+      detail: Signed, expiring capability scoped to one organization and contact. No login required; no email address embedded in the token.
+    - name: credito
+      detail: 'Prepaid credit token in Authorization: Bearer cred_... (or the X-Credito header). Not an account: a bearer of balance.'
+  permissions:
+    - messages:send
+    - template:write
+    - campaign:write

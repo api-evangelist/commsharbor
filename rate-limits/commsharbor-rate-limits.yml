@@ -1,0 +1,29 @@
+generated: '2026-09-05'
+method: searched
+source: https://commsharbor.com/openapi.json + https://commsharbor.com/llms.txt + https://commsharbor.com/api/billing
+note: >-
+  CommsHarbor signals capacity as quota, not request rate: there are no X-RateLimit-*/RateLimit
+  response headers. Send responses carry an inline capacity object (remaining, global_remaining,
+  hard_cap) so an agent learns its remaining budget on every dispatch, and 429 means an exhausted
+  entitlement or the global cap rather than a burst limit. Two auth endpoints also answer 429 on
+  abuse (too many OTP codes / attempts) with no documented numeric threshold.
+limit_count: 3
+exhaustion_status: 429
+headers: []
+inline_signal:
+  field: capacity
+  shape: '{ remaining, global_remaining, hard_cap }'
+  where: send responses (POST /api/messages, POST .../messages, campaign launch)
+limits:
+  - scope: global (whole platform, bootstrap phase)
+    window: per calendar month
+    limit: 1000 real recipients
+    detail: 'The bootstrap global cap of 1,000 real recipients per month always prevails over any entitlement.'
+  - scope: per-organization sends
+    window: entitlement period (30-day trial/pass, 365-day top-up)
+    limit: 5000 (trial) / 20000 (pass) / +10000 (top-up)
+    detail: Quota allocation and expiration warnings are readable at GET /api/organizations/{organization_id}/billing.
+  - scope: per-address OTP requests (POST /api/auth/start, /api/auth/verify)
+    window: undocumented
+    limit: undocumented
+    detail: 429 on too many codes requested or too many verify attempts; numeric thresholds not published.

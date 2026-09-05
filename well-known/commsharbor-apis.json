@@ -1,0 +1,75 @@
+{
+  "name": "CommsHarbor",
+  "description": "Transactional email and permission-based campaigns in one accountable harbor, with multi-tenancy and audit built in.",
+  "image": "https://commsharbor.com/icon.svg",
+  "url": "https://commsharbor.com/apis.json",
+  "tags": [
+    "Transactional email with idempotent sends, delivery tracking and dead-letter replay",
+    "Permission-based marketing campaigns: audiences, templates, consent and suppressions",
+    "Sending domains verified live against SES and DNS, with deliverability feedback",
+    "Multi-tenant organizations with members, invitations, scoped API keys and webhooks",
+    "Tenant CRM and platform CRM kept apart, with contacts, exports and deletion requests",
+    "Audit trail and delivery accountability",
+    "Agent-first HTTP API"
+  ],
+  "created": "2026-09-05",
+  "modified": "2026-09-05",
+  "specificationVersion": "0.19",
+  "apis": [
+    {
+      "name": "CommsHarbor",
+      "description": "Transactional email and permission-based campaigns in one accountable harbor, with multi-tenancy and audit built in.",
+      "image": "https://commsharbor.com/icon.svg",
+      "humanURL": "https://commsharbor.com/",
+      "baseURL": "https://commsharbor.com/api/",
+      "tags": [
+        "Transactional email with idempotent sends, delivery tracking and dead-letter replay",
+        "Permission-based marketing campaigns: audiences, templates, consent and suppressions",
+        "Sending domains verified live against SES and DNS, with deliverability feedback",
+        "Multi-tenant organizations with members, invitations, scoped API keys and webhooks",
+        "Tenant CRM and platform CRM kept apart, with contacts, exports and deletion requests",
+        "Audit trail and delivery accountability",
+        "Agent-first HTTP API"
+      ],
+      "properties": [
+        {
+          "type": "OpenAPI",
+          "url": "https://commsharbor.com/openapi.json"
+        },
+        {
+          "type": "Documentation",
+          "url": "https://commsharbor.com/llms-full.txt"
+        },
+        {
+          "type": "x-llms-txt",
+          "url": "https://commsharbor.com/llms.txt"
+        },
+        {
+          "type": "x-mcp",
+          "url": "https://commsharbor.com/mcp"
+        },
+        {
+          "type": "x-api-catalog",
+          "url": "https://commsharbor.com/.well-known/api-catalog"
+        },
+        {
+          "type": "x-okf",
+          "url": "https://commsharbor.com/okf/index.md"
+        }
+      ],
+      "contact": [
+        {
+          "FN": "CommsHarbor",
+          "email": "contato@commsharbor.com"
+        }
+      ]
+    }
+  ],
+  "include": [],
+  "maintainers": [
+    {
+      "FN": "CommsHarbor",
+      "email": "contato@commsharbor.com"
+    }
+  ]
+}

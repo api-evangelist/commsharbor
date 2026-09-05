@@ -1,0 +1,3688 @@
+{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "result": {
+        "tools": [
+            {
+                "name": "commsharbor_health",
+                "description": "Read deployment health and build.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {},
+                    "required": [],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_auth_start",
+                "description": "Send an OTP to an email address.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "email": {
+                            "type": "string",
+                            "description": "Login email"
+                        }
+                    },
+                    "required": [
+                        "email"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_auth_verify",
+                "description": "Verify an OTP and receive a session.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "email": {
+                            "type": "string",
+                            "description": "Login email"
+                        },
+                        "code": {
+                            "type": "string",
+                            "description": "Six-digit code"
+                        }
+                    },
+                    "required": [
+                        "email",
+                        "code"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_logout",
+                "description": "Revoke the current session.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {},
+                    "required": [],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_me",
+                "description": "Read the current profile and memberships.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {},
+                    "required": [],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_profile_update",
+                "description": "Update the current profile.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "display_name": {
+                            "type": "string",
+                            "description": "Display name"
+                        },
+                        "locale": {
+                            "type": "string",
+                            "enum": [
+                                "en",
+                                "pt-BR"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "display_name",
+                        "locale"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_organizations",
+                "description": "List memberships.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {},
+                    "required": [],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_organization_create",
+                "description": "Create the verified owner's single trial.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "type": "string",
+                            "description": "Organization name"
+                        },
+                        "sending_domain": {
+                            "type": "string",
+                            "description": "Sending domain"
+                        }
+                    },
+                    "required": [
+                        "name",
+                        "sending_domain"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_context",
+                "description": "Resolve the active organization identity.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {},
+                    "required": [],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_organization_get",
+                "description": "Read an organization.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_organization_update",
+                "description": "Update an organization.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "Organization name"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "name"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_members",
+                "description": "List organization members.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_member_role",
+                "description": "Change a non-owner member role.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "user_id": {
+                            "type": "string",
+                            "description": "Member user ID"
+                        },
+                        "role": {
+                            "type": "string",
+                            "description": "New role"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "user_id",
+                        "role"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_invitations",
+                "description": "List invitations.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_invitation_create",
+                "description": "Invite a member and reveal the acceptance token once.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "email": {
+                            "type": "string",
+                            "description": "Invitee email"
+                        },
+                        "role": {
+                            "type": "string",
+                            "description": "Member role"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "email",
+                        "role"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_invitation_accept",
+                "description": "Accept an invitation.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "token": {
+                            "type": "string",
+                            "description": "Invitation token"
+                        }
+                    },
+                    "required": [
+                        "token"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_api_keys",
+                "description": "List API keys without secrets.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_api_key_create",
+                "description": "Create a scoped API key and reveal it once.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "Credential name"
+                        },
+                        "scopes": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "name",
+                        "scopes"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_api_key_revoke",
+                "description": "Revoke an API key.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "api_key_id": {
+                            "type": "string",
+                            "description": "API key ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "api_key_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_audit",
+                "description": "List tenant audit events.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "cursor": {
+                            "type": "string",
+                            "description": "Opaque cursor"
+                        }
+                    },
+                    "required": [
+                        "organization_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_platform_context",
+                "description": "Confirm the caller's platform role.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {},
+                    "required": [],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_domains",
+                "description": "List sending domains with their last observed state.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_domain_create",
+                "description": "Register the organization's exact sending domain and queue SES provisioning.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "domain": {
+                            "type": "string",
+                            "description": "Sending domain"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "domain"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_domain_get",
+                "description": "Read one stored sending-domain resource.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "domain_id": {
+                            "type": "string",
+                            "description": "Sending domain ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "domain_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_domain_verify",
+                "description": "Refresh domain readiness from real SES and DNS observations.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "domain_id": {
+                            "type": "string",
+                            "description": "Sending domain ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "domain_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_domain_smoke",
+                "description": "Send one controlled smoke to the server-side recipient secret; never accepts a recipient argument.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "domain_id": {
+                            "type": "string",
+                            "description": "Sending domain ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "domain_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_domain_deliveries",
+                "description": "List a domain's deliveries without recipient addresses.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "domain_id": {
+                            "type": "string",
+                            "description": "Sending domain ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "domain_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_delivery_get",
+                "description": "Read one delivery and its SES MessageId without recipient data.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "delivery_id": {
+                            "type": "string",
+                            "description": "Delivery ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "delivery_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_delivery_events",
+                "description": "List normalized SES feedback events for one delivery.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "delivery_id": {
+                            "type": "string",
+                            "description": "Delivery ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "delivery_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_crm_contacts_list",
+                "description": "list CRM contact.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "organization_id"
+                        },
+                        "cursor": {
+                            "type": "string",
+                            "description": "Opaque cursor returned by the previous page"
+                        },
+                        "limit": {
+                            "type": "integer",
+                            "description": "Page size from 1 to 100"
+                        },
+                        "q": {
+                            "type": "string",
+                            "description": "q"
+                        },
+                        "company_id": {
+                            "type": "string",
+                            "description": "company_id"
+                        }
+                    },
+                    "required": [
+                        "organization_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_crm_contacts_create",
+                "description": "create CRM contact.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "organization_id"
+                        },
+                        "email": {
+                            "type": "string",
+                            "description": "email"
+                        },
+                        "first_name": {
+                            "type": "string",
+                            "description": "first name"
+                        },
+                        "company_id": {
+                            "type": "string",
+                            "description": "company id"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "email",
+                        "first_name"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_crm_contacts_get",
+                "description": "get CRM contact.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "organization_id"
+                        },
+                        "contact_id": {
+                            "type": "string",
+                            "description": "contact_id"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "contact_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_crm_contacts_update",
+                "description": "update CRM contact.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "organization_id"
+                        },
+                        "contact_id": {
+                            "type": "string",
+                            "description": "contact_id"
+                        },
+                        "email": {
+                            "type": "string",
+                            "description": "email"
+                        },
+                        "first_name": {
+                            "type": "string",
+                            "description": "first name"
+                        },
+                        "company_id": {
+                            "type": "string",
+                            "description": "company id"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "contact_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_crm_contacts_delete",
+                "description": "delete CRM contact.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "organization_id"
+                        },
+                        "contact_id": {
+                            "type": "string",
+                            "description": "contact_id"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "contact_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_crm_companies_list",
+                "description": "list CRM company.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "organization_id"
+                        },
+                        "cursor": {
+                            "type": "string",
+                            "description": "Opaque cursor returned by the previous page"
+                        },
+                        "limit": {
+                            "type": "integer",
+                            "description": "Page size from 1 to 100"
+                        },
+                        "q": {
+                            "type": "string",
+                            "description": "q"
+                        }
+                    },
+                    "required": [
+                        "organization_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_crm_companies_create",
+                "description": "create CRM company.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "organization_id"
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "name"
+                        },
+                        "domain": {
+                            "type": "string",
+                            "description": "domain"
+                        },
+                        "website": {
+                            "type": "string",
+                            "description": "website"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "name"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_crm_companies_get",
+                "description": "get CRM company.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "organization_id"
+                        },
+                        "company_id": {
+                            "type": "string",
+                            "description": "company_id"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "company_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_crm_companies_update",
+                "description": "update CRM company.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "organization_id"
+                        },
+                        "company_id": {
+                            "type": "string",
+                            "description": "company_id"
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "name"
+                        },
+                        "domain": {
+                            "type": "string",
+                            "description": "domain"
+                        },
+                        "website": {
+                            "type": "string",
+                            "description": "website"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "company_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_crm_companies_delete",
+                "description": "delete CRM company.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "organization_id"
+                        },
+                        "company_id": {
+                            "type": "string",
+                            "description": "company_id"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "company_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_crm_pipelines_list",
+                "description": "list CRM pipeline.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "organization_id"
+                        },
+                        "cursor": {
+                            "type": "string",
+                            "description": "Opaque cursor returned by the previous page"
+                        },
+                        "limit": {
+                            "type": "integer",
+                            "description": "Page size from 1 to 100"
+                        },
+                        "q": {
+                            "type": "string",
+                            "description": "q"
+                        }
+                    },
+                    "required": [
+                        "organization_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_crm_pipelines_create",
+                "description": "create CRM pipeline.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "organization_id"
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "name"
+                        },
+                        "stages": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "name"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_crm_pipelines_get",
+                "description": "get CRM pipeline.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "organization_id"
+                        },
+                        "pipeline_id": {
+                            "type": "string",
+                            "description": "pipeline_id"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "pipeline_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_crm_pipelines_update",
+                "description": "update CRM pipeline.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "organization_id"
+                        },
+                        "pipeline_id": {
+                            "type": "string",
+                            "description": "pipeline_id"
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "name"
+                        },
+                        "stages": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "pipeline_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_crm_pipelines_delete",
+                "description": "delete CRM pipeline.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "organization_id"
+                        },
+                        "pipeline_id": {
+                            "type": "string",
+                            "description": "pipeline_id"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "pipeline_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_crm_deals_list",
+                "description": "list CRM deal.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "organization_id"
+                        },
+                        "cursor": {
+                            "type": "string",
+                            "description": "Opaque cursor returned by the previous page"
+                        },
+                        "limit": {
+                            "type": "integer",
+                            "description": "Page size from 1 to 100"
+                        },
+                        "q": {
+                            "type": "string",
+                            "description": "q"
+                        },
+                        "pipeline_id": {
+                            "type": "string",
+                            "description": "pipeline_id"
+                        },
+                        "stage_id": {
+                            "type": "string",
+                            "description": "stage_id"
+                        },
+                        "status": {
+                            "type": "string",
+                            "description": "status"
+                        }
+                    },
+                    "required": [
+                        "organization_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_crm_deals_create",
+                "description": "create CRM deal.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "organization_id"
+                        },
+                        "title": {
+                            "type": "string",
+                            "description": "title"
+                        },
+                        "pipeline_id": {
+                            "type": "string",
+                            "description": "pipeline id"
+                        },
+                        "stage_id": {
+                            "type": "string",
+                            "description": "stage id"
+                        },
+                        "value_minor": {
+                            "type": "integer",
+                            "description": "value_minor"
+                        },
+                        "currency": {
+                            "type": "string",
+                            "description": "currency"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "title",
+                        "pipeline_id",
+                        "stage_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_crm_deals_get",
+                "description": "get CRM deal.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "organization_id"
+                        },
+                        "deal_id": {
+                            "type": "string",
+                            "description": "deal_id"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "deal_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_crm_deals_update",
+                "description": "update CRM deal.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "organization_id"
+                        },
+                        "deal_id": {
+                            "type": "string",
+                            "description": "deal_id"
+                        },
+                        "title": {
+                            "type": "string",
+                            "description": "title"
+                        },
+                        "pipeline_id": {
+                            "type": "string",
+                            "description": "pipeline id"
+                        },
+                        "stage_id": {
+                            "type": "string",
+                            "description": "stage id"
+                        },
+                        "value_minor": {
+                            "type": "integer",
+                            "description": "value_minor"
+                        },
+                        "currency": {
+                            "type": "string",
+                            "description": "currency"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "deal_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_crm_deals_delete",
+                "description": "delete CRM deal.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "organization_id"
+                        },
+                        "deal_id": {
+                            "type": "string",
+                            "description": "deal_id"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "deal_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_crm_activities_list",
+                "description": "list CRM activity.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "organization_id"
+                        },
+                        "cursor": {
+                            "type": "string",
+                            "description": "Opaque cursor returned by the previous page"
+                        },
+                        "limit": {
+                            "type": "integer",
+                            "description": "Page size from 1 to 100"
+                        },
+                        "q": {
+                            "type": "string",
+                            "description": "q"
+                        },
+                        "deal_id": {
+                            "type": "string",
+                            "description": "deal_id"
+                        },
+                        "contact_id": {
+                            "type": "string",
+                            "description": "contact_id"
+                        },
+                        "company_id": {
+                            "type": "string",
+                            "description": "company_id"
+                        },
+                        "activity_type": {
+                            "type": "string",
+                            "description": "activity_type"
+                        }
+                    },
+                    "required": [
+                        "organization_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_crm_activities_create",
+                "description": "create CRM activity.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "organization_id"
+                        },
+                        "activity_type": {
+                            "type": "string",
+                            "description": "activity type"
+                        },
+                        "note": {
+                            "type": "string",
+                            "description": "note"
+                        },
+                        "deal_id": {
+                            "type": "string",
+                            "description": "deal id"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "note"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_crm_activities_get",
+                "description": "get CRM activity.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "organization_id"
+                        },
+                        "activity_id": {
+                            "type": "string",
+                            "description": "activity_id"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "activity_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_crm_activities_update",
+                "description": "update CRM activity.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "organization_id"
+                        },
+                        "activity_id": {
+                            "type": "string",
+                            "description": "activity_id"
+                        },
+                        "activity_type": {
+                            "type": "string",
+                            "description": "activity type"
+                        },
+                        "note": {
+                            "type": "string",
+                            "description": "note"
+                        },
+                        "deal_id": {
+                            "type": "string",
+                            "description": "deal id"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "activity_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_crm_activities_delete",
+                "description": "delete CRM activity.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "organization_id"
+                        },
+                        "activity_id": {
+                            "type": "string",
+                            "description": "activity_id"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "activity_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_crm_tasks_list",
+                "description": "list CRM task.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "organization_id"
+                        },
+                        "cursor": {
+                            "type": "string",
+                            "description": "Opaque cursor returned by the previous page"
+                        },
+                        "limit": {
+                            "type": "integer",
+                            "description": "Page size from 1 to 100"
+                        },
+                        "q": {
+                            "type": "string",
+                            "description": "q"
+                        },
+                        "status": {
+                            "type": "string",
+                            "description": "status"
+                        },
+                        "deal_id": {
+                            "type": "string",
+                            "description": "deal_id"
+                        },
+                        "contact_id": {
+                            "type": "string",
+                            "description": "contact_id"
+                        },
+                        "assignee_user_id": {
+                            "type": "string",
+                            "description": "assignee_user_id"
+                        }
+                    },
+                    "required": [
+                        "organization_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_crm_tasks_create",
+                "description": "create CRM task.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "organization_id"
+                        },
+                        "title": {
+                            "type": "string",
+                            "description": "title"
+                        },
+                        "status": {
+                            "type": "string",
+                            "description": "status"
+                        },
+                        "deal_id": {
+                            "type": "string",
+                            "description": "deal id"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "title"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_crm_tasks_get",
+                "description": "get CRM task.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "organization_id"
+                        },
+                        "task_id": {
+                            "type": "string",
+                            "description": "task_id"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "task_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_crm_tasks_update",
+                "description": "update CRM task.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "organization_id"
+                        },
+                        "task_id": {
+                            "type": "string",
+                            "description": "task_id"
+                        },
+                        "title": {
+                            "type": "string",
+                            "description": "title"
+                        },
+                        "status": {
+                            "type": "string",
+                            "description": "status"
+                        },
+                        "deal_id": {
+                            "type": "string",
+                            "description": "deal id"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "task_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_crm_tasks_delete",
+                "description": "delete CRM task.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "organization_id"
+                        },
+                        "task_id": {
+                            "type": "string",
+                            "description": "task_id"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "task_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_crm_stages_list",
+                "description": "list CRM stage.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "organization_id"
+                        },
+                        "pipeline_id": {
+                            "type": "string",
+                            "description": "pipeline_id"
+                        },
+                        "cursor": {
+                            "type": "string",
+                            "description": "Opaque cursor returned by the previous page"
+                        },
+                        "limit": {
+                            "type": "integer",
+                            "description": "Page size from 1 to 100"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "pipeline_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_crm_stages_create",
+                "description": "create CRM stage.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "organization_id"
+                        },
+                        "pipeline_id": {
+                            "type": "string",
+                            "description": "pipeline_id"
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "name"
+                        },
+                        "position": {
+                            "type": "integer",
+                            "description": "position"
+                        },
+                        "probability": {
+                            "type": "integer",
+                            "description": "probability"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "pipeline_id",
+                        "name"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_crm_stages_get",
+                "description": "get CRM stage.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "organization_id"
+                        },
+                        "pipeline_id": {
+                            "type": "string",
+                            "description": "pipeline_id"
+                        },
+                        "stage_id": {
+                            "type": "string",
+                            "description": "stage_id"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "pipeline_id",
+                        "stage_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_crm_stages_update",
+                "description": "update CRM stage.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "organization_id"
+                        },
+                        "pipeline_id": {
+                            "type": "string",
+                            "description": "pipeline_id"
+                        },
+                        "stage_id": {
+                            "type": "string",
+                            "description": "stage_id"
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "name"
+                        },
+                        "position": {
+                            "type": "integer",
+                            "description": "position"
+                        },
+                        "probability": {
+                            "type": "integer",
+                            "description": "probability"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "pipeline_id",
+                        "stage_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_crm_stages_delete",
+                "description": "delete CRM stage.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "organization_id"
+                        },
+                        "pipeline_id": {
+                            "type": "string",
+                            "description": "pipeline_id"
+                        },
+                        "stage_id": {
+                            "type": "string",
+                            "description": "stage_id"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "pipeline_id",
+                        "stage_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_platform_crm_leads_list",
+                "description": "list CRM lead.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "cursor": {
+                            "type": "string",
+                            "description": "Opaque cursor returned by the previous page"
+                        },
+                        "limit": {
+                            "type": "integer",
+                            "description": "Page size from 1 to 100"
+                        },
+                        "q": {
+                            "type": "string",
+                            "description": "q"
+                        },
+                        "stage": {
+                            "type": "string",
+                            "description": "stage"
+                        }
+                    },
+                    "required": [],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_platform_crm_leads_create",
+                "description": "create CRM lead.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "email": {
+                            "type": "string",
+                            "description": "email"
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "name"
+                        },
+                        "company_name": {
+                            "type": "string",
+                            "description": "company name"
+                        },
+                        "source": {
+                            "type": "string",
+                            "description": "source"
+                        },
+                        "stage": {
+                            "type": "string",
+                            "description": "stage"
+                        },
+                        "organization_id": {
+                            "type": "string",
+                            "description": "organization id"
+                        }
+                    },
+                    "required": [
+                        "email",
+                        "name"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_platform_crm_leads_get",
+                "description": "get CRM lead.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "lead_id": {
+                            "type": "string",
+                            "description": "lead_id"
+                        }
+                    },
+                    "required": [
+                        "lead_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_platform_crm_leads_update",
+                "description": "update CRM lead.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "lead_id": {
+                            "type": "string",
+                            "description": "lead_id"
+                        },
+                        "email": {
+                            "type": "string",
+                            "description": "email"
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "name"
+                        },
+                        "company_name": {
+                            "type": "string",
+                            "description": "company name"
+                        },
+                        "source": {
+                            "type": "string",
+                            "description": "source"
+                        },
+                        "stage": {
+                            "type": "string",
+                            "description": "stage"
+                        },
+                        "organization_id": {
+                            "type": "string",
+                            "description": "organization id"
+                        }
+                    },
+                    "required": [
+                        "lead_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_platform_crm_leads_delete",
+                "description": "delete CRM lead.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "lead_id": {
+                            "type": "string",
+                            "description": "lead_id"
+                        }
+                    },
+                    "required": [
+                        "lead_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_platform_crm_tasks_list",
+                "description": "list CRM task.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "cursor": {
+                            "type": "string",
+                            "description": "Opaque cursor returned by the previous page"
+                        },
+                        "limit": {
+                            "type": "integer",
+                            "description": "Page size from 1 to 100"
+                        },
+                        "q": {
+                            "type": "string",
+                            "description": "q"
+                        },
+                        "status": {
+                            "type": "string",
+                            "description": "status"
+                        },
+                        "lead_id": {
+                            "type": "string",
+                            "description": "lead_id"
+                        },
+                        "assignee_user_id": {
+                            "type": "string",
+                            "description": "assignee_user_id"
+                        }
+                    },
+                    "required": [],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_platform_crm_tasks_create",
+                "description": "create CRM task.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "title": {
+                            "type": "string",
+                            "description": "title"
+                        },
+                        "lead_id": {
+                            "type": "string",
+                            "description": "lead id"
+                        },
+                        "due_at": {
+                            "type": "string",
+                            "description": "due at"
+                        }
+                    },
+                    "required": [
+                        "title"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_platform_crm_tasks_get",
+                "description": "get CRM task.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "task_id": {
+                            "type": "string",
+                            "description": "task_id"
+                        }
+                    },
+                    "required": [
+                        "task_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_platform_crm_tasks_update",
+                "description": "update CRM task.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "task_id": {
+                            "type": "string",
+                            "description": "task_id"
+                        },
+                        "title": {
+                            "type": "string",
+                            "description": "title"
+                        },
+                        "lead_id": {
+                            "type": "string",
+                            "description": "lead id"
+                        },
+                        "due_at": {
+                            "type": "string",
+                            "description": "due at"
+                        }
+                    },
+                    "required": [
+                        "task_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_platform_crm_tasks_delete",
+                "description": "delete CRM task.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "task_id": {
+                            "type": "string",
+                            "description": "task_id"
+                        }
+                    },
+                    "required": [
+                        "task_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_platform_crm_activities_list",
+                "description": "list CRM activity.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "lead_id": {
+                            "type": "string",
+                            "description": "lead_id"
+                        },
+                        "cursor": {
+                            "type": "string",
+                            "description": "Opaque cursor returned by the previous page"
+                        },
+                        "limit": {
+                            "type": "integer",
+                            "description": "Page size from 1 to 100"
+                        },
+                        "q": {
+                            "type": "string",
+                            "description": "q"
+                        }
+                    },
+                    "required": [
+                        "lead_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_platform_crm_activities_create",
+                "description": "create CRM activity.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "lead_id": {
+                            "type": "string",
+                            "description": "lead_id"
+                        },
+                        "activity_type": {
+                            "type": "string",
+                            "description": "activity type"
+                        },
+                        "note": {
+                            "type": "string",
+                            "description": "note"
+                        }
+                    },
+                    "required": [
+                        "lead_id",
+                        "note"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_platform_crm_activities_get",
+                "description": "get CRM activity.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "lead_id": {
+                            "type": "string",
+                            "description": "lead_id"
+                        },
+                        "activity_id": {
+                            "type": "string",
+                            "description": "activity_id"
+                        }
+                    },
+                    "required": [
+                        "lead_id",
+                        "activity_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_platform_crm_activities_update",
+                "description": "update CRM activity.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "lead_id": {
+                            "type": "string",
+                            "description": "lead_id"
+                        },
+                        "activity_id": {
+                            "type": "string",
+                            "description": "activity_id"
+                        },
+                        "activity_type": {
+                            "type": "string",
+                            "description": "activity type"
+                        },
+                        "note": {
+                            "type": "string",
+                            "description": "note"
+                        }
+                    },
+                    "required": [
+                        "lead_id",
+                        "activity_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_platform_crm_activities_delete",
+                "description": "delete CRM activity.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "lead_id": {
+                            "type": "string",
+                            "description": "lead_id"
+                        },
+                        "activity_id": {
+                            "type": "string",
+                            "description": "activity_id"
+                        }
+                    },
+                    "required": [
+                        "lead_id",
+                        "activity_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_contact_marketing_get",
+                "description": "Read consent and preference for a CRM contact.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "contact_id": {
+                            "type": "string",
+                            "description": "CRM contact ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "contact_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_contact_marketing_put",
+                "description": "Record permission-based marketing consent.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "contact_id": {
+                            "type": "string",
+                            "description": "CRM contact ID"
+                        },
+                        "basis": {
+                            "type": "string",
+                            "description": "explicit or documented_relationship"
+                        },
+                        "source": {
+                            "type": "string",
+                            "description": "Consent source"
+                        },
+                        "captured_at": {
+                            "type": "string",
+                            "description": "ISO-8601 capture time"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "contact_id",
+                        "basis",
+                        "source",
+                        "captured_at"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_preference_token_create",
+                "description": "Create signed preference and unsubscribe URLs.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "contact_id": {
+                            "type": "string",
+                            "description": "CRM contact ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "contact_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_preference_get",
+                "description": "Read preference through a signed capability.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "token": {
+                            "type": "string",
+                            "description": "Signed preference token"
+                        }
+                    },
+                    "required": [
+                        "token"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_preference_unsubscribe",
+                "description": "Apply one-click unsubscribe through a signed capability.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "token": {
+                            "type": "string",
+                            "description": "Signed preference token"
+                        }
+                    },
+                    "required": [
+                        "token"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_marketing_smoke",
+                "description": "Send one controlled permission-based marketing smoke.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "domain_id": {
+                            "type": "string",
+                            "description": "Active sending domain ID"
+                        },
+                        "contact_id": {
+                            "type": "string",
+                            "description": "CRM contact matching the server-side QA recipient"
+                        },
+                        "idempotency_key": {
+                            "type": "string",
+                            "description": "Unique send key"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "domain_id",
+                        "contact_id",
+                        "idempotency_key"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_contact_imports",
+                "description": "List contact imports.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "cursor": {
+                            "type": "string",
+                            "description": "Opaque pagination cursor"
+                        },
+                        "limit": {
+                            "type": "integer",
+                            "description": "Page size, maximum 100",
+                            "minimum": 1,
+                            "maximum": 100
+                        }
+                    },
+                    "required": [
+                        "organization_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_contact_import_preview",
+                "description": "Upload and preview a consent-declared CSV.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "csv": {
+                            "type": "string",
+                            "description": "CSV, maximum 5 MB and 10,000 rows"
+                        },
+                        "mapping": {
+                            "type": "object"
+                        },
+                        "basis": {
+                            "type": "string",
+                            "description": "Consent basis"
+                        },
+                        "source": {
+                            "type": "string",
+                            "description": "Consent source"
+                        },
+                        "captured_at": {
+                            "type": "string",
+                            "description": "ISO-8601 capture time"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "csv",
+                        "mapping",
+                        "basis",
+                        "source",
+                        "captured_at"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_contact_import_get",
+                "description": "Read one contact import.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "import_id": {
+                            "type": "string",
+                            "description": "Contact import ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "import_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_contact_import_confirm",
+                "description": "Confirm an import with a mandatory idempotency key.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "import_id": {
+                            "type": "string",
+                            "description": "Contact import ID"
+                        },
+                        "idempotency_key": {
+                            "type": "string",
+                            "description": "Unique confirmation key"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "import_id",
+                        "idempotency_key"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_contact_import_errors",
+                "description": "List deterministic row-level import errors.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "import_id": {
+                            "type": "string",
+                            "description": "Contact import ID"
+                        },
+                        "cursor": {
+                            "type": "string",
+                            "description": "Opaque pagination cursor"
+                        },
+                        "limit": {
+                            "type": "integer",
+                            "description": "Page size, maximum 100",
+                            "minimum": 1,
+                            "maximum": 100
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "import_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_contact_file_get",
+                "description": "Download a tenant CSV before expiry.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "file_id": {
+                            "type": "string",
+                            "description": "Contact file ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "file_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_contacts_export",
+                "description": "Create a safe seven-day contact CSV export.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_suppressions",
+                "description": "List organization suppressions.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "cursor": {
+                            "type": "string",
+                            "description": "Opaque pagination cursor"
+                        },
+                        "limit": {
+                            "type": "integer",
+                            "description": "Page size, maximum 100",
+                            "minimum": 1,
+                            "maximum": 100
+                        }
+                    },
+                    "required": [
+                        "organization_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_suppression_create",
+                "description": "Suppress a recipient in one organization.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "email": {
+                            "type": "string",
+                            "description": "Recipient email"
+                        },
+                        "contact_id": {
+                            "type": "string",
+                            "description": "Optional CRM contact ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "email"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_audiences",
+                "description": "List audiences and saved segments.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "cursor": {
+                            "type": "string",
+                            "description": "Opaque pagination cursor"
+                        },
+                        "limit": {
+                            "type": "integer",
+                            "description": "Page size, maximum 100",
+                            "minimum": 1,
+                            "maximum": 100
+                        }
+                    },
+                    "required": [
+                        "organization_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_audience_create",
+                "description": "Create an audience or saved segment.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "Audience name"
+                        },
+                        "kind": {
+                            "type": "string",
+                            "description": "static or saved_segment"
+                        },
+                        "filter": {
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "name",
+                        "kind"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_audience_get",
+                "description": "Read one audience.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "audience_id": {
+                            "type": "string",
+                            "description": "Audience ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "audience_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_audience_update",
+                "description": "Update an audience.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "audience_id": {
+                            "type": "string",
+                            "description": "Audience ID"
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "Audience name"
+                        },
+                        "filter": {
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "audience_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_audience_delete",
+                "description": "Delete an audience.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "audience_id": {
+                            "type": "string",
+                            "description": "Audience ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "audience_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_audience_members",
+                "description": "List audience contacts.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "audience_id": {
+                            "type": "string",
+                            "description": "Audience ID"
+                        },
+                        "cursor": {
+                            "type": "string",
+                            "description": "Opaque pagination cursor"
+                        },
+                        "limit": {
+                            "type": "integer",
+                            "description": "Page size, maximum 100",
+                            "minimum": 1,
+                            "maximum": 100
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "audience_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_audience_member_add",
+                "description": "Add a CRM contact to a static audience.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "audience_id": {
+                            "type": "string",
+                            "description": "Audience ID"
+                        },
+                        "contact_id": {
+                            "type": "string",
+                            "description": "CRM contact ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "audience_id",
+                        "contact_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_audience_member_remove",
+                "description": "Remove a CRM contact from a static audience.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "audience_id": {
+                            "type": "string",
+                            "description": "Audience ID"
+                        },
+                        "contact_id": {
+                            "type": "string",
+                            "description": "CRM contact ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "audience_id",
+                        "contact_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_templates",
+                "description": "List email templates.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "cursor": {
+                            "type": "string",
+                            "description": "Opaque cursor"
+                        },
+                        "limit": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 100
+                        }
+                    },
+                    "required": [
+                        "organization_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_template_create",
+                "description": "Create a canonical block template draft.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "Template name"
+                        },
+                        "message_type": {
+                            "type": "string",
+                            "enum": [
+                                "transactional",
+                                "marketing"
+                            ]
+                        },
+                        "subject": {
+                            "type": "string",
+                            "description": "Subject with declared {{variables}}"
+                        },
+                        "variables": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Variable name"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "string",
+                                            "number",
+                                            "date"
+                                        ]
+                                    },
+                                    "required": {
+                                        "type": "boolean"
+                                    }
+                                },
+                                "required": [
+                                    "name",
+                                    "type"
+                                ],
+                                "additionalProperties": false
+                            }
+                        },
+                        "blocks": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "additionalProperties": true
+                            }
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "name",
+                        "message_type",
+                        "subject",
+                        "variables",
+                        "blocks"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_template_get",
+                "description": "Read one template.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "template_id": {
+                            "type": "string",
+                            "description": "Template ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "template_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_template_update",
+                "description": "Update one template draft.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "template_id": {
+                            "type": "string",
+                            "description": "Template ID"
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "Template name"
+                        },
+                        "message_type": {
+                            "type": "string",
+                            "enum": [
+                                "transactional",
+                                "marketing"
+                            ]
+                        },
+                        "subject": {
+                            "type": "string",
+                            "description": "Subject with declared {{variables}}"
+                        },
+                        "variables": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Variable name"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "string",
+                                            "number",
+                                            "date"
+                                        ]
+                                    },
+                                    "required": {
+                                        "type": "boolean"
+                                    }
+                                },
+                                "required": [
+                                    "name",
+                                    "type"
+                                ],
+                                "additionalProperties": false
+                            }
+                        },
+                        "blocks": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "additionalProperties": true
+                            }
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "template_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_template_archive",
+                "description": "Archive a template and preserve its versions.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "template_id": {
+                            "type": "string",
+                            "description": "Template ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "template_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_template_publish",
+                "description": "Publish an immutable template version.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "template_id": {
+                            "type": "string",
+                            "description": "Template ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "template_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_template_versions",
+                "description": "List immutable versions.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "template_id": {
+                            "type": "string",
+                            "description": "Template ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "template_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_template_preview",
+                "description": "Compile and render a safe template preview.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "Template name"
+                        },
+                        "message_type": {
+                            "type": "string",
+                            "enum": [
+                                "transactional",
+                                "marketing"
+                            ]
+                        },
+                        "subject": {
+                            "type": "string",
+                            "description": "Subject with declared {{variables}}"
+                        },
+                        "variables": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Variable name"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "string",
+                                            "number",
+                                            "date"
+                                        ]
+                                    },
+                                    "required": {
+                                        "type": "boolean"
+                                    }
+                                },
+                                "required": [
+                                    "name",
+                                    "type"
+                                ],
+                                "additionalProperties": false
+                            }
+                        },
+                        "blocks": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "additionalProperties": true
+                            }
+                        },
+                        "values": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "subject",
+                        "variables",
+                        "blocks"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_template_export",
+                "description": "Export the latest published HTML, text and MJML.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "template_id": {
+                            "type": "string",
+                            "description": "Template ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "template_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_template_import_html",
+                "description": "Import a safe HTML subset as a draft.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "Template name"
+                        },
+                        "message_type": {
+                            "type": "string",
+                            "enum": [
+                                "transactional",
+                                "marketing"
+                            ]
+                        },
+                        "subject": {
+                            "type": "string",
+                            "description": "Subject with declared {{variables}}"
+                        },
+                        "html": {
+                            "type": "string",
+                            "description": "Safe HTML subset"
+                        },
+                        "variables": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Variable name"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "enum": [
+                                            "string",
+                                            "number",
+                                            "date"
+                                        ]
+                                    },
+                                    "required": {
+                                        "type": "boolean"
+                                    }
+                                },
+                                "required": [
+                                    "name",
+                                    "type"
+                                ],
+                                "additionalProperties": false
+                            }
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "name",
+                        "message_type",
+                        "subject",
+                        "html"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_message_send",
+                "description": "Queue one idempotent transactional delivery.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "domain_id": {
+                            "type": "string",
+                            "description": "Active sending domain ID"
+                        },
+                        "to": {
+                            "type": "string",
+                            "description": "Recipient email"
+                        },
+                        "template_id": {
+                            "type": "string",
+                            "description": "Published template ID"
+                        },
+                        "template_version": {
+                            "type": "integer",
+                            "minimum": 1
+                        },
+                        "variables": {
+                            "type": "object",
+                            "additionalProperties": true
+                        },
+                        "reply_to": {
+                            "type": "string",
+                            "description": "Optional reply-to email"
+                        },
+                        "idempotency_key": {
+                            "type": "string",
+                            "description": "Unique logical message key"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "domain_id",
+                        "to",
+                        "template_id",
+                        "variables",
+                        "idempotency_key"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_campaigns",
+                "description": "List campaigns.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_campaign_create",
+                "description": "Create a campaign draft.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "Campaign name"
+                        },
+                        "domain_id": {
+                            "type": "string",
+                            "description": "Active sending domain ID"
+                        },
+                        "audience_id": {
+                            "type": "string",
+                            "description": "Audience ID"
+                        },
+                        "template_id": {
+                            "type": "string",
+                            "description": "Published marketing template ID"
+                        },
+                        "template_version": {
+                            "type": "integer",
+                            "minimum": 1
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "name",
+                        "domain_id",
+                        "audience_id",
+                        "template_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_campaign_get",
+                "description": "Read a campaign.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "campaign_id": {
+                            "type": "string",
+                            "description": "Campaign ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "campaign_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_campaign_update",
+                "description": "Edit, pause, resume or cancel a campaign.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "campaign_id": {
+                            "type": "string",
+                            "description": "Campaign ID"
+                        },
+                        "name": {
+                            "type": "string",
+                            "description": "Campaign name"
+                        },
+                        "domain_id": {
+                            "type": "string",
+                            "description": "Active sending domain ID"
+                        },
+                        "audience_id": {
+                            "type": "string",
+                            "description": "Audience ID"
+                        },
+                        "template_id": {
+                            "type": "string",
+                            "description": "Published marketing template ID"
+                        },
+                        "template_version": {
+                            "type": "integer",
+                            "minimum": 1
+                        },
+                        "status": {
+                            "type": "string",
+                            "description": "paused, running or canceled"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "campaign_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_campaign_launch",
+                "description": "Freeze and launch or schedule a campaign idempotently.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "campaign_id": {
+                            "type": "string",
+                            "description": "Campaign ID"
+                        },
+                        "scheduled_for": {
+                            "type": "string",
+                            "description": "Optional ISO-8601 instant with offset"
+                        },
+                        "idempotency_key": {
+                            "type": "string",
+                            "description": "Stable launch key"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "campaign_id",
+                        "idempotency_key"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_campaign_report",
+                "description": "Reconcile campaign deliveries and feedback.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "campaign_id": {
+                            "type": "string",
+                            "description": "Campaign ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "campaign_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_messaging_settings",
+                "description": "Read timezone and marketing state.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_messaging_settings_update",
+                "description": "Update timezone or pause state.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "timezone": {
+                            "type": "string",
+                            "description": "IANA timezone"
+                        },
+                        "marketing_state": {
+                            "type": "string",
+                            "description": "active or paused"
+                        }
+                    },
+                    "required": [
+                        "organization_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_deliverability",
+                "description": "Read deliverability and backlog aggregates.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_domain_report",
+                "description": "Read domain delivery and feedback aggregates.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "domain_id": {
+                            "type": "string",
+                            "description": "Sending domain ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "domain_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_webhooks",
+                "description": "List webhook endpoints without secrets.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_webhook_create",
+                "description": "Create a webhook and reveal its secret once.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "url": {
+                            "type": "string",
+                            "description": "Public HTTPS URL"
+                        },
+                        "event_types": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "url",
+                        "event_types"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_webhook_get",
+                "description": "Read a webhook without its secret.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "webhook_id": {
+                            "type": "string",
+                            "description": "Webhook endpoint ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "webhook_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_webhook_disable",
+                "description": "Disable a webhook.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "webhook_id": {
+                            "type": "string",
+                            "description": "Webhook endpoint ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "webhook_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_webhook_deliveries",
+                "description": "List webhook retries and outcomes.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "webhook_id": {
+                            "type": "string",
+                            "description": "Webhook endpoint ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "webhook_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_dead_letters",
+                "description": "Inspect nominal dead letters.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_dead_letter_replay",
+                "description": "Replay one campaign or webhook dead letter.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "record_id": {
+                            "type": "string",
+                            "description": "Dead-letter record ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "record_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_billing_catalog",
+                "description": "Read plans, prices and x402 network.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {},
+                    "required": [],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_billing",
+                "description": "Read tenant entitlements and available sends.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_billing_purchase",
+                "description": "Request a pass or top-up and receive the x402 challenge when payment is required.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "action": {
+                            "type": "string",
+                            "enum": [
+                                "pass",
+                                "topup"
+                            ]
+                        },
+                        "idempotency_key": {
+                            "type": "string",
+                            "description": "Stable logical purchase key"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "action",
+                        "idempotency_key"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_operations",
+                "description": "List current operational alerts without PII.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_operations_refresh",
+                "description": "Refresh alerts, quota and capacity observations.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_data_exports",
+                "description": "List tenant JSON exports.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_data_export_create",
+                "description": "Create a seven-day tenant JSON export.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_data_export_download",
+                "description": "Download a tenant JSON export.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "export_id": {
+                            "type": "string",
+                            "description": "Tenant export ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "export_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_deletion_request",
+                "description": "Read the latest tenant deletion request.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_deletion_schedule",
+                "description": "Schedule tenant erasure after seven days using the exact confirmation phrase.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "confirmation": {
+                            "type": "string",
+                            "description": "Exact phrase: delete <organization_id>"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "confirmation"
+                    ],
+                    "additionalProperties": false
+                }
+            },
+            {
+                "name": "commsharbor_deletion_cancel",
+                "description": "Cancel a scheduled tenant erasure.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "organization_id": {
+                            "type": "string",
+                            "description": "Active organization ID"
+                        },
+                        "request_id": {
+                            "type": "string",
+                            "description": "Deletion request ID"
+                        }
+                    },
+                    "required": [
+                        "organization_id",
+                        "request_id"
+                    ],
+                    "additionalProperties": false
+                }
+            }
+        ]
+    }
+}

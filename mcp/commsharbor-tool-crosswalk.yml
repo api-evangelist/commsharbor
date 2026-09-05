@@ -1,0 +1,911 @@
+generated: '2026-09-05'
+method: derived
+source: mcp/commsharbor-mcp-tools.json + openapi/commsharbor-openapi.json
+note: All 141 MCP tool names are exactly the operationIds of their backing REST operations (verified programmatically,
+  141/141 exact matches). The provider states the MCP uses the same API handlers and maintains no second backend,
+  so each tool inherits its operation parameters and requestBody as its real inputSchema.
+surfaces:
+  openapi:
+    path: openapi/commsharbor-openapi.json
+    url: https://commsharbor.com/openapi.json
+    gated: false
+  mcp:
+    url: https://commsharbor.com/mcp
+    transport: streamable-http
+    gated: false
+    note: tools/list answers anonymously with full inputSchemas; tools/call requires a session or scoped API key
+coverage:
+  mcp_tools: 141
+  rest_operations: 151
+  bound: 141
+  mcp_only: 0
+  rest_only: 10
+crosswalk:
+- tool: commsharbor_health
+  category: operations
+  rest:
+  - commsharbor_health
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_auth_start
+  category: identity
+  rest:
+  - commsharbor_auth_start
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_auth_verify
+  category: identity
+  rest:
+  - commsharbor_auth_verify
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_logout
+  category: identity
+  rest:
+  - commsharbor_logout
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_me
+  category: identity
+  rest:
+  - commsharbor_me
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_profile_update
+  category: identity
+  rest:
+  - commsharbor_profile_update
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_organizations
+  category: identity
+  rest:
+  - commsharbor_organizations
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_organization_create
+  category: identity
+  rest:
+  - commsharbor_organization_create
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_context
+  category: identity
+  rest:
+  - commsharbor_context
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_organization_get
+  category: identity
+  rest:
+  - commsharbor_organization_get
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_organization_update
+  category: identity
+  rest:
+  - commsharbor_organization_update
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_members
+  category: identity
+  rest:
+  - commsharbor_members
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_member_role
+  category: identity
+  rest:
+  - commsharbor_member_role
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_invitations
+  category: identity
+  rest:
+  - commsharbor_invitations
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_invitation_create
+  category: identity
+  rest:
+  - commsharbor_invitation_create
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_invitation_accept
+  category: identity
+  rest:
+  - commsharbor_invitation_accept
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_api_keys
+  category: identity
+  rest:
+  - commsharbor_api_keys
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_api_key_create
+  category: identity
+  rest:
+  - commsharbor_api_key_create
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_api_key_revoke
+  category: identity
+  rest:
+  - commsharbor_api_key_revoke
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_audit
+  category: identity
+  rest:
+  - commsharbor_audit
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_platform_context
+  category: platform
+  rest:
+  - commsharbor_platform_context
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_domains
+  category: deliverability
+  rest:
+  - commsharbor_domains
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_domain_create
+  category: deliverability
+  rest:
+  - commsharbor_domain_create
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_domain_get
+  category: deliverability
+  rest:
+  - commsharbor_domain_get
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_domain_verify
+  category: deliverability
+  rest:
+  - commsharbor_domain_verify
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_domain_smoke
+  category: deliverability
+  rest:
+  - commsharbor_domain_smoke
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_domain_deliveries
+  category: deliverability
+  rest:
+  - commsharbor_domain_deliveries
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_delivery_get
+  category: deliverability
+  rest:
+  - commsharbor_delivery_get
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_delivery_events
+  category: deliverability
+  rest:
+  - commsharbor_delivery_events
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_crm_contacts_list
+  category: crm
+  rest:
+  - commsharbor_crm_contacts_list
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_crm_contacts_create
+  category: crm
+  rest:
+  - commsharbor_crm_contacts_create
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_crm_contacts_get
+  category: crm
+  rest:
+  - commsharbor_crm_contacts_get
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_crm_contacts_update
+  category: crm
+  rest:
+  - commsharbor_crm_contacts_update
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_crm_contacts_delete
+  category: crm
+  rest:
+  - commsharbor_crm_contacts_delete
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_crm_companies_list
+  category: crm
+  rest:
+  - commsharbor_crm_companies_list
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_crm_companies_create
+  category: crm
+  rest:
+  - commsharbor_crm_companies_create
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_crm_companies_get
+  category: crm
+  rest:
+  - commsharbor_crm_companies_get
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_crm_companies_update
+  category: crm
+  rest:
+  - commsharbor_crm_companies_update
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_crm_companies_delete
+  category: crm
+  rest:
+  - commsharbor_crm_companies_delete
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_crm_pipelines_list
+  category: crm
+  rest:
+  - commsharbor_crm_pipelines_list
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_crm_pipelines_create
+  category: crm
+  rest:
+  - commsharbor_crm_pipelines_create
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_crm_pipelines_get
+  category: crm
+  rest:
+  - commsharbor_crm_pipelines_get
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_crm_pipelines_update
+  category: crm
+  rest:
+  - commsharbor_crm_pipelines_update
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_crm_pipelines_delete
+  category: crm
+  rest:
+  - commsharbor_crm_pipelines_delete
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_crm_deals_list
+  category: crm
+  rest:
+  - commsharbor_crm_deals_list
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_crm_deals_create
+  category: crm
+  rest:
+  - commsharbor_crm_deals_create
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_crm_deals_get
+  category: crm
+  rest:
+  - commsharbor_crm_deals_get
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_crm_deals_update
+  category: crm
+  rest:
+  - commsharbor_crm_deals_update
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_crm_deals_delete
+  category: crm
+  rest:
+  - commsharbor_crm_deals_delete
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_crm_activities_list
+  category: crm
+  rest:
+  - commsharbor_crm_activities_list
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_crm_activities_create
+  category: crm
+  rest:
+  - commsharbor_crm_activities_create
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_crm_activities_get
+  category: crm
+  rest:
+  - commsharbor_crm_activities_get
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_crm_activities_update
+  category: crm
+  rest:
+  - commsharbor_crm_activities_update
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_crm_activities_delete
+  category: crm
+  rest:
+  - commsharbor_crm_activities_delete
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_crm_tasks_list
+  category: crm
+  rest:
+  - commsharbor_crm_tasks_list
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_crm_tasks_create
+  category: crm
+  rest:
+  - commsharbor_crm_tasks_create
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_crm_tasks_get
+  category: crm
+  rest:
+  - commsharbor_crm_tasks_get
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_crm_tasks_update
+  category: crm
+  rest:
+  - commsharbor_crm_tasks_update
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_crm_tasks_delete
+  category: crm
+  rest:
+  - commsharbor_crm_tasks_delete
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_crm_stages_list
+  category: crm
+  rest:
+  - commsharbor_crm_stages_list
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_crm_stages_create
+  category: crm
+  rest:
+  - commsharbor_crm_stages_create
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_crm_stages_get
+  category: crm
+  rest:
+  - commsharbor_crm_stages_get
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_crm_stages_update
+  category: crm
+  rest:
+  - commsharbor_crm_stages_update
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_crm_stages_delete
+  category: crm
+  rest:
+  - commsharbor_crm_stages_delete
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_platform_crm_leads_list
+  category: crm
+  rest:
+  - commsharbor_platform_crm_leads_list
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_platform_crm_leads_create
+  category: crm
+  rest:
+  - commsharbor_platform_crm_leads_create
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_platform_crm_leads_get
+  category: crm
+  rest:
+  - commsharbor_platform_crm_leads_get
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_platform_crm_leads_update
+  category: crm
+  rest:
+  - commsharbor_platform_crm_leads_update
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_platform_crm_leads_delete
+  category: crm
+  rest:
+  - commsharbor_platform_crm_leads_delete
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_platform_crm_tasks_list
+  category: crm
+  rest:
+  - commsharbor_platform_crm_tasks_list
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_platform_crm_tasks_create
+  category: crm
+  rest:
+  - commsharbor_platform_crm_tasks_create
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_platform_crm_tasks_get
+  category: crm
+  rest:
+  - commsharbor_platform_crm_tasks_get
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_platform_crm_tasks_update
+  category: crm
+  rest:
+  - commsharbor_platform_crm_tasks_update
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_platform_crm_tasks_delete
+  category: crm
+  rest:
+  - commsharbor_platform_crm_tasks_delete
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_platform_crm_activities_list
+  category: crm
+  rest:
+  - commsharbor_platform_crm_activities_list
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_platform_crm_activities_create
+  category: crm
+  rest:
+  - commsharbor_platform_crm_activities_create
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_platform_crm_activities_get
+  category: crm
+  rest:
+  - commsharbor_platform_crm_activities_get
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_platform_crm_activities_update
+  category: crm
+  rest:
+  - commsharbor_platform_crm_activities_update
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_platform_crm_activities_delete
+  category: crm
+  rest:
+  - commsharbor_platform_crm_activities_delete
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_contact_marketing_get
+  category: crm
+  rest:
+  - commsharbor_contact_marketing_get
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_contact_marketing_put
+  category: crm
+  rest:
+  - commsharbor_contact_marketing_put
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_preference_token_create
+  category: crm
+  rest:
+  - commsharbor_preference_token_create
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_preference_get
+  category: marketing
+  rest:
+  - commsharbor_preference_get
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_preference_unsubscribe
+  category: marketing
+  rest:
+  - commsharbor_preference_unsubscribe
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_marketing_smoke
+  category: marketing
+  rest:
+  - commsharbor_marketing_smoke
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_contact_imports
+  category: identity
+  rest:
+  - commsharbor_contact_imports
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_contact_import_preview
+  category: identity
+  rest:
+  - commsharbor_contact_import_preview
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_contact_import_get
+  category: identity
+  rest:
+  - commsharbor_contact_import_get
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_contact_import_confirm
+  category: identity
+  rest:
+  - commsharbor_contact_import_confirm
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_contact_import_errors
+  category: identity
+  rest:
+  - commsharbor_contact_import_errors
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_contact_file_get
+  category: identity
+  rest:
+  - commsharbor_contact_file_get
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_contacts_export
+  category: identity
+  rest:
+  - commsharbor_contacts_export
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_suppressions
+  category: marketing
+  rest:
+  - commsharbor_suppressions
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_suppression_create
+  category: marketing
+  rest:
+  - commsharbor_suppression_create
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_audiences
+  category: marketing
+  rest:
+  - commsharbor_audiences
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_audience_create
+  category: marketing
+  rest:
+  - commsharbor_audience_create
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_audience_get
+  category: marketing
+  rest:
+  - commsharbor_audience_get
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_audience_update
+  category: marketing
+  rest:
+  - commsharbor_audience_update
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_audience_delete
+  category: marketing
+  rest:
+  - commsharbor_audience_delete
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_audience_members
+  category: marketing
+  rest:
+  - commsharbor_audience_members
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_audience_member_add
+  category: marketing
+  rest:
+  - commsharbor_audience_member_add
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_audience_member_remove
+  category: marketing
+  rest:
+  - commsharbor_audience_member_remove
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_templates
+  category: messaging
+  rest:
+  - commsharbor_templates
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_template_create
+  category: messaging
+  rest:
+  - commsharbor_template_create
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_template_get
+  category: messaging
+  rest:
+  - commsharbor_template_get
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_template_update
+  category: messaging
+  rest:
+  - commsharbor_template_update
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_template_archive
+  category: messaging
+  rest:
+  - commsharbor_template_archive
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_template_publish
+  category: messaging
+  rest:
+  - commsharbor_template_publish
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_template_versions
+  category: messaging
+  rest:
+  - commsharbor_template_versions
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_template_preview
+  category: messaging
+  rest:
+  - commsharbor_template_preview
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_template_export
+  category: messaging
+  rest:
+  - commsharbor_template_export
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_template_import_html
+  category: messaging
+  rest:
+  - commsharbor_template_import_html
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_message_send
+  category: messaging
+  rest:
+  - commsharbor_message_send
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_campaigns
+  category: marketing
+  rest:
+  - commsharbor_campaigns
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_campaign_create
+  category: marketing
+  rest:
+  - commsharbor_campaign_create
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_campaign_get
+  category: marketing
+  rest:
+  - commsharbor_campaign_get
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_campaign_update
+  category: marketing
+  rest:
+  - commsharbor_campaign_update
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_campaign_launch
+  category: marketing
+  rest:
+  - commsharbor_campaign_launch
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_campaign_report
+  category: marketing
+  rest:
+  - commsharbor_campaign_report
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_messaging_settings
+  category: identity
+  rest:
+  - commsharbor_messaging_settings
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_messaging_settings_update
+  category: identity
+  rest:
+  - commsharbor_messaging_settings_update
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_deliverability
+  category: deliverability
+  rest:
+  - commsharbor_deliverability
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_domain_report
+  category: deliverability
+  rest:
+  - commsharbor_domain_report
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_webhooks
+  category: events
+  rest:
+  - commsharbor_webhooks
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_webhook_create
+  category: events
+  rest:
+  - commsharbor_webhook_create
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_webhook_get
+  category: events
+  rest:
+  - commsharbor_webhook_get
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_webhook_disable
+  category: events
+  rest:
+  - commsharbor_webhook_disable
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_webhook_deliveries
+  category: deliverability
+  rest:
+  - commsharbor_webhook_deliveries
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_dead_letters
+  category: events
+  rest:
+  - commsharbor_dead_letters
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_dead_letter_replay
+  category: events
+  rest:
+  - commsharbor_dead_letter_replay
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_billing_catalog
+  category: billing
+  rest:
+  - commsharbor_billing_catalog
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_billing
+  category: billing
+  rest:
+  - commsharbor_billing
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_billing_purchase
+  category: billing
+  rest:
+  - commsharbor_billing_purchase
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_operations
+  category: identity
+  rest:
+  - commsharbor_operations
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_operations_refresh
+  category: identity
+  rest:
+  - commsharbor_operations_refresh
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_data_exports
+  category: identity
+  rest:
+  - commsharbor_data_exports
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_data_export_create
+  category: identity
+  rest:
+  - commsharbor_data_export_create
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_data_export_download
+  category: identity
+  rest:
+  - commsharbor_data_export_download
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_deletion_request
+  category: identity
+  rest:
+  - commsharbor_deletion_request
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_deletion_schedule
+  category: identity
+  rest:
+  - commsharbor_deletion_schedule
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+- tool: commsharbor_deletion_cancel
+  category: identity
+  rest:
+  - commsharbor_deletion_cancel
+  binding: name-identical; MCP shares the REST handlers
+  confidence: high
+mcp_only: []
+rest_only:
+- operationId: get_okf_by_arquivo
+  method: GET
+  path: /okf/{arquivo}
+  reason: public OKF markdown bundle
+- operationId: get_well_known_by_arquivo
+  method: GET
+  path: /.well-known/{arquivo}
+  reason: public well-known documents
+- operationId: get_apis_json
+  method: GET
+  path: /apis.json
+  reason: public APIs.json discovery document
+- operationId: get_api
+  method: GET
+  path: /api/
+  reason: public API index; discovery, not a tenant action
+- operationId: get_mcp
+  method: GET
+  path: /mcp
+  reason: the MCP server card itself
+- operationId: post_api_aws_sns
+  method: POST
+  path: /api/aws/sns
+  reason: Amazon SNS callback; never called by a client
+- operationId: post_api_messages
+  method: POST
+  path: /api/messages
+  reason: header-resolved variant of commsharbor_message_send
+- operationId: post_api_credito
+  method: POST
+  path: /api/credito
+  reason: x402 prepaid credit top-up; payment flow, not a tool
+- operationId: get_api_credito
+  method: GET
+  path: /api/credito
+  reason: prepaid-credit statement; bearer-of-balance token, not an org credential
+- operationId: get_api_metrics
+  method: GET
+  path: /api/metrics
+  reason: public operator metrics endpoint

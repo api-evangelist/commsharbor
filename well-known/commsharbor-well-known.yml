@@ -1,0 +1,41 @@
+generated: '2026-09-05'
+method: probed
+source: https://commsharbor.com
+note: >-
+  commsharbor.com serves a real machine-discovery surface: RFC 9116 security.txt, an RFC 9727
+  api-catalog linkset (served as text/plain rather than application/linkset+json), an MCP registry
+  Ed25519 verification key, and an APIs.json index mirrored at /.well-known/apis.json. No OIDC/OAuth
+  discovery documents and no A2A agent card (agent-card.json and agent.json both 404).
+  www.commsharbor.com 301-redirects everything to the apex.
+hosts:
+  - host: commsharbor.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 200
+        file: well-known/commsharbor-security.txt
+      - path: /.well-known/api-catalog
+        status: 200
+        file: well-known/commsharbor-api-catalog.json
+      - path: /.well-known/mcp-registry-auth
+        status: 200
+        file: well-known/commsharbor-mcp-registry-auth.txt
+      - path: /.well-known/apis.json
+        status: 200
+        file: well-known/commsharbor-apis.json
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+  - host: www.commsharbor.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 301
+        note: redirects to the apex host

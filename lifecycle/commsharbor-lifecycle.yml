@@ -1,0 +1,32 @@
+generated: '2026-09-05'
+method: searched
+source: https://commsharbor.com/llms.txt + https://commsharbor.com/openapi.json + https://commsharbor.com/api/health
+name: CommsHarbor API lifecycle
+versioning:
+  scheme: continuous-deployment
+  current: 2d690e87
+  detail: >-
+    No URL or header API versioning. The deployed build hash is the version, exposed identically in
+    OpenAPI info.version, GET /api/health, GET /api/ and the MCP server card, so a client can always
+    tell which build answered. Published email template versions are immutable and content-hashed.
+deprecation:
+  policy: none-published
+  deprecated_operations: []
+  detail: >-
+    No deprecation policy, Sunset/Deprecation header usage, or deprecated operations found in the
+    contract or agent docs (0 of 151 operations flagged deprecated). The product is new (first
+    published build observed 2026-09-05).
+status_page:
+  url: null
+  detail: >-
+    No public status page found. Liveness is machine-readable at GET /api/health (environment +
+    deployed build) and last-7-day operator metrics are public at GET /api/metrics; tenant-scoped
+    operational alerts (DLQ, backlog, worker/SNS failure, reputation, quota, capacity) are exposed
+    at GET /api/organizations/{organization_id}/operations.
+sla:
+  detail: No published SLA. Passes and top-ups never auto-renew; entitlements are time-boxed (30-day passes, 365-day top-up validity).
+data_lifecycle:
+  - contact import and export files expire after seven days; durable audit and row-level result records remain
+  - tenant data exports are retained for seven days
+  - organization erasure waits a seven-day grace period, is cancellable inside it, and retains only pseudonymous financial and audit evidence
+  - webhook signing secrets and API keys are revealed exactly once at creation

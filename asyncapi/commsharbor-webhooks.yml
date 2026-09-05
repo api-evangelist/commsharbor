@@ -1,0 +1,36 @@
+generated: '2026-09-05'
+method: searched
+source: https://commsharbor.com/llms-full.txt (webhooks section) + https://commsharbor.com/openapi.json
+name: CommsHarbor webhooks
+note: >-
+  CommsHarbor publishes no AsyncAPI document; this captures the documented webhook surface. Webhook
+  endpoints are organization-scoped HTTPS destinations subscribed to normalized SES feedback events.
+  The signing secret is revealed exactly once, on the creating response, and never again.
+delivery:
+  signing: timestamped HMAC-SHA256 with the per-webhook secret
+  retry: exponential backoff; exhausted attempts land in the tenant-scoped dead-letter queue
+  replay: POST /api/organizations/{organization_id}/dead-letters/{record_id}/replay (commsharbor_dead_letter_replay)
+  attempts_log: GET /api/organizations/{organization_id}/webhooks/{webhook_id}/deliveries lists signed attempts and their retry state
+  requirements: destination URL must be HTTPS; unknown event types are rejected with 400
+event_types:
+  - name: Delivery
+    detail: message accepted/delivered feedback normalized from SES
+  - name: Bounce
+    detail: normalized SES bounce feedback
+  - name: Complaint
+    detail: normalized SES complaint feedback
+  - name: Open
+    detail: additive engagement feedback event; never overwrites delivery state (documented as a normalized feedback event; webhook subscription examples name Delivery/Bounce/Complaint)
+  - name: Click
+    detail: additive engagement feedback event; never overwrites delivery state (same caveat as Open)
+management:
+  - operation: commsharbor_webhooks
+    detail: list endpoints, without signing secrets
+  - operation: commsharbor_webhook_create
+    detail: create an HTTPS webhook and reveal its signing secret exactly once (event_types[] required, e.g. Delivery, Bounce, Complaint)
+  - operation: commsharbor_webhook_get
+    detail: read one webhook, without its secret
+  - operation: commsharbor_webhook_disable
+    detail: disable a webhook without deleting the evidence of what it already delivered
+  - operation: commsharbor_webhook_deliveries
+    detail: list the signed attempts made to one webhook and their retry state
