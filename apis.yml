@@ -1,0 +1,61 @@
+name: CommsHarbor
+description: >-
+  Transactional email and permission-based marketing infrastructure with tenant isolation, deliverability tracking, CRM,
+  and multi-tenant governance. Self-describes as an agent-first HTTP API with a hosted MCP server.
+url: https://raw.githubusercontent.com/api-evangelist/commsharbor/refs/heads/main/apis.yml
+created: '2026-09-05'
+modified: '2026-09-05'
+specificationVersion: '0.21'
+tags:
+  - Email
+  - Transactional Email
+  - Email Marketing
+  - Communications
+  - Messaging
+  - Deliverability
+  - CRM
+  - Multi-tenant SaaS
+  - Agent-native
+  - MCP
+  - Web3 payments
+  - x402
+apis:
+  - name: CommsHarbor API
+    description: >-
+      REST/HTTP API (OpenAPI 3.1) for transactional email, deliverability, sending domains, permission-based marketing,
+      CRM, and multi-tenancy governance across 96 paths. Cross-linked with a hosted MCP server and llms.txt agent
+      documentation.
+    humanURL: https://commsharbor.com/api/
+    baseURL: https://commsharbor.com
+    tags:
+      - Email
+      - Transactional Email
+      - Email Marketing
+      - Communications
+      - Messaging
+      - Deliverability
+      - CRM
+      - Multi-tenant SaaS
+      - Agent-native
+      - MCP
+      - Web3 payments
+      - x402
+    properties:
+      - type: OpenAPI
+        url: https://commsharbor.com/openapi.json
+      - type: Documentation
+        url: https://commsharbor.com/api/
+      - type: LLMsTxt
+        url: https://commsharbor.com/llms.txt
+      - type: LLMsTxt
+        url: https://commsharbor.com/llms-full.txt
+      - type: MCPServer
+        url: https://commsharbor.com/mcp
+maintainers:
+  - FN: CommsHarbor
+    url: mailto:contato@commsharbor.com
+generated:
+  by: apis.io/add
+  model: claude-opus-4-8
+  confidence: 97
+  at: '2026-09-05T11:49:20.514Z'
