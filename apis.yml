@@ -39,6 +39,8 @@ apis:
   humanURL: https://commsharbor.com/api/
   baseURL: https://commsharbor.com
   tags:
+  - APIs.json
+  tags_raw:
   - Apis.json
   properties:
   - type: OpenAPI
@@ -69,6 +71,8 @@ apis:
   humanURL: https://commsharbor.com/api/
   baseURL: https://commsharbor.com
   tags:
+  - Authentication
+  tags_raw:
   - Auth
   properties:
   - type: OpenAPI
@@ -99,6 +103,8 @@ apis:
   humanURL: https://commsharbor.com/api/
   baseURL: https://commsharbor.com
   tags:
+  - AWS
+  tags_raw:
   - Aws
   properties:
   - type: OpenAPI
@@ -309,6 +315,8 @@ apis:
   humanURL: https://commsharbor.com/api/
   baseURL: https://commsharbor.com
   tags:
+  - MCP
+  tags_raw:
   - Mcp
   properties:
   - type: OpenAPI
@@ -369,6 +377,8 @@ apis:
   humanURL: https://commsharbor.com/api/
   baseURL: https://commsharbor.com
   tags:
+  - Message
+  tags_raw:
   - Messages
   properties:
   - type: OpenAPI
@@ -459,6 +469,8 @@ apis:
   humanURL: https://commsharbor.com/api/
   baseURL: https://commsharbor.com
   tags:
+  - Organization
+  tags_raw:
   - Organizations
   properties:
   - type: OpenAPI

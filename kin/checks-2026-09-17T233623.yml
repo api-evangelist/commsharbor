@@ -2,16 +2,17 @@
 kin_checks:
   slug: commsharbor
   schema_version: 0.22.0
-  scored_at: '2026-09-15'
-  run_ts: 2026-09-15T230249
-  note: Actionable checks only (missed + partial). earned/na are every other check
-    in rubric/scoring-0.22.0.yml; counts below let you verify that.
+  scored_at: '2026-09-17'
+  run_ts: 2026-09-17T233623
+  note: Actionable checks (missed + partial) in `checks`, plus the ids that did not
+    apply in `na`. Everything else in rubric/scoring-0.22.0.yml was earned; counts
+    below let you verify that.
   counts:
     total: 136
-    earned: 31
-    partial: 10
+    earned: 44
+    partial: 15
     missed: 55
-    na: 40
+    na: 22
   checks:
   - id: multiple_apis
     status: missed
@@ -19,10 +20,18 @@ kin_checks:
     status: missed
   - id: apis_json_self_hosted
     status: missed
-  - id: servers_resolvable
+  - id: openapi_3_2
     status: missed
-  - id: examples_present
+    detail: 0 of 18 openapi documents pass
+  - id: openapi_3_0
     status: missed
+    detail: 0 of 18 openapi documents pass
+  - id: info_complete
+    status: missed
+    detail: 0 of 18 openapi documents pass
+  - id: webhooks_or_callbacks
+    status: missed
+    detail: 0 of 18 openapi documents pass
   - id: inbound_contract_published
     status: missed
   - id: json_schema_present
@@ -105,10 +114,6 @@ kin_checks:
     status: missed
   - id: agentic_access
     status: missed
-  - id: reversibility_documented
-    status: missed
-  - id: openapi_examples
-    status: missed
   - id: consent_identity
     status: missed
   - id: agent_card
@@ -123,6 +128,21 @@ kin_checks:
     status: missed
   - id: agentic_commerce
     status: missed
+  - id: error_responses_documented
+    status: partial
+    earned: 2.89
+    detail: 13 of 18 openapi documents pass
+  - id: examples_present
+    status: partial
+    earned: 0.99
+  - id: components_reuse
+    status: partial
+    earned: 0.33
+    detail: 2 of 18 openapi documents pass
+  - id: security_applied
+    status: partial
+    earned: 1.67
+    detail: 10 of 18 openapi documents pass
   - id: lifecycle_documented
     status: partial
     earned: 3.03
@@ -136,6 +156,10 @@ kin_checks:
     status: partial
     earned: 2.5
     detail: pointer liveness 0.5
+  - id: reversibility_documented
+    status: partial
+    earned: 2.4
+    detail: 'grade: documented'
   - id: mcp_server
     status: partial
     earned: 4.8
@@ -144,14 +168,14 @@ kin_checks:
     status: partial
     earned: 3.5
     detail: 'grade: bearer'
-  - id: idempotency
-    status: partial
-    earned: 4.5
-    detail: 'grade: documented'
   - id: error_semantics
     status: partial
     earned: 4.0
     detail: 'grade: documented'
+  - id: openapi_examples
+    status: partial
+    earned: 3.5
+    detail: 'grade: partial'
   - id: rate_limit_signal
     status: partial
     earned: 3.5
@@ -160,3 +184,26 @@ kin_checks:
     status: partial
     earned: 1.25
     detail: 'authorship: derived'
+  na:
+  - asyncapi_3_x
+  - channels_defined
+  - contract_self_operated
+  - fhir_capability_statement
+  - fhir_resource_coverage
+  - graphql_descriptions
+  - graphql_sdl_present
+  - graphql_type_depth
+  - messages_with_schema
+  - os_code_of_conduct
+  - os_contribution_guide
+  - os_releases
+  - os_security_policy
+  - reg_camara_conformance
+  - reg_certification_signal
+  - reg_consent_model
+  - reg_entitlement_terms
+  - reg_fapi_profile
+  - reg_mandate_verified
+  - reg_smart_configuration
+  - security_schemes
+  - server_bindings
