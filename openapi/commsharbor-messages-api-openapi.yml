@@ -1,0 +1,182 @@
+openapi: 3.2.0
+info:
+  title: CommsHarbor Messages API
+  version: 2d690e87
+  description: CommsHarbor API. Organization identity is explicit and tenant-scoped.
+servers:
+- url: https://commsharbor.com
+tags:
+- name: Messages
+paths:
+  /api/messages:
+    post:
+      operationId: post_api_messages
+      summary: Queue one idempotent transactional delivery for the active organization
+      description: 'The canonical send route. Suppressions are checked before quota, and quota before any Queue work — a suppressed recipient never costs a send. The response carries no recipient address and no message content.
+
+        Returns: { delivery{id,status,domain_id,template_id,template_version,ses_message_id,created_at}, capacity{remaining,global_remaining,hard_cap}, dispatch{queued,job_id}, replayed }'
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: Idempotency-Key
+        in: header
+        required: true
+        schema:
+          type: string
+        description: Unique key for this logical message. An equivalent replay returns the SAME delivery and produces no second send; the same key with a different payload conflicts before quota or Queue work.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                domain_id:
+                  type: string
+                  description: Active sending domain to send from.
+                to:
+                  type: string
+                  description: Recipient address. It is not echoed back in the response.
+                template_id:
+                  type: string
+                  description: Template to render.
+                template_version:
+                  type: integer
+                  description: Published version to use. Without it, the latest published version is used — pin it when the content must not drift.
+                variables:
+                  type: object
+                  description: Values for the template's declared variables.
+                reply_to:
+                  type: string
+                  description: Reply-To address, when it differs from the sending domain.
+              required:
+              - domain_id
+              - to
+              - template_id
+            example:
+              domain_id: dom_…
+              to: recipient@example.com
+              template_id: tpl_…
+              template_version: 1
+              variables:
+                name: Ada
+              reply_to: support@example.com
+      responses:
+        '200':
+          description: '{ delivery{id,status,domain_id,template_id,template_version,ses_message_id,created_at}, capacity{remaining,global_remaining,hard_cap}, dispatch{queued,job_id}, replayed }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Send'
+        '400':
+          description: Missing Idempotency-Key, unknown template, or a required variable with no value.
+        '401':
+          description: No session, no API key, or the credential does not resolve to this organization.
+        '403':
+          description: The identity is valid but lacks the required role or scope for this operation.
+        '404':
+          description: The resource does not exist in this organization. Another tenant's ID answers the same 404 — the API never confirms that it exists elsewhere.
+        '409':
+          description: The same Idempotency-Key was used with a different payload, or the recipient is suppressed.
+        '429':
+          description: No capacity left for this organization, or the global monthly cap was reached.
+      tags:
+      - Messages
+components:
+  schemas:
+    Delivery:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Delivery ID.
+        status:
+          type: string
+          description: Delivery state, authoritative in D1.
+        domain_id:
+          type: string
+          description: Domain it was sent from.
+        template_id:
+          type: string
+          description: Template used.
+          nullable: true
+        template_version:
+          type: integer
+          description: Immutable template version used.
+          nullable: true
+        ses_message_id:
+          type: string
+          description: SES MessageId, for correlating with AWS.
+          nullable: true
+        created_at:
+          type: string
+          description: When it was queued (UTC).
+      required:
+      - id
+      - status
+      - domain_id
+      - template_id
+      - template_version
+      - ses_message_id
+      - created_at
+      description: One queued message. It never carries the recipient address or the body — that is deliberate, not an omission.
+    Capacity:
+      type: object
+      properties:
+        remaining:
+          type: integer
+          description: Sends still available to this organization.
+        global_remaining:
+          type: integer
+          description: Sends still available across the whole platform this month.
+        hard_cap:
+          type: integer
+          description: The global monthly cap on real recipients. Nothing raises it.
+      required:
+      - remaining
+      - global_remaining
+      - hard_cap
+      description: What is left to send. The bootstrap global cap always prevails over any tenant allowance.
+    Dispatch:
+      type: object
+      properties:
+        queued:
+          type: boolean
+          description: Whether a Queue message was produced.
+        job_id:
+          type: string
+          description: Dispatch job ID, when one was created.
+          nullable: true
+      required:
+      - queued
+      - job_id
+      description: What actually happened to the queue message behind this send.
+    Send:
+      type: object
+      properties:
+        delivery:
+          allOf:
+          - $ref: '#/components/schemas/Delivery'
+          description: The delivery record.
+        capacity:
+          allOf:
+          - $ref: '#/components/schemas/Capacity'
+          description: What is left after this send.
+        dispatch:
+          allOf:
+          - $ref: '#/components/schemas/Dispatch'
+          description: The queue work behind it.
+        replayed:
+          type: boolean
+          description: True when this was a replay of an earlier identical request.
+      required:
+      - delivery
+      - capacity
+      - dispatch
+      - replayed
+      description: The result of queueing one message. `replayed` true means an equivalent Idempotency-Key already existed and NO second message was produced.
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Human session or scoped organization API key. Organization identity remains explicit.

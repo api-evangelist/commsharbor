@@ -1,0 +1,145 @@
+openapi: 3.2.0
+info:
+  title: CommsHarbor Me API
+  version: 2d690e87
+  description: CommsHarbor API. Organization identity is explicit and tenant-scoped.
+servers:
+- url: https://commsharbor.com
+tags:
+- name: Me
+paths:
+  /api/me:
+    get:
+      operationId: commsharbor_me
+      summary: Read the profile, every membership and the platform role, if any
+      description: 'This is how a client discovers which organizations it may pass in `X-Organization-Id`.
+
+        Returns: { user{id,email}, profile{display_name,locale}, organizations[{id,name,sending_domain,created_at}], platform_role }'
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: '{ user{id,email}, profile{display_name,locale}, organizations[{id,name,sending_domain,created_at}], platform_role }'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    allOf:
+                    - $ref: '#/components/schemas/User'
+                    description: The person behind the session.
+                  profile:
+                    allOf:
+                    - $ref: '#/components/schemas/Profile'
+                    description: Personal preferences — they belong to the person, not to a tenant.
+                  organizations:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Organization'
+                    description: Every organization this person belongs to.
+                  platform_role:
+                    type: string
+                    description: Platform role, when one was explicitly granted. Owning a tenant grants nothing here.
+                    nullable: true
+                required:
+                - user
+                - profile
+                - organizations
+                - platform_role
+        '401':
+          description: No session, or the session expired.
+      tags:
+      - Me
+    patch:
+      operationId: commsharbor_profile_update
+      summary: Update the display name or language of the current profile
+      description: 'Returns: { display_name, locale }'
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                display_name:
+                  type: string
+                  description: Name shown in the interface.
+                locale:
+                  type: string
+                  description: Preferred language, e.g. `en` or `pt-br`.
+            example:
+              display_name: A. User
+              locale: en
+      responses:
+        '200':
+          description: '{ display_name, locale }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        '400':
+          description: No updatable field in the body.
+        '401':
+          description: No session, or the session expired.
+      tags:
+      - Me
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          description: User ID.
+        email:
+          type: string
+          description: Email address confirmed by one-time code.
+      required:
+      - id
+      - email
+      description: The person behind the session.
+    Profile:
+      type: object
+      properties:
+        display_name:
+          type: string
+          description: Name shown in the interface.
+          nullable: true
+        locale:
+          type: string
+          description: Preferred language, e.g. `en` or `pt-br`.
+          nullable: true
+      required:
+      - display_name
+      - locale
+      description: Personal preferences. They belong to the person, not to any organization.
+    Organization:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Organization ID, used in every tenant route.
+        name:
+          type: string
+          description: Display name.
+        sending_domain:
+          type: string
+          description: Domain the organization sends from.
+          nullable: true
+        created_at:
+          type: string
+          description: Creation time (UTC, ISO-8601).
+      required:
+      - id
+      - name
+      - sending_domain
+      - created_at
+      description: A tenant. Every piece of customer data in this product is scoped to exactly one.
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Human session or scoped organization API key. Organization identity remains explicit.

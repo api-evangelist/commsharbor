@@ -1,0 +1,84 @@
+openapi: 3.2.0
+info:
+  title: CommsHarbor Context API
+  version: 2d690e87
+  description: CommsHarbor API. Organization identity is explicit and tenant-scoped.
+servers:
+- url: https://commsharbor.com
+tags:
+- name: Context
+paths:
+  /api/context:
+    get:
+      operationId: commsharbor_context
+      summary: Resolve which organization and role the current credential is acting as
+      description: 'Read this before a write when you are not certain which tenant is active. Guessing is how data lands in the wrong organization.
+
+        Returns: { kind, organizationId, userId?, email?, sessionId?, role?, organization?, apiKeyId?, scopes? }'
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: X-Organization-Id
+        in: header
+        required: true
+        schema:
+          type: string
+        description: Which organization to act in. Required with a human session; an API key determines its own and rejects a conflicting value.
+      responses:
+        '200':
+          description: '{ kind, organizationId, userId?, email?, sessionId?, role?, organization?, apiKeyId?, scopes? }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Identity'
+        '401':
+          description: No session, no API key, or the credential does not resolve to this organization.
+        '403':
+          description: The identity is valid but lacks the required role or scope for this operation.
+        '404':
+          description: The resource does not exist in this organization. Another tenant's ID answers the same 404 — the API never confirms that it exists elsewhere.
+      tags:
+      - Context
+components:
+  schemas:
+    Identity:
+      type: object
+      properties:
+        kind:
+          type: string
+          description: How the identity was resolved.
+        organizationId:
+          type: string
+          description: The active organization.
+        userId:
+          type: string
+          description: The person, when a session is in play.
+        email:
+          type: string
+          description: The person's e-mail, on a session.
+        sessionId:
+          type: string
+          description: Session identifier, on a session.
+        role:
+          type: string
+          description: Role inside that organization; sessions only.
+        organization:
+          type: object
+          description: '`{ id, name, slug }` of the active organization; sessions only.'
+        apiKeyId:
+          type: string
+          description: Which key answered, on an API key.
+        scopes:
+          type: array
+          items:
+            type: string
+          description: Granted scopes; present on an API key, which carries its own narrower set.
+      required:
+      - kind
+      - organizationId
+      description: Who the current credential resolves to. Read this before a write when you are not sure which organization is active.
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Human session or scoped organization API key. Organization identity remains explicit.

@@ -1,0 +1,81 @@
+openapi: 3.2.0
+info:
+  title: Comms Harbor API
+  version: 2d690e87
+  description: CommsHarbor API. Organization identity is explicit and tenant-scoped.
+servers:
+- url: https://commsharbor.com
+tags:
+- name: CommsHarbor
+paths:
+  /api/:
+    get:
+      operationId: get_api
+      summary: 'Discover the whole API: every endpoint, every auth mode and the MCP endpoint'
+      description: 'Returns: { name, description, build, environment, base_url, docs, auth, endpoints, mcp, mcp_tools }'
+      security: []
+      responses:
+        '200':
+          description: '{ name, description, build, environment, base_url, docs, auth, endpoints, mcp, mcp_tools }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiIndex'
+      tags:
+      - CommsHarbor
+components:
+  schemas:
+    ApiIndex:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Product name.
+        description:
+          type: string
+          description: What the product does, in one sentence.
+        build:
+          type: string
+          description: Deployed commit.
+        environment:
+          type: string
+          description: 'Which environment answered: `production`, `staging` or `local`.'
+        base_url:
+          type: string
+          description: Origin this API is served from.
+        docs:
+          type: object
+          description: Links to llms.txt, llms-full.txt, openapi.json, the MCP endpoint and the human UI.
+        auth:
+          type: object
+          description: Every authentication mode and how to obtain it.
+        endpoints:
+          type: array
+          items:
+            type: object
+          description: Every endpoint with method, path, auth, absolute URL and what it returns.
+        mcp:
+          type: object
+          description: Remote MCP endpoint and transport.
+        mcp_tools:
+          type: array
+          items:
+            type: string
+          description: Name of every MCP tool.
+      required:
+      - name
+      - description
+      - build
+      - environment
+      - base_url
+      - docs
+      - auth
+      - endpoints
+      - mcp
+      - mcp_tools
+      description: The self-describing index of the whole API.
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Human session or scoped organization API key. Organization identity remains explicit.

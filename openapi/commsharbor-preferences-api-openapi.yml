@@ -1,0 +1,102 @@
+openapi: 3.2.0
+info:
+  title: CommsHarbor Preferences API
+  version: 2d690e87
+  description: CommsHarbor API. Organization identity is explicit and tenant-scoped.
+servers:
+- url: https://commsharbor.com
+tags:
+- name: Preferences
+paths:
+  /api/preferences/{token}:
+    get:
+      operationId: commsharbor_preference_get
+      summary: Read a contact's preference through a signed capability, with no login
+      description: 'The token IS the credential. It reveals preference state and nothing else — no email address, no CRM record.
+
+        Returns: { marketing_enabled, unsubscribed_at, expires_at }'
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: token
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: '{ marketing_enabled, unsubscribed_at, expires_at }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PreferenceState'
+        '401':
+          description: Bad signature.
+        '404':
+          description: Unknown or expired capability.
+      tags:
+      - Preferences
+  /api/preferences/{token}/unsubscribe:
+    post:
+      operationId: commsharbor_preference_unsubscribe
+      summary: Apply an RFC 8058 one-click unsubscribe, idempotently
+      description: 'This is the endpoint mail clients call from the `List-Unsubscribe-Post` header, which is why the body is form-encoded and fixed. Calling it twice is the same as calling it once.
+
+        Returns: { unsubscribed }'
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: token
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            example: List-Unsubscribe=One-Click
+      responses:
+        '200':
+          description: '{ unsubscribed }'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  unsubscribed:
+                    type: boolean
+                    description: Always true once the contact is unsubscribed, whether or not this call was the one that did it.
+                required:
+                - unsubscribed
+        '401':
+          description: Bad signature.
+        '404':
+          description: Unknown or expired capability.
+      tags:
+      - Preferences
+components:
+  schemas:
+    PreferenceState:
+      type: object
+      properties:
+        marketing_enabled:
+          type: boolean
+          description: Whether marketing may be sent.
+        unsubscribed_at:
+          type: string
+          description: When the contact unsubscribed.
+          nullable: true
+        expires_at:
+          type: string
+          description: When this capability stops working (UTC).
+      required:
+      - marketing_enabled
+      - unsubscribed_at
+      - expires_at
+      description: What the signed capability reveals. No login, and no email address is exposed.
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Human session or scoped organization API key. Organization identity remains explicit.

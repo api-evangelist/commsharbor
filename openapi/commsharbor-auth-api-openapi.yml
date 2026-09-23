@@ -1,0 +1,149 @@
+openapi: 3.2.0
+info:
+  title: CommsHarbor Auth API
+  version: 2d690e87
+  description: CommsHarbor API. Organization identity is explicit and tenant-scoped.
+servers:
+- url: https://commsharbor.com
+tags:
+- name: Auth
+paths:
+  /api/auth/start:
+    post:
+      operationId: commsharbor_auth_start
+      summary: Send a one-time login code to an email address
+      description: 'Returns: { sent, expires_in }'
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: Where to send the code.
+              required:
+              - email
+            example:
+              email: owner@example.com
+      responses:
+        '200':
+          description: '{ sent, expires_in }'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent:
+                    type: boolean
+                    description: Whether the message was accepted for delivery.
+                  expires_in:
+                    type: integer
+                    description: Seconds until the code stops working.
+                required:
+                - sent
+                - expires_in
+        '400':
+          description: Missing or malformed email.
+        '429':
+          description: Too many codes requested for this address.
+      tags:
+      - Auth
+  /api/auth/verify:
+    post:
+      operationId: commsharbor_auth_verify
+      summary: Exchange a one-time code for a session
+      description: 'Returns: { user{id,email}, session_token }'
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: The address the code was sent to.
+                code:
+                  type: string
+                  description: The six digits from the email.
+              required:
+              - email
+              - code
+            example:
+              email: owner@example.com
+              code: '123456'
+      responses:
+        '200':
+          description: '{ user{id,email}, session_token }'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    allOf:
+                    - $ref: '#/components/schemas/User'
+                    description: The person who just signed in.
+                  session_token:
+                    type: string
+                    description: Bearer token for `Authorization`. It implies no organization on its own.
+                required:
+                - user
+                - session_token
+        '400':
+          description: Wrong or expired code.
+        '429':
+          description: Too many attempts.
+      tags:
+      - Auth
+  /api/auth/logout:
+    post:
+      operationId: commsharbor_logout
+      summary: Revoke the session in use right now
+      description: 'Returns: { ok }'
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: '{ ok }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+        '401':
+          description: No session, or the session expired.
+      tags:
+      - Auth
+components:
+  schemas:
+    Ok:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          description: Always true — failures arrive as a 4xx/5xx status, never as `ok:false`.
+      required:
+      - ok
+      description: Write confirmation for an operation with no body of its own.
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          description: User ID.
+        email:
+          type: string
+          description: Email address confirmed by one-time code.
+      required:
+      - id
+      - email
+      description: The person behind the session.
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Human session or scoped organization API key. Organization identity remains explicit.

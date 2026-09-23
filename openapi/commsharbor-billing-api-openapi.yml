@@ -1,0 +1,146 @@
+openapi: 3.2.0
+info:
+  title: CommsHarbor Billing API
+  version: 2d690e87
+  description: CommsHarbor API. Organization identity is explicit and tenant-scoped.
+servers:
+- url: https://commsharbor.com
+tags:
+- name: Billing
+paths:
+  /api/billing:
+    get:
+      operationId: commsharbor_billing_catalog
+      summary: Read the versioned trial, pass and top-up catalog, plus the x402 network in…
+      description: 'Public and unauthenticated: an agent should be able to learn what things cost before deciding whether to sign up at all.
+
+        Returns: { catalog{version,trial,pass,topup,checkout_live,global_recipient_hard_cap,auto_renew}, payment{provider,mode,network,chain_id,pay_to,homolog,dev,dev_gate,facilitator,asset,asset_address,faucet,wallets}, invite_only }'
+      security: []
+      responses:
+        '200':
+          description: '{ catalog{version,trial,pass,topup,checkout_live,global_recipient_hard_cap,auto_renew}, payment{provider,mode,network,chain_id,pay_to,homolog,dev,dev_gate,facilitator,asset,asset_address,faucet,wallets}, invite_only }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingPublic'
+      tags:
+      - Billing
+components:
+  schemas:
+    PlanoX402:
+      type: object
+      properties:
+        provider:
+          type: string
+          description: Always `x402` — the only billing protocol accepted.
+        mode:
+          type: string
+          description: 'Seller mode: `live` charges for real, `dev` lets calls through unpaid.'
+        network:
+          type: string
+          description: 'USDC network: `base` in production, `base-sepolia` in staging.'
+        chain_id:
+          type: integer
+          description: EVM chain ID of the network above, so the wallet signs on the right chain.
+        pay_to:
+          type: string
+          description: Address that receives the payment.
+          nullable: true
+        homolog:
+          type: boolean
+          description: 'Staging seam on: the loop can be closed without spending USDC.'
+        dev:
+          type: boolean
+          description: 'Development mode: the 402 is simulated.'
+        dev_gate:
+          type: string
+          description: How dev mode is unlocked, when it exists.
+          nullable: true
+        facilitator:
+          type: string
+          description: URL of the facilitator that verifies and settles the payment.
+        asset:
+          type: string
+          description: Accepted currency — always `USDC`.
+        asset_address:
+          type: string
+          description: USDC contract on the network above.
+        faucet:
+          type: string
+          description: Test-USDC faucet; only on base-sepolia.
+          nullable: true
+        wallets:
+          type: object
+          description: Links to wallets that speak x402 (metamask, coinbase, base_app).
+      required:
+      - provider
+      - mode
+      - network
+      - chain_id
+      - pay_to
+      - homolog
+      - dev
+      - dev_gate
+      - facilitator
+      - asset
+      - asset_address
+      - faucet
+      - wallets
+      description: x402 payment configuration in force. Comes from `planPublic` and is the same across the products.
+    BillingCatalog:
+      type: object
+      properties:
+        version:
+          type: string
+          description: Catalog version, so a client can tell prices changed.
+        trial:
+          type: object
+          description: What a new organization gets for free.
+        pass:
+          type: object
+          description: 'The paid pass: what it grants and what it costs.'
+        topup:
+          type: object
+          description: 'One-off send top-up: size and price.'
+        checkout_live:
+          type: boolean
+          description: Whether live checkout is enabled. While false, a purchase returns an x402 challenge.
+        global_recipient_hard_cap:
+          type: integer
+          description: Real recipients per month across the whole platform. This always prevails.
+        auto_renew:
+          type: boolean
+          description: Always false — nothing here renews by itself.
+      required:
+      - version
+      - trial
+      - pass
+      - topup
+      - checkout_live
+      - global_recipient_hard_cap
+      - auto_renew
+      description: Plans and prices, versioned. Nothing here auto-renews — a pass or a top-up is bought once and runs out.
+    BillingPublic:
+      type: object
+      properties:
+        catalog:
+          allOf:
+          - $ref: '#/components/schemas/BillingCatalog'
+          description: Plans and prices in force.
+        payment:
+          allOf:
+          - $ref: '#/components/schemas/PlanoX402'
+          description: 'x402 configuration: network, asset, facilitator and where to pay.'
+        invite_only:
+          type: boolean
+          description: Whether new organizations require an invitation.
+      required:
+      - catalog
+      - payment
+      - invite_only
+      description: 'The public billing view: catalog, x402 configuration and whether signup is invite-only.'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Human session or scoped organization API key. Organization identity remains explicit.

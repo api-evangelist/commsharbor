@@ -1,0 +1,873 @@
+openapi: 3.2.0
+info:
+  title: CommsHarbor Platform API
+  version: 2d690e87
+  description: CommsHarbor API. Organization identity is explicit and tenant-scoped.
+servers:
+- url: https://commsharbor.com
+tags:
+- name: Platform
+paths:
+  /api/platform/context:
+    get:
+      operationId: commsharbor_platform_context
+      summary: Confirm an explicitly granted platform administrator
+      description: 'Tenant ownership grants nothing here: platform access is a separate, explicit grant.
+
+        Returns: { role, user_id }'
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: '{ role, user_id }'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  role:
+                    type: string
+                    description: The platform role that was granted.
+                  user_id:
+                    type: string
+                    description: Who holds it.
+                required:
+                - role
+                - user_id
+        '401':
+          description: No session.
+        '403':
+          description: This person has no platform grant.
+      tags:
+      - Platform
+  /api/platform/crm/leads:
+    get:
+      operationId: commsharbor_platform_crm_leads_list
+      summary: List leads in the platform CRM — a prospective ORGANIZATION in our own funnel…
+      description: 'Returns: { items[{id,email,name,company_name,source,stage,organization_id,created_at,updated_at,url}], next_cursor }'
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: cursor
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Opaque cursor from the previous page. Do not build or parse it.
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 50
+        description: Page size, from 1 to 100.
+      - name: q
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Free-text search over the record's main fields.
+      - name: stage
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Restrict to one funnel stage of the platform lead.
+      responses:
+        '200':
+          description: '{ items[{id,email,name,company_name,source,stage,organization_id,created_at,updated_at,url}], next_cursor }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageLead'
+        '401':
+          description: No session, no API key, or the credential does not resolve to this organization.
+        '403':
+          description: The identity is valid but lacks the required role or scope for this operation.
+        '404':
+          description: The resource does not exist in this organization. Another tenant's ID answers the same 404 — the API never confirms that it exists elsewhere.
+      tags:
+      - Platform
+    post:
+      operationId: commsharbor_platform_crm_leads_create
+      summary: Create a lead in the platform CRM
+      description: 'Returns: { id, email, name, company_name, source, stage, organization_id, created_at, updated_at, url }'
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: Contact email for the lead.
+                name:
+                  type: string
+                  description: Who to talk to.
+                company_name:
+                  type: string
+                  description: Name of the prospective organization.
+                source:
+                  type: string
+                  description: Where the lead came from, e.g. `manual`.
+                stage:
+                  type: string
+                  description: Where it sits in our funnel, e.g. `new`.
+                organization_id:
+                  type: string
+                  description: The organization it became, once converted.
+              required:
+              - email
+              - name
+            example:
+              email: lead@example.com
+              name: Lead
+              company_name: Acme
+              source: manual
+              stage: new
+              organization_id: org_…
+      responses:
+        '200':
+          description: '{ id, email, name, company_name, source, stage, organization_id, created_at, updated_at, url }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lead'
+        '400':
+          description: A required field is missing, or a referenced record does not exist here.
+        '401':
+          description: No session, no API key, or the credential does not resolve to this organization.
+        '403':
+          description: The identity is valid but lacks the required role or scope for this operation.
+        '404':
+          description: The resource does not exist in this organization. Another tenant's ID answers the same 404 — the API never confirms that it exists elsewhere.
+      tags:
+      - Platform
+  /api/platform/crm/leads/{lead_id}:
+    get:
+      operationId: commsharbor_platform_crm_leads_get
+      summary: Read one lead from the platform CRM
+      description: 'Returns: { id, email, name, company_name, source, stage, organization_id, created_at, updated_at, url }'
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: lead_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: '{ id, email, name, company_name, source, stage, organization_id, created_at, updated_at, url }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lead'
+        '401':
+          description: No session, no API key, or the credential does not resolve to this organization.
+        '403':
+          description: The identity is valid but lacks the required role or scope for this operation.
+        '404':
+          description: The resource does not exist in this organization. Another tenant's ID answers the same 404 — the API never confirms that it exists elsewhere.
+      tags:
+      - Platform
+    patch:
+      operationId: commsharbor_platform_crm_leads_update
+      summary: Update one lead in the platform CRM. Only the fields you send change
+      description: 'Returns: { id, email, name, company_name, source, stage, organization_id, created_at, updated_at, url }'
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: lead_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: Contact email for the lead.
+                name:
+                  type: string
+                  description: Who to talk to.
+                company_name:
+                  type: string
+                  description: Name of the prospective organization.
+                source:
+                  type: string
+                  description: Where the lead came from, e.g. `manual`.
+                stage:
+                  type: string
+                  description: Where it sits in our funnel, e.g. `new`.
+                organization_id:
+                  type: string
+                  description: The organization it became, once converted.
+              required:
+              - email
+              - name
+            example:
+              email: lead@example.com
+              name: Lead
+              company_name: Acme
+              source: manual
+              stage: new
+              organization_id: org_…
+      responses:
+        '200':
+          description: '{ id, email, name, company_name, source, stage, organization_id, created_at, updated_at, url }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lead'
+        '400':
+          description: A field is invalid, or a referenced record does not exist here.
+        '401':
+          description: No session, no API key, or the credential does not resolve to this organization.
+        '403':
+          description: The identity is valid but lacks the required role or scope for this operation.
+        '404':
+          description: The resource does not exist in this organization. Another tenant's ID answers the same 404 — the API never confirms that it exists elsewhere.
+      tags:
+      - Platform
+    delete:
+      operationId: commsharbor_platform_crm_leads_delete
+      summary: Delete one lead from the platform CRM. The response carries the record as it was
+      description: 'Returns: { id, email, name, company_name, source, stage, organization_id, created_at, updated_at, url }'
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: lead_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: '{ id, email, name, company_name, source, stage, organization_id, created_at, updated_at, url }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lead'
+        '401':
+          description: No session, no API key, or the credential does not resolve to this organization.
+        '403':
+          description: The identity is valid but lacks the required role or scope for this operation.
+        '404':
+          description: The resource does not exist in this organization. Another tenant's ID answers the same 404 — the API never confirms that it exists elsewhere.
+      tags:
+      - Platform
+  /api/platform/crm/tasks:
+    get:
+      operationId: commsharbor_platform_crm_tasks_list
+      summary: List tasks in the platform CRM — work on a platform lead — about a prospective…
+      description: 'Returns: { items[{id,title,status,lead_id,due_at,assignee_user_id,created_at,updated_at,url}], next_cursor }'
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: cursor
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Opaque cursor from the previous page. Do not build or parse it.
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 50
+        description: Page size, from 1 to 100.
+      - name: q
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Free-text search over the record's main fields.
+      - name: status
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Restrict to one status value.
+      - name: lead_id
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Restrict to one platform lead.
+      - name: assignee_user_id
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Restrict to the member the work is assigned to.
+      responses:
+        '200':
+          description: '{ items[{id,title,status,lead_id,due_at,assignee_user_id,created_at,updated_at,url}], next_cursor }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagePlatformTask'
+        '401':
+          description: No session, no API key, or the credential does not resolve to this organization.
+        '403':
+          description: The identity is valid but lacks the required role or scope for this operation.
+        '404':
+          description: The resource does not exist in this organization. Another tenant's ID answers the same 404 — the API never confirms that it exists elsewhere.
+      tags:
+      - Platform
+    post:
+      operationId: commsharbor_platform_crm_tasks_create
+      summary: Create a task in the platform CRM
+      description: 'Returns: { id, title, status, lead_id, due_at, assignee_user_id, created_at, updated_at, url }'
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: What has to be done.
+                lead_id:
+                  type: string
+                  description: Lead the task belongs to.
+                due_at:
+                  type: string
+                  description: When it is due, ISO-8601.
+                assignee_user_id:
+                  type: string
+                  description: Who is responsible.
+              required:
+              - title
+            example:
+              title: Follow up
+              lead_id: ld_…
+              due_at: '2026-09-01T12:00:00Z'
+      responses:
+        '200':
+          description: '{ id, title, status, lead_id, due_at, assignee_user_id, created_at, updated_at, url }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlatformTask'
+        '400':
+          description: A required field is missing, or a referenced record does not exist here.
+        '401':
+          description: No session, no API key, or the credential does not resolve to this organization.
+        '403':
+          description: The identity is valid but lacks the required role or scope for this operation.
+        '404':
+          description: The resource does not exist in this organization. Another tenant's ID answers the same 404 — the API never confirms that it exists elsewhere.
+      tags:
+      - Platform
+  /api/platform/crm/tasks/{task_id}:
+    get:
+      operationId: commsharbor_platform_crm_tasks_get
+      summary: Read one task from the platform CRM
+      description: 'Returns: { id, title, status, lead_id, due_at, assignee_user_id, created_at, updated_at, url }'
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: task_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: '{ id, title, status, lead_id, due_at, assignee_user_id, created_at, updated_at, url }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlatformTask'
+        '401':
+          description: No session, no API key, or the credential does not resolve to this organization.
+        '403':
+          description: The identity is valid but lacks the required role or scope for this operation.
+        '404':
+          description: The resource does not exist in this organization. Another tenant's ID answers the same 404 — the API never confirms that it exists elsewhere.
+      tags:
+      - Platform
+    patch:
+      operationId: commsharbor_platform_crm_tasks_update
+      summary: Update one task in the platform CRM. Only the fields you send change
+      description: 'Returns: { id, title, status, lead_id, due_at, assignee_user_id, created_at, updated_at, url }'
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: task_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: What has to be done.
+                lead_id:
+                  type: string
+                  description: Lead the task belongs to.
+                due_at:
+                  type: string
+                  description: When it is due, ISO-8601.
+                assignee_user_id:
+                  type: string
+                  description: Who is responsible.
+              required:
+              - title
+            example:
+              title: Follow up
+              lead_id: ld_…
+              due_at: '2026-09-01T12:00:00Z'
+      responses:
+        '200':
+          description: '{ id, title, status, lead_id, due_at, assignee_user_id, created_at, updated_at, url }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlatformTask'
+        '400':
+          description: A field is invalid, or a referenced record does not exist here.
+        '401':
+          description: No session, no API key, or the credential does not resolve to this organization.
+        '403':
+          description: The identity is valid but lacks the required role or scope for this operation.
+        '404':
+          description: The resource does not exist in this organization. Another tenant's ID answers the same 404 — the API never confirms that it exists elsewhere.
+      tags:
+      - Platform
+    delete:
+      operationId: commsharbor_platform_crm_tasks_delete
+      summary: Delete one task from the platform CRM. The response carries the record as it was
+      description: 'Returns: { id, title, status, lead_id, due_at, assignee_user_id, created_at, updated_at, url }'
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: task_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: '{ id, title, status, lead_id, due_at, assignee_user_id, created_at, updated_at, url }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlatformTask'
+        '401':
+          description: No session, no API key, or the credential does not resolve to this organization.
+        '403':
+          description: The identity is valid but lacks the required role or scope for this operation.
+        '404':
+          description: The resource does not exist in this organization. Another tenant's ID answers the same 404 — the API never confirms that it exists elsewhere.
+      tags:
+      - Platform
+  /api/platform/crm/leads/{lead_id}/activities:
+    get:
+      operationId: commsharbor_platform_crm_activities_list
+      summary: List activities in the platform CRM — our note about a prospective tenant
+      description: 'Returns: { items[{id,activity_type,note,lead_id,created_at,url}], next_cursor }'
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: lead_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: cursor
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Opaque cursor from the previous page. Do not build or parse it.
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 50
+        description: Page size, from 1 to 100.
+      - name: q
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Free-text search over the record's main fields.
+      responses:
+        '200':
+          description: '{ items[{id,activity_type,note,lead_id,created_at,url}], next_cursor }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagePlatformActivity'
+        '401':
+          description: No session, no API key, or the credential does not resolve to this organization.
+        '403':
+          description: The identity is valid but lacks the required role or scope for this operation.
+        '404':
+          description: The resource does not exist in this organization. Another tenant's ID answers the same 404 — the API never confirms that it exists elsewhere.
+      tags:
+      - Platform
+    post:
+      operationId: commsharbor_platform_crm_activities_create
+      summary: Create a activity in the platform CRM
+      description: 'Returns: { id, activity_type, note, lead_id, created_at, url }'
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: lead_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                note:
+                  type: string
+                  description: The text of the activity.
+                activity_type:
+                  type: string
+                  description: What kind it was, e.g. `note`.
+              required:
+              - note
+            example:
+              activity_type: note
+              note: Followed up
+      responses:
+        '200':
+          description: '{ id, activity_type, note, lead_id, created_at, url }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlatformActivity'
+        '400':
+          description: A required field is missing, or a referenced record does not exist here.
+        '401':
+          description: No session, no API key, or the credential does not resolve to this organization.
+        '403':
+          description: The identity is valid but lacks the required role or scope for this operation.
+        '404':
+          description: The resource does not exist in this organization. Another tenant's ID answers the same 404 — the API never confirms that it exists elsewhere.
+      tags:
+      - Platform
+  /api/platform/crm/leads/{lead_id}/activities/{activity_id}:
+    get:
+      operationId: commsharbor_platform_crm_activities_get
+      summary: Read one activity from the platform CRM
+      description: 'Returns: { id, activity_type, note, lead_id, created_at, url }'
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: lead_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: activity_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: '{ id, activity_type, note, lead_id, created_at, url }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlatformActivity'
+        '401':
+          description: No session, no API key, or the credential does not resolve to this organization.
+        '403':
+          description: The identity is valid but lacks the required role or scope for this operation.
+        '404':
+          description: The resource does not exist in this organization. Another tenant's ID answers the same 404 — the API never confirms that it exists elsewhere.
+      tags:
+      - Platform
+    patch:
+      operationId: commsharbor_platform_crm_activities_update
+      summary: Update one activity in the platform CRM. Only the fields you send change
+      description: 'Returns: { id, activity_type, note, lead_id, created_at, url }'
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: lead_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: activity_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                note:
+                  type: string
+                  description: The text of the activity.
+                activity_type:
+                  type: string
+                  description: What kind it was, e.g. `note`.
+              required:
+              - note
+            example:
+              activity_type: note
+              note: Followed up
+      responses:
+        '200':
+          description: '{ id, activity_type, note, lead_id, created_at, url }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlatformActivity'
+        '400':
+          description: A field is invalid, or a referenced record does not exist here.
+        '401':
+          description: No session, no API key, or the credential does not resolve to this organization.
+        '403':
+          description: The identity is valid but lacks the required role or scope for this operation.
+        '404':
+          description: The resource does not exist in this organization. Another tenant's ID answers the same 404 — the API never confirms that it exists elsewhere.
+      tags:
+      - Platform
+    delete:
+      operationId: commsharbor_platform_crm_activities_delete
+      summary: Delete one activity from the platform CRM.
+      description: 'Returns: { id, activity_type, note, lead_id, created_at, url }'
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: lead_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: activity_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: '{ id, activity_type, note, lead_id, created_at, url }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlatformActivity'
+        '401':
+          description: No session, no API key, or the credential does not resolve to this organization.
+        '403':
+          description: The identity is valid but lacks the required role or scope for this operation.
+        '404':
+          description: The resource does not exist in this organization. Another tenant's ID answers the same 404 — the API never confirms that it exists elsewhere.
+      tags:
+      - Platform
+components:
+  schemas:
+    PlatformActivity:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Activity ID.
+        activity_type:
+          type: string
+          description: What kind of activity it was, e.g. `note`.
+        note:
+          type: string
+          description: The text of the activity.
+        lead_id:
+          type: string
+          description: Lead it refers to.
+        created_at:
+          type: string
+          description: Creation time (UTC).
+        url:
+          type: string
+          description: Absolute URL of this activity.
+      required:
+      - id
+      - activity_type
+      - note
+      - lead_id
+      - created_at
+      - url
+      description: Something that happened with a platform lead — our note about a prospective tenant.
+    PageLead:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Lead'
+          description: The records on this page.
+        next_cursor:
+          type: string
+          description: Cursor for the next page; null when there are no more.
+          nullable: true
+      required:
+      - items
+      - next_cursor
+      description: Cursor-paginated listing. A null cursor means this was the last page.
+    Lead:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Lead ID.
+        email:
+          type: string
+          description: Contact email for the lead.
+        name:
+          type: string
+          description: Who to talk to.
+        company_name:
+          type: string
+          description: Name of the prospective organization.
+          nullable: true
+        source:
+          type: string
+          description: Where the lead came from, e.g. `manual`.
+          nullable: true
+        stage:
+          type: string
+          description: Where the lead is in our own funnel, e.g. `new`.
+        organization_id:
+          type: string
+          description: The organization this lead became, once it converted.
+          nullable: true
+        created_at:
+          type: string
+          description: Creation time (UTC).
+        updated_at:
+          type: string
+          description: Last change (UTC).
+          nullable: true
+        url:
+          type: string
+          description: Absolute URL of this lead.
+      required:
+      - id
+      - email
+      - name
+      - company_name
+      - source
+      - stage
+      - organization_id
+      - created_at
+      - updated_at
+      - url
+      description: A prospective ORGANIZATION in the platform CRM. This is our own pipeline about tenants — it is not tenant data, and it is only reachable with an explicit platform grant.
+    PagePlatformActivity:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlatformActivity'
+          description: The records on this page.
+        next_cursor:
+          type: string
+          description: Cursor for the next page; null when there are no more.
+          nullable: true
+      required:
+      - items
+      - next_cursor
+      description: Cursor-paginated listing. A null cursor means this was the last page.
+    PagePlatformTask:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlatformTask'
+          description: The records on this page.
+        next_cursor:
+          type: string
+          description: Cursor for the next page; null when there are no more.
+          nullable: true
+      required:
+      - items
+      - next_cursor
+      description: Cursor-paginated listing. A null cursor means this was the last page.
+    PlatformTask:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Task ID.
+        title:
+          type: string
+          description: What has to be done.
+        status:
+          type: string
+          description: Current state.
+        lead_id:
+          type: string
+          description: Lead the task belongs to.
+          nullable: true
+        due_at:
+          type: string
+          description: When it is due (UTC).
+          nullable: true
+        assignee_user_id:
+          type: string
+          description: Who is responsible.
+          nullable: true
+        created_at:
+          type: string
+          description: Creation time (UTC).
+        updated_at:
+          type: string
+          description: Last change (UTC).
+          nullable: true
+        url:
+          type: string
+          description: Absolute URL of this task.
+      required:
+      - id
+      - title
+      - status
+      - lead_id
+      - due_at
+      - assignee_user_id
+      - created_at
+      - updated_at
+      - url
+      description: 'Work on a platform lead. Same idea as a CRM task, different subject: this one is about a prospective tenant, not about a tenant''s customer.'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Human session or scoped organization API key. Organization identity remains explicit.

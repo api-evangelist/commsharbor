@@ -1,0 +1,34 @@
+openapi: 3.2.0
+info:
+  title: CommsHarbor Aws API
+  version: 2d690e87
+  description: CommsHarbor API. Organization identity is explicit and tenant-scoped.
+servers:
+- url: https://commsharbor.com
+tags:
+- name: Aws
+paths:
+  /api/aws/sns:
+    post:
+      operationId: post_api_aws_sns
+      summary: Receive a signed Amazon SNS callback for the configured SES topic
+      description: 'This callback never accepts a user credential. It requires a valid SNS signature, a certificate URL in the expected AWS region, and the exact configured TopicArn — anything else is rejected before the body is read.
+
+        Returns: `204 No Content` when the notification was accepted.'
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: '`204 No Content` when the notification was accepted.'
+        '400':
+          description: Malformed notification, or a certificate URL outside the expected region.
+        '403':
+          description: Bad signature, or a TopicArn other than the configured one.
+      tags:
+      - Aws
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Human session or scoped organization API key. Organization identity remains explicit.

@@ -1,0 +1,63 @@
+openapi: 3.2.0
+info:
+  title: CommsHarbor MCP API
+  version: 2d690e87
+  description: CommsHarbor API. Organization identity is explicit and tenant-scoped.
+servers:
+- url: https://commsharbor.com
+tags:
+- name: MCP
+paths:
+  /mcp:
+    get:
+      operationId: get_mcp
+      summary: 'Inspect the remote MCP server card: transport, protocol and tool count'
+      description: '`POST /mcp` speaks Streamable HTTP with JSON-RPC 2.0. The tools are the operations in this catalog; the MCP has no backend of its own.
+
+        Returns: { transport, protocol_version, endpoint, server, tools, usage, api_index }'
+      security: []
+      responses:
+        '200':
+          description: '{ transport, protocol_version, endpoint, server, tools, usage, api_index }'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  transport:
+                    type: string
+                    description: How the server speaks — `streamable-http`.
+                  protocol_version:
+                    type: string
+                    description: MCP protocol version the server implements.
+                  endpoint:
+                    type: string
+                    description: Absolute URL to POST JSON-RPC to.
+                  server:
+                    type: object
+                    description: '`name` and `version` of this server; the version is the deployed commit.'
+                  tools:
+                    type: integer
+                    description: How many tools the server exposes.
+                  usage:
+                    type: string
+                    description: One line saying how to call it.
+                  api_index:
+                    type: string
+                    description: The self-describing API index, for the operations behind the tools.
+                required:
+                - transport
+                - protocol_version
+                - endpoint
+                - server
+                - tools
+                - usage
+                - api_index
+      tags:
+      - MCP
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Human session or scoped organization API key. Organization identity remains explicit.

@@ -1,0 +1,76 @@
+openapi: 3.2.0
+info:
+  title: CommsHarbor Invitations API
+  version: 2d690e87
+  description: CommsHarbor API. Organization identity is explicit and tenant-scoped.
+servers:
+- url: https://commsharbor.com
+tags:
+- name: Invitations
+paths:
+  /api/invitations/accept:
+    post:
+      operationId: commsharbor_invitation_accept
+      summary: Accept an invitation and join the organization it points at
+      description: 'Accepting joins an EXISTING organization trial. It never creates one, so an invitation cannot be used to mint tenants.
+
+        Returns: { organization_id, user_id, role, created_at }'
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                  description: The invitation token, from the response that created it.
+              required:
+              - token
+            example:
+              token: invite_…
+      responses:
+        '200':
+          description: '{ organization_id, user_id, role, created_at }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Membership'
+        '400':
+          description: Missing token.
+        '401':
+          description: No session, or the session expired.
+        '404':
+          description: Unknown, expired or already used invitation.
+      tags:
+      - Invitations
+components:
+  schemas:
+    Membership:
+      type: object
+      properties:
+        organization_id:
+          type: string
+          description: The organization.
+        user_id:
+          type: string
+          description: The member.
+        role:
+          type: string
+          description: What the member may do.
+        created_at:
+          type: string
+          description: When the membership started (UTC).
+      required:
+      - organization_id
+      - user_id
+      - role
+      - created_at
+      description: One person's place in one organization.
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Human session or scoped organization API key. Organization identity remains explicit.
