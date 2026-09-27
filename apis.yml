@@ -15,7 +15,7 @@ tags:
 - Deliverability
 - CRM
 - Multi-tenant SaaS
-- agent-native
+- Agent-Native
 - MCP
 - Web3 payments
 - x402
@@ -32,12 +32,12 @@ tags_raw:
 - MCP
 - Web3 payments
 - x402
+- agent-native
 apis:
 - aid: commsharbor:commsharbor-apis-json-api
   name: CommsHarbor Apis.json API
   description: The Apis.json API from CommsHarbor — 1 operation(s) for apis.json.
   humanURL: https://commsharbor.com/api/
-  baseURL: https://commsharbor.com
   tags:
   - APIs.json
   tags_raw:
@@ -69,7 +69,6 @@ apis:
   name: CommsHarbor Auth API
   description: The Auth API from CommsHarbor — 3 operation(s) for auth.
   humanURL: https://commsharbor.com/api/
-  baseURL: https://commsharbor.com
   tags:
   - Authentication
   tags_raw:
@@ -101,7 +100,6 @@ apis:
   name: CommsHarbor Aws API
   description: The Aws API from CommsHarbor — 1 operation(s) for aws.
   humanURL: https://commsharbor.com/api/
-  baseURL: https://commsharbor.com
   tags:
   - AWS
   tags_raw:
@@ -133,7 +131,6 @@ apis:
   name: CommsHarbor Billing API
   description: The Billing API from CommsHarbor — 1 operation(s) for billing.
   humanURL: https://commsharbor.com/api/
-  baseURL: https://commsharbor.com
   tags:
   - Billing
   properties:
@@ -163,7 +160,6 @@ apis:
   name: CommsHarbor Comms Harbor API
   description: The CommsHarbor API from CommsHarbor — 1 operation(s) for commsharbor.
   humanURL: https://commsharbor.com/api/
-  baseURL: https://commsharbor.com
   tags:
   - CommsHarbor
   properties:
@@ -193,7 +189,6 @@ apis:
   name: CommsHarbor Context API
   description: The Context API from CommsHarbor — 1 operation(s) for context.
   humanURL: https://commsharbor.com/api/
-  baseURL: https://commsharbor.com
   tags:
   - Context
   properties:
@@ -223,7 +218,6 @@ apis:
   name: CommsHarbor Credito API
   description: The Credito API from CommsHarbor — 1 operation(s) for credito.
   humanURL: https://commsharbor.com/api/
-  baseURL: https://commsharbor.com
   tags:
   - Credito
   properties:
@@ -253,7 +247,6 @@ apis:
   name: CommsHarbor Health API
   description: The Health API from CommsHarbor — 1 operation(s) for health.
   humanURL: https://commsharbor.com/api/
-  baseURL: https://commsharbor.com
   tags:
   - Health
   properties:
@@ -283,7 +276,6 @@ apis:
   name: CommsHarbor Invitations API
   description: The Invitations API from CommsHarbor — 1 operation(s) for invitations.
   humanURL: https://commsharbor.com/api/
-  baseURL: https://commsharbor.com
   tags:
   - Invitations
   properties:
@@ -313,7 +305,6 @@ apis:
   name: CommsHarbor MCP API
   description: The Mcp API from CommsHarbor — 1 operation(s) for mcp.
   humanURL: https://commsharbor.com/api/
-  baseURL: https://commsharbor.com
   tags:
   - MCP
   tags_raw:
@@ -345,7 +336,6 @@ apis:
   name: CommsHarbor Me API
   description: The Me API from CommsHarbor — 1 operation(s) for me.
   humanURL: https://commsharbor.com/api/
-  baseURL: https://commsharbor.com
   tags:
   - Me
   properties:
@@ -375,7 +365,6 @@ apis:
   name: CommsHarbor Messages API
   description: The Messages API from CommsHarbor — 1 operation(s) for messages.
   humanURL: https://commsharbor.com/api/
-  baseURL: https://commsharbor.com
   tags:
   - Message
   tags_raw:
@@ -407,7 +396,6 @@ apis:
   name: CommsHarbor Metrics API
   description: The Metrics API from CommsHarbor — 1 operation(s) for metrics.
   humanURL: https://commsharbor.com/api/
-  baseURL: https://commsharbor.com
   tags:
   - Metrics
   properties:
@@ -437,7 +425,6 @@ apis:
   name: CommsHarbor Okf API
   description: The Okf API from CommsHarbor — 1 operation(s) for okf.
   humanURL: https://commsharbor.com/api/
-  baseURL: https://commsharbor.com
   tags:
   - Okf
   properties:
@@ -467,7 +454,6 @@ apis:
   name: CommsHarbor Organizations API
   description: The Organizations API from CommsHarbor — 70 operation(s) for organizations.
   humanURL: https://commsharbor.com/api/
-  baseURL: https://commsharbor.com
   tags:
   - Organization
   tags_raw:
@@ -499,7 +485,6 @@ apis:
   name: CommsHarbor Platform API
   description: The Platform API from CommsHarbor — 7 operation(s) for platform.
   humanURL: https://commsharbor.com/api/
-  baseURL: https://commsharbor.com
   tags:
   - Platform
   properties:
@@ -529,7 +514,6 @@ apis:
   name: CommsHarbor Preferences API
   description: The Preferences API from CommsHarbor — 2 operation(s) for preferences.
   humanURL: https://commsharbor.com/api/
-  baseURL: https://commsharbor.com
   tags:
   - Preferences
   properties:
@@ -559,7 +543,6 @@ apis:
   name: CommsHarbor .well Known API
   description: The .well Known API from CommsHarbor — 1 operation(s) for .well known.
   humanURL: https://commsharbor.com/api/
-  baseURL: https://commsharbor.com
   tags:
   - .well Known
   properties:

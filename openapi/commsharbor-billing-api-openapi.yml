@@ -27,6 +27,25 @@ paths:
       - Billing
 components:
   schemas:
+    BillingPublic:
+      type: object
+      properties:
+        catalog:
+          allOf:
+          - $ref: '#/components/schemas/BillingCatalog'
+          description: Plans and prices in force.
+        payment:
+          allOf:
+          - $ref: '#/components/schemas/PlanoX402'
+          description: 'x402 configuration: network, asset, facilitator and where to pay.'
+        invite_only:
+          type: boolean
+          description: Whether new organizations require an invitation.
+      required:
+      - catalog
+      - payment
+      - invite_only
+      description: 'The public billing view: catalog, x402 configuration and whether signup is invite-only.'
     PlanoX402:
       type: object
       properties:
@@ -120,25 +139,6 @@ components:
       - global_recipient_hard_cap
       - auto_renew
       description: Plans and prices, versioned. Nothing here auto-renews — a pass or a top-up is bought once and runs out.
-    BillingPublic:
-      type: object
-      properties:
-        catalog:
-          allOf:
-          - $ref: '#/components/schemas/BillingCatalog'
-          description: Plans and prices in force.
-        payment:
-          allOf:
-          - $ref: '#/components/schemas/PlanoX402'
-          description: 'x402 configuration: network, asset, facilitator and where to pay.'
-        invite_only:
-          type: boolean
-          description: Whether new organizations require an invitation.
-      required:
-      - catalog
-      - payment
-      - invite_only
-      description: 'The public billing view: catalog, x402 configuration and whether signup is invite-only.'
   securitySchemes:
     bearerAuth:
       type: http

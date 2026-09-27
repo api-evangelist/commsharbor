@@ -695,6 +695,38 @@ paths:
       - Platform
 components:
   schemas:
+    PageLead:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Lead'
+          description: The records on this page.
+        next_cursor:
+          type: string
+          description: Cursor for the next page; null when there are no more.
+          nullable: true
+      required:
+      - items
+      - next_cursor
+      description: Cursor-paginated listing. A null cursor means this was the last page.
+    PagePlatformActivity:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlatformActivity'
+          description: The records on this page.
+        next_cursor:
+          type: string
+          description: Cursor for the next page; null when there are no more.
+          nullable: true
+      required:
+      - items
+      - next_cursor
+      description: Cursor-paginated listing. A null cursor means this was the last page.
     PlatformActivity:
       type: object
       properties:
@@ -724,22 +756,6 @@ components:
       - created_at
       - url
       description: Something that happened with a platform lead — our note about a prospective tenant.
-    PageLead:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/Lead'
-          description: The records on this page.
-        next_cursor:
-          type: string
-          description: Cursor for the next page; null when there are no more.
-          nullable: true
-      required:
-      - items
-      - next_cursor
-      description: Cursor-paginated listing. A null cursor means this was the last page.
     Lead:
       type: object
       properties:
@@ -789,38 +805,6 @@ components:
       - updated_at
       - url
       description: A prospective ORGANIZATION in the platform CRM. This is our own pipeline about tenants — it is not tenant data, and it is only reachable with an explicit platform grant.
-    PagePlatformActivity:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/PlatformActivity'
-          description: The records on this page.
-        next_cursor:
-          type: string
-          description: Cursor for the next page; null when there are no more.
-          nullable: true
-      required:
-      - items
-      - next_cursor
-      description: Cursor-paginated listing. A null cursor means this was the last page.
-    PagePlatformTask:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/PlatformTask'
-          description: The records on this page.
-        next_cursor:
-          type: string
-          description: Cursor for the next page; null when there are no more.
-          nullable: true
-      required:
-      - items
-      - next_cursor
-      description: Cursor-paginated listing. A null cursor means this was the last page.
     PlatformTask:
       type: object
       properties:
@@ -866,6 +850,22 @@ components:
       - updated_at
       - url
       description: 'Work on a platform lead. Same idea as a CRM task, different subject: this one is about a prospective tenant, not about a tenant''s customer.'
+    PagePlatformTask:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlatformTask'
+          description: The records on this page.
+        next_cursor:
+          type: string
+          description: Cursor for the next page; null when there are no more.
+          nullable: true
+      required:
+      - items
+      - next_cursor
+      description: Cursor-paginated listing. A null cursor means this was the last page.
   securitySchemes:
     bearerAuth:
       type: http

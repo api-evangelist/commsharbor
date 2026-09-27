@@ -120,15 +120,6 @@ paths:
       - Auth
 components:
   schemas:
-    Ok:
-      type: object
-      properties:
-        ok:
-          type: boolean
-          description: Always true — failures arrive as a 4xx/5xx status, never as `ok:false`.
-      required:
-      - ok
-      description: Write confirmation for an operation with no body of its own.
     User:
       type: object
       properties:
@@ -142,6 +133,15 @@ components:
       - id
       - email
       description: The person behind the session.
+    Ok:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          description: Always true — failures arrive as a 4xx/5xx status, never as `ok:false`.
+      required:
+      - ok
+      description: Write confirmation for an operation with no body of its own.
   securitySchemes:
     bearerAuth:
       type: http

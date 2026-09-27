@@ -88,19 +88,6 @@ paths:
       - Me
 components:
   schemas:
-    User:
-      type: object
-      properties:
-        id:
-          type: string
-          description: User ID.
-        email:
-          type: string
-          description: Email address confirmed by one-time code.
-      required:
-      - id
-      - email
-      description: The person behind the session.
     Profile:
       type: object
       properties:
@@ -116,6 +103,19 @@ components:
       - display_name
       - locale
       description: Personal preferences. They belong to the person, not to any organization.
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          description: User ID.
+        email:
+          type: string
+          description: Email address confirmed by one-time code.
+      required:
+      - id
+      - email
+      description: The person behind the session.
     Organization:
       type: object
       properties:
