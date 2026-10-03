@@ -711,13 +711,58 @@ components:
       - items
       - next_cursor
       description: Cursor-paginated listing. A null cursor means this was the last page.
-    PagePlatformActivity:
+    PlatformTask:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Task ID.
+        title:
+          type: string
+          description: What has to be done.
+        status:
+          type: string
+          description: Current state.
+        lead_id:
+          type: string
+          description: Lead the task belongs to.
+          nullable: true
+        due_at:
+          type: string
+          description: When it is due (UTC).
+          nullable: true
+        assignee_user_id:
+          type: string
+          description: Who is responsible.
+          nullable: true
+        created_at:
+          type: string
+          description: Creation time (UTC).
+        updated_at:
+          type: string
+          description: Last change (UTC).
+          nullable: true
+        url:
+          type: string
+          description: Absolute URL of this task.
+      required:
+      - id
+      - title
+      - status
+      - lead_id
+      - due_at
+      - assignee_user_id
+      - created_at
+      - updated_at
+      - url
+      description: 'Work on a platform lead. Same idea as a CRM task, different subject: this one is about a prospective tenant, not about a tenant''s customer.'
+    PagePlatformTask:
       type: object
       properties:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/PlatformActivity'
+            $ref: '#/components/schemas/PlatformTask'
           description: The records on this page.
         next_cursor:
           type: string
@@ -805,58 +850,13 @@ components:
       - updated_at
       - url
       description: A prospective ORGANIZATION in the platform CRM. This is our own pipeline about tenants — it is not tenant data, and it is only reachable with an explicit platform grant.
-    PlatformTask:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Task ID.
-        title:
-          type: string
-          description: What has to be done.
-        status:
-          type: string
-          description: Current state.
-        lead_id:
-          type: string
-          description: Lead the task belongs to.
-          nullable: true
-        due_at:
-          type: string
-          description: When it is due (UTC).
-          nullable: true
-        assignee_user_id:
-          type: string
-          description: Who is responsible.
-          nullable: true
-        created_at:
-          type: string
-          description: Creation time (UTC).
-        updated_at:
-          type: string
-          description: Last change (UTC).
-          nullable: true
-        url:
-          type: string
-          description: Absolute URL of this task.
-      required:
-      - id
-      - title
-      - status
-      - lead_id
-      - due_at
-      - assignee_user_id
-      - created_at
-      - updated_at
-      - url
-      description: 'Work on a platform lead. Same idea as a CRM task, different subject: this one is about a prospective tenant, not about a tenant''s customer.'
-    PagePlatformTask:
+    PagePlatformActivity:
       type: object
       properties:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/PlatformTask'
+            $ref: '#/components/schemas/PlatformActivity'
           description: The records on this page.
         next_cursor:
           type: string
