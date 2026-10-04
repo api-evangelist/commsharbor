@@ -578,6 +578,9 @@ x-generated:
   confidence: 97
   at: '2026-09-05T11:49:20.514Z'
 common:
+- type: CapabilityMap
+  url: capabilities/commsharbor-capability-edges.yml
+  name: CommsHarbor Business Capability Map
 - type: MCPServer
   url: https://commsharbor.com/mcp
 - type: MCPServer

@@ -1,0 +1,35 @@
+slug: commsharbor
+provider: CommsHarbor
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 2
+edges:
+- tag: Organizations
+  spec_file: commsharbor-organizations-api-openapi.yml
+  capability_id: BC-4230.10
+  capability_id_l1: BC-4230
+  capability_name: Tenant Provisioning & Lifecycle
+  confidence: 0.8
+  evidence: '"Create one organization trial for a verified owner and a sending domain"; "List the members
+    of an organization and their roles"; schemas BillingTenant, Provisioning'
+  reason: Operations create and administer tenant organizations, members, roles, API keys and audit trails
+    in an explicitly tenant-scoped multi-tenant service — tenant provisioning and lifecycle management.
+- tag: Platform
+  spec_file: commsharbor-platform-api-openapi.yml
+  capability_id: BC-410.30
+  capability_id_l1: BC-410
+  capability_name: Opportunity & Pipeline Management
+  confidence: 0.75
+  evidence: '"List leads in the platform CRM — a prospective ORGANIZATION in our own funnel"; schemas
+    PageLead, Lead, PlatformActivity'
+  reason: The operations manage leads, tasks and activities in the vendor's own sales funnel for prospective
+    tenants — lead/opportunity pipeline management, despite the administrative 'Platform' tag name.
