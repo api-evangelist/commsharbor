@@ -46,6 +46,39 @@ components:
       - payment
       - invite_only
       description: 'The public billing view: catalog, x402 configuration and whether signup is invite-only.'
+    BillingCatalog:
+      type: object
+      properties:
+        version:
+          type: string
+          description: Catalog version, so a client can tell prices changed.
+        trial:
+          type: object
+          description: What a new organization gets for free.
+        pass:
+          type: object
+          description: 'The paid pass: what it grants and what it costs.'
+        topup:
+          type: object
+          description: 'One-off send top-up: size and price.'
+        checkout_live:
+          type: boolean
+          description: Whether live checkout is enabled. While false, a purchase returns an x402 challenge.
+        global_recipient_hard_cap:
+          type: integer
+          description: Real recipients per month across the whole platform. This always prevails.
+        auto_renew:
+          type: boolean
+          description: Always false — nothing here renews by itself.
+      required:
+      - version
+      - trial
+      - pass
+      - topup
+      - checkout_live
+      - global_recipient_hard_cap
+      - auto_renew
+      description: Plans and prices, versioned. Nothing here auto-renews — a pass or a top-up is bought once and runs out.
     PlanoX402:
       type: object
       properties:
@@ -106,39 +139,6 @@ components:
       - faucet
       - wallets
       description: x402 payment configuration in force. Comes from `planPublic` and is the same across the products.
-    BillingCatalog:
-      type: object
-      properties:
-        version:
-          type: string
-          description: Catalog version, so a client can tell prices changed.
-        trial:
-          type: object
-          description: What a new organization gets for free.
-        pass:
-          type: object
-          description: 'The paid pass: what it grants and what it costs.'
-        topup:
-          type: object
-          description: 'One-off send top-up: size and price.'
-        checkout_live:
-          type: boolean
-          description: Whether live checkout is enabled. While false, a purchase returns an x402 challenge.
-        global_recipient_hard_cap:
-          type: integer
-          description: Real recipients per month across the whole platform. This always prevails.
-        auto_renew:
-          type: boolean
-          description: Always false — nothing here renews by itself.
-      required:
-      - version
-      - trial
-      - pass
-      - topup
-      - checkout_live
-      - global_recipient_hard_cap
-      - auto_renew
-      description: Plans and prices, versioned. Nothing here auto-renews — a pass or a top-up is bought once and runs out.
   securitySchemes:
     bearerAuth:
       type: http

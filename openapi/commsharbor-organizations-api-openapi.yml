@@ -5251,6 +5251,116 @@ paths:
       - Organizations
 components:
   schemas:
+    DataExport:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Export ID.
+        status:
+          type: string
+          description: Where the export stands.
+        expires_at:
+          type: string
+          description: When the file is deleted (UTC).
+        created_at:
+          type: string
+          description: Creation time (UTC).
+      required:
+      - id
+      - status
+      - expires_at
+      - created_at
+      description: A tenant-scoped JSON export, retained for seven days.
+    Marketing:
+      type: object
+      properties:
+        marketing_enabled:
+          type: boolean
+          description: Whether marketing may be sent to this contact right now.
+        basis:
+          type: string
+          description: Why sending is allowed.
+          nullable: true
+        source:
+          type: string
+          description: Where the consent came from, e.g. a signup form.
+          nullable: true
+        captured_at:
+          type: string
+          description: When consent was captured (UTC).
+          nullable: true
+        unsubscribed_at:
+          type: string
+          description: When the contact unsubscribed; null when they never did.
+          nullable: true
+      required:
+      - marketing_enabled
+      - basis
+      - source
+      - captured_at
+      - unsubscribed_at
+      description: Consent and preference for one contact. Recording consent NEVER restores a previous unsubscribe — that asymmetry is the point.
+    Operations:
+      type: object
+      properties:
+        alerts:
+          type: array
+          items:
+            type: object
+          description: Current alerts, each with a kind, a severity and what to do.
+        billing:
+          type: object
+          description: Quota position at the time of the observation.
+        capacity:
+          type: object
+          description: Conservative SES and SNS capacity observations.
+      required:
+      - alerts
+      - billing
+      - capacity
+      description: Operational alerts for the organization — DLQ, backlog, worker and SNS failures, reputation, paused sending, quota and SES/SNS cost capacity. Never contains recipient PII.
+    Webhook:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Webhook ID.
+        url:
+          type: string
+          description: HTTPS destination.
+        event_types:
+          type: array
+          items:
+            type: string
+          description: Which events are delivered to it.
+        status:
+          type: string
+          description: Whether it is receiving.
+        created_at:
+          type: string
+          description: Creation time (UTC).
+        secret:
+          type: string
+          description: Signing secret for timestamped HMAC-SHA256. Present only on the response that created it.
+      required:
+      - id
+      - url
+      - event_types
+      - status
+      - created_at
+      description: An HTTPS endpoint that receives delivery events. The signing secret is revealed once, at creation.
+    ListaDeliveryEvent:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/DeliveryEvent'
+          description: Every record in the collection.
+      required:
+      - items
+      description: A complete, unpaginated collection — used where the set is bounded by design.
     CampaignReport:
       type: object
       properties:
@@ -5269,287 +5379,44 @@ components:
       - deliveries
       - events
       description: 'Campaign reconciliation: what was delivered and what came back. Counts only — no recipient data.'
-    BillingTenant:
-      type: object
-      properties:
-        catalog:
-          allOf:
-          - $ref: '#/components/schemas/BillingCatalog'
-          description: Plans and prices in force.
-        state:
-          type: object
-          description: 'Current entitlement: what is active, how many sends remain and when it expires.'
-        warning:
-          type: object
-          description: Expiration or exhaustion warning, when one applies.
-          nullable: true
-        payment:
-          allOf:
-          - $ref: '#/components/schemas/PlanoX402'
-          description: x402 configuration for paying.
-      required:
-      - catalog
-      - state
-      - warning
-      - payment
-      description: What THIS organization is entitled to, and how close it is to running out.
-    AuditEvent:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Event ID.
-        action:
-          type: string
-          description: What happened, e.g. `api_key.created`.
-        actor_user_id:
-          type: string
-          description: Who did it; null when the actor was a key or the system.
-          nullable: true
-        target:
-          type: string
-          description: What it happened to.
-          nullable: true
-        metadata:
-          type: object
-          description: Extra context for this action. Never contains recipient PII.
-        created_at:
-          type: string
-          description: When it happened (UTC).
-      required:
-      - id
-      - action
-      - actor_user_id
-      - target
-      - metadata
-      - created_at
-      description: One append-only record of something that happened in the organization. Audit is never rewritten.
-    ImportError:
-      type: object
-      properties:
-        row:
-          type: integer
-          description: 1-based row number in the uploaded CSV.
-        code:
-          type: string
-          description: Why it was rejected, e.g. `invalid_email`.
-        message:
-          type: string
-          description: The reason in a sentence.
-      required:
-      - row
-      - code
-      - message
-      description: One rejected row, addressed by line number so it can be fixed in the source file.
-    Contact:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Contact ID.
-        email:
-          type: string
-          description: Email address, normalized and never truncated.
-        first_name:
-          type: string
-          description: Given name.
-          nullable: true
-        last_name:
-          type: string
-          description: Family name.
-          nullable: true
-        company_id:
-          type: string
-          description: Company this contact belongs to.
-          nullable: true
-        created_at:
-          type: string
-          description: Creation time (UTC).
-        updated_at:
-          type: string
-          description: Last change (UTC).
-          nullable: true
-        url:
-          type: string
-          description: Absolute URL of this contact — agents never build the path by hand.
-      required:
-      - id
-      - email
-      - first_name
-      - last_name
-      - company_id
-      - created_at
-      - updated_at
-      - url
-      description: A person in the tenant CRM. Marketing consent is a separate resource — being in the CRM is not permission to email.
-    Provisioning:
-      type: object
-      properties:
-        queued:
-          type: boolean
-          description: Whether this call enqueued provisioning work.
-        job_id:
-          type: string
-          description: The provisioning job, when one was created.
-          nullable: true
-      required:
-      - queued
-      - job_id
-      description: The idempotent SES provisioning queued for a domain. Asking twice does not provision twice.
-    PageAudience:
+    PageCamelTemplate:
       type: object
       properties:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/Audience'
+            $ref: '#/components/schemas/Template'
           description: The records on this page.
-        next_cursor:
+        nextCursor:
           type: string
           description: Cursor for the next page; null when there are no more.
           nullable: true
       required:
       - items
-      - next_cursor
-      description: Cursor-paginated listing. A null cursor means this was the last page.
-    MessagingSettings:
-      type: object
-      properties:
-        timezone:
-          type: string
-          description: IANA timezone used to schedule campaigns, e.g. `America/Sao_Paulo`.
-        marketing_state:
-          type: string
-          description: Whether marketing may go out.
-        paused_reason:
-          type: string
-          description: Why marketing was paused, when it was.
-          nullable: true
-      required:
-      - timezone
-      - marketing_state
-      - paused_reason
-      description: Timezone and marketing pause state. A reputation or SES tenant risk pauses marketing automatically, and resuming requires a healthy observation first.
-    PageCompany:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/Company'
-          description: The records on this page.
-        next_cursor:
-          type: string
-          description: Cursor for the next page; null when there are no more.
-          nullable: true
-      required:
-      - items
-      - next_cursor
-      description: Cursor-paginated listing. A null cursor means this was the last page.
-    ApiKey:
+      - nextCursor
+      description: The same listing with the cursor in camelCase. Older resources ship it this way and the name is kept because changing it would break clients already reading it.
+    Organization:
       type: object
       properties:
         id:
           type: string
-          description: API key ID, used to revoke it.
+          description: Organization ID, used in every tenant route.
         name:
           type: string
-          description: Label chosen at creation.
-        scopes:
-          type: array
-          items:
-            type: string
-          description: What this key may do, e.g. `crm:read`, `messages:send`.
-        prefix:
+          description: Display name.
+        sending_domain:
           type: string
-          description: Token prefix, so a key can be recognised in a list.
-        last_used_at:
-          type: string
-          description: When the key last answered; null if never.
-          nullable: true
-        revoked_at:
-          type: string
-          description: When it was revoked; null while it is still valid.
+          description: Domain the organization sends from.
           nullable: true
         created_at:
           type: string
-          description: Creation time (UTC).
-        token:
-          type: string
-          description: The key itself. Present only on the response that created it — it is never shown again.
+          description: Creation time (UTC, ISO-8601).
       required:
       - id
       - name
-      - scopes
-      - prefix
-      - last_used_at
-      - revoked_at
+      - sending_domain
       - created_at
-      description: A scoped machine credential. It determines its own organization and rejects a conflicting header.
-    BillingCatalog:
-      type: object
-      properties:
-        version:
-          type: string
-          description: Catalog version, so a client can tell prices changed.
-        trial:
-          type: object
-          description: What a new organization gets for free.
-        pass:
-          type: object
-          description: 'The paid pass: what it grants and what it costs.'
-        topup:
-          type: object
-          description: 'One-off send top-up: size and price.'
-        checkout_live:
-          type: boolean
-          description: Whether live checkout is enabled. While false, a purchase returns an x402 challenge.
-        global_recipient_hard_cap:
-          type: integer
-          description: Real recipients per month across the whole platform. This always prevails.
-        auto_renew:
-          type: boolean
-          description: Always false — nothing here renews by itself.
-      required:
-      - version
-      - trial
-      - pass
-      - topup
-      - checkout_live
-      - global_recipient_hard_cap
-      - auto_renew
-      description: Plans and prices, versioned. Nothing here auto-renews — a pass or a top-up is bought once and runs out.
-    Capacity:
-      type: object
-      properties:
-        remaining:
-          type: integer
-          description: Sends still available to this organization.
-        global_remaining:
-          type: integer
-          description: Sends still available across the whole platform this month.
-        hard_cap:
-          type: integer
-          description: The global monthly cap on real recipients. Nothing raises it.
-      required:
-      - remaining
-      - global_remaining
-      - hard_cap
-      description: What is left to send. The bootstrap global cap always prevails over any tenant allowance.
-    Dispatch:
-      type: object
-      properties:
-        queued:
-          type: boolean
-          description: Whether a Queue message was produced.
-        job_id:
-          type: string
-          description: Dispatch job ID, when one was created.
-          nullable: true
-      required:
-      - queued
-      - job_id
-      description: What actually happened to the queue message behind this send.
+      description: A tenant. Every piece of customer data in this product is scoped to exactly one.
     Task:
       type: object
       properties:
@@ -5600,28 +5467,181 @@ components:
       - updated_at
       - url
       description: Work someone still has to do, inside the tenant CRM.
-    ListaDataExport:
+    Membership:
+      type: object
+      properties:
+        organization_id:
+          type: string
+          description: The organization.
+        user_id:
+          type: string
+          description: The member.
+        role:
+          type: string
+          description: What the member may do.
+        created_at:
+          type: string
+          description: When the membership started (UTC).
+      required:
+      - organization_id
+      - user_id
+      - role
+      - created_at
+      description: One person's place in one organization.
+    ContactImport:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Import ID.
+        status:
+          type: string
+          description: Where the import stands.
+        rows:
+          type: integer
+          description: Rows found in the CSV.
+        accepted:
+          type: integer
+          description: Rows that will be imported.
+        rejected:
+          type: integer
+          description: Rows rejected, with reasons in the errors listing.
+        basis:
+          type: string
+          description: Declared consent basis for every row.
+        file_id:
+          type: string
+          description: Stored file, downloadable for seven days.
+          nullable: true
+        created_at:
+          type: string
+          description: Upload time (UTC).
+      required:
+      - id
+      - status
+      - rows
+      - accepted
+      - rejected
+      - basis
+      - file_id
+      - created_at
+      description: A CSV import of contacts, with the consent declaration that made it legal to import them.
+    Provisioning:
+      type: object
+      properties:
+        queued:
+          type: boolean
+          description: Whether this call enqueued provisioning work.
+        job_id:
+          type: string
+          description: The provisioning job, when one was created.
+          nullable: true
+      required:
+      - queued
+      - job_id
+      description: The idempotent SES provisioning queued for a domain. Asking twice does not provision twice.
+    ListaWebhook:
       type: object
       properties:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/DataExport'
+            $ref: '#/components/schemas/Webhook'
           description: Every record in the collection.
       required:
       - items
       description: A complete, unpaginated collection — used where the set is bounded by design.
-    ListaDelivery:
+    PageCamelAuditEvent:
       type: object
       properties:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/Delivery'
-          description: Every record in the collection.
+            $ref: '#/components/schemas/AuditEvent'
+          description: The records on this page.
+        nextCursor:
+          type: string
+          description: Cursor for the next page; null when there are no more.
+          nullable: true
       required:
       - items
-      description: A complete, unpaginated collection — used where the set is bounded by design.
+      - nextCursor
+      description: The same listing with the cursor in camelCase. Older resources ship it this way and the name is kept because changing it would break clients already reading it.
+    Pipeline:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Pipeline ID.
+        name:
+          type: string
+          description: Pipeline name.
+        created_at:
+          type: string
+          description: Creation time (UTC).
+        url:
+          type: string
+          description: Absolute URL of this pipeline.
+      required:
+      - id
+      - name
+      - created_at
+      - url
+      description: A named sequence of stages that deals move through.
+    Stage:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Stage ID.
+        pipeline_id:
+          type: string
+          description: Pipeline this stage belongs to.
+        name:
+          type: string
+          description: Stage name, e.g. `Proposal`.
+        position:
+          type: integer
+          description: Order within the pipeline, lowest first.
+        probability:
+          type: integer
+          description: Chance of winning at this stage, 0 to 100.
+          nullable: true
+        url:
+          type: string
+          description: Absolute URL of this stage.
+      required:
+      - id
+      - pipeline_id
+      - name
+      - position
+      - probability
+      - url
+      description: One step of a pipeline. Stages belong to a pipeline and are addressed under it.
+    BillingTenant:
+      type: object
+      properties:
+        catalog:
+          allOf:
+          - $ref: '#/components/schemas/BillingCatalog'
+          description: Plans and prices in force.
+        state:
+          type: object
+          description: 'Current entitlement: what is active, how many sends remain and when it expires.'
+        warning:
+          type: object
+          description: Expiration or exhaustion warning, when one applies.
+          nullable: true
+        payment:
+          allOf:
+          - $ref: '#/components/schemas/PlanoX402'
+          description: x402 configuration for paying.
+      required:
+      - catalog
+      - state
+      - warning
+      - payment
+      description: What THIS organization is entitled to, and how close it is to running out.
     Company:
       type: object
       properties:
@@ -5658,60 +5678,89 @@ components:
       - updated_at
       - url
       description: An organization in the tenant CRM — a customer of the customer, not a tenant of this product.
-    DataExport:
+    Suppression:
       type: object
       properties:
         id:
           type: string
-          description: Export ID.
-        status:
+          description: Suppression ID.
+        scope:
           type: string
-          description: Where the export stands.
-        expires_at:
+          description: How far it reaches.
+        reason:
           type: string
-          description: When the file is deleted (UTC).
-        created_at:
-          type: string
-          description: Creation time (UTC).
-      required:
-      - id
-      - status
-      - expires_at
-      - created_at
-      description: A tenant-scoped JSON export, retained for seven days.
-    Deal:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Deal ID.
-        title:
-          type: string
-          description: What the deal is.
-        pipeline_id:
-          type: string
-          description: Pipeline the deal lives in.
-        stage_id:
-          type: string
-          description: Current stage.
-        status:
-          type: string
-          description: Where it stands.
-        value_minor:
-          type: integer
-          description: Value in the currency's minor unit — cents, not dollars.
-          nullable: true
-        currency:
-          type: string
-          description: ISO 4217 code for `value_minor`.
-          nullable: true
+          description: Why it exists, e.g. `bounce`, `complaint`, `manual`.
         contact_id:
           type: string
-          description: Main contact on the deal.
+          description: CRM contact it matches, when known.
+          nullable: true
+        created_at:
+          type: string
+          description: When it was added (UTC).
+      required:
+      - id
+      - scope
+      - reason
+      - contact_id
+      - created_at
+      description: A recipient that must not be emailed. Suppressions are checked BEFORE quota and before any queue work.
+    PageSuppression:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Suppression'
+          description: The records on this page.
+        next_cursor:
+          type: string
+          description: Cursor for the next page; null when there are no more.
+          nullable: true
+      required:
+      - items
+      - next_cursor
+      description: Cursor-paginated listing. A null cursor means this was the last page.
+    DeliveryEvent:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Event ID.
+        event_type:
+          type: string
+          description: What SES reported.
+        occurred_at:
+          type: string
+          description: When SES says it happened (UTC).
+        detail:
+          type: object
+          description: Normalized detail for this event type, without recipient PII.
+      required:
+      - id
+      - event_type
+      - occurred_at
+      - detail
+      description: A normalized SES feedback event. Open and Click are ADDITIVE — they never overwrite delivery state.
+    Contact:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Contact ID.
+        email:
+          type: string
+          description: Email address, normalized and never truncated.
+        first_name:
+          type: string
+          description: Given name.
+          nullable: true
+        last_name:
+          type: string
+          description: Family name.
           nullable: true
         company_id:
           type: string
-          description: Company on the deal.
+          description: Company this contact belongs to.
           nullable: true
         created_at:
           type: string
@@ -5722,32 +5771,80 @@ components:
           nullable: true
         url:
           type: string
-          description: Absolute URL of this deal.
+          description: Absolute URL of this contact — agents never build the path by hand.
       required:
       - id
-      - title
-      - pipeline_id
-      - stage_id
-      - status
-      - value_minor
-      - currency
-      - contact_id
+      - email
+      - first_name
+      - last_name
       - company_id
       - created_at
       - updated_at
       - url
-      description: An opportunity moving through a pipeline. Money is stored in minor units to avoid float rounding.
-    ListaWebhook:
+      description: A person in the tenant CRM. Marketing consent is a separate resource — being in the CRM is not permission to email.
+    TemplatePreview:
       type: object
       properties:
-        items:
+        subject:
+          type: string
+          description: Subject with variables applied.
+        html:
+          type: string
+          description: Rendered HTML.
+        text:
+          type: string
+          description: Plain-text alternative.
+        warnings:
           type: array
           items:
-            $ref: '#/components/schemas/Webhook'
-          description: Every record in the collection.
+            type: string
+          description: What was stripped or would not render — active content, forms, unsafe URLs.
       required:
-      - items
-      description: A complete, unpaginated collection — used where the set is bounded by design.
+      - subject
+      - html
+      - text
+      - warnings
+      description: A draft compiled and rendered safely, without publishing anything.
+    ApiKey:
+      type: object
+      properties:
+        id:
+          type: string
+          description: API key ID, used to revoke it.
+        name:
+          type: string
+          description: Label chosen at creation.
+        scopes:
+          type: array
+          items:
+            type: string
+          description: What this key may do, e.g. `crm:read`, `messages:send`.
+        prefix:
+          type: string
+          description: Token prefix, so a key can be recognised in a list.
+        last_used_at:
+          type: string
+          description: When the key last answered; null if never.
+          nullable: true
+        revoked_at:
+          type: string
+          description: When it was revoked; null while it is still valid.
+          nullable: true
+        created_at:
+          type: string
+          description: Creation time (UTC).
+        token:
+          type: string
+          description: The key itself. Present only on the response that created it — it is never shown again.
+      required:
+      - id
+      - name
+      - scopes
+      - prefix
+      - last_used_at
+      - revoked_at
+      - created_at
+      description: A scoped machine credential. It determines its own organization and rejects a conflicting header.
     Campaign:
       type: object
       properties:
@@ -5795,273 +5892,6 @@ components:
       - frozen_recipients
       - created_at
       description: A marketing send to an audience. Launching freezes the eligible recipients exactly once — the frozen set is what gets sent, no matter what changes afterwards.
-    Organization:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Organization ID, used in every tenant route.
-        name:
-          type: string
-          description: Display name.
-        sending_domain:
-          type: string
-          description: Domain the organization sends from.
-          nullable: true
-        created_at:
-          type: string
-          description: Creation time (UTC, ISO-8601).
-      required:
-      - id
-      - name
-      - sending_domain
-      - created_at
-      description: A tenant. Every piece of customer data in this product is scoped to exactly one.
-    PageCamelTemplate:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/Template'
-          description: The records on this page.
-        nextCursor:
-          type: string
-          description: Cursor for the next page; null when there are no more.
-          nullable: true
-      required:
-      - items
-      - nextCursor
-      description: The same listing with the cursor in camelCase. Older resources ship it this way and the name is kept because changing it would break clients already reading it.
-    Webhook:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Webhook ID.
-        url:
-          type: string
-          description: HTTPS destination.
-        event_types:
-          type: array
-          items:
-            type: string
-          description: Which events are delivered to it.
-        status:
-          type: string
-          description: Whether it is receiving.
-        created_at:
-          type: string
-          description: Creation time (UTC).
-        secret:
-          type: string
-          description: Signing secret for timestamped HMAC-SHA256. Present only on the response that created it.
-      required:
-      - id
-      - url
-      - event_types
-      - status
-      - created_at
-      description: An HTTPS endpoint that receives delivery events. The signing secret is revealed once, at creation.
-    PageImportError:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/ImportError'
-          description: The records on this page.
-        next_cursor:
-          type: string
-          description: Cursor for the next page; null when there are no more.
-          nullable: true
-      required:
-      - items
-      - next_cursor
-      description: Cursor-paginated listing. A null cursor means this was the last page.
-    Suppression:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Suppression ID.
-        scope:
-          type: string
-          description: How far it reaches.
-        reason:
-          type: string
-          description: Why it exists, e.g. `bounce`, `complaint`, `manual`.
-        contact_id:
-          type: string
-          description: CRM contact it matches, when known.
-          nullable: true
-        created_at:
-          type: string
-          description: When it was added (UTC).
-      required:
-      - id
-      - scope
-      - reason
-      - contact_id
-      - created_at
-      description: A recipient that must not be emailed. Suppressions are checked BEFORE quota and before any queue work.
-    PageContactImport:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/ContactImport'
-          description: The records on this page.
-        next_cursor:
-          type: string
-          description: Cursor for the next page; null when there are no more.
-          nullable: true
-      required:
-      - items
-      - next_cursor
-      description: Cursor-paginated listing. A null cursor means this was the last page.
-    ListaDomain:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/Domain'
-          description: Every record in the collection.
-      required:
-      - items
-      description: A complete, unpaginated collection — used where the set is bounded by design.
-    TemplateVersion:
-      type: object
-      properties:
-        version:
-          type: integer
-          description: Version number, increasing.
-        content_hash:
-          type: string
-          description: Hash of the compiled content; it is the version's identity.
-        subject:
-          type: string
-          description: Subject at this version.
-        published_at:
-          type: string
-          description: Publication time (UTC).
-      required:
-      - version
-      - content_hash
-      - subject
-      - published_at
-      description: A published version. Immutable and identified by the hash of its content — republishing identical content does not create a new one.
-    PageTask:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/Task'
-          description: The records on this page.
-        next_cursor:
-          type: string
-          description: Cursor for the next page; null when there are no more.
-          nullable: true
-      required:
-      - items
-      - next_cursor
-      description: Cursor-paginated listing. A null cursor means this was the last page.
-    Pipeline:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Pipeline ID.
-        name:
-          type: string
-          description: Pipeline name.
-        created_at:
-          type: string
-          description: Creation time (UTC).
-        url:
-          type: string
-          description: Absolute URL of this pipeline.
-      required:
-      - id
-      - name
-      - created_at
-      - url
-      description: A named sequence of stages that deals move through.
-    Activity:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Activity ID.
-        activity_type:
-          type: string
-          description: What kind of activity it was, e.g. `note`, `call`, `meeting`.
-        note:
-          type: string
-          description: The text of the activity.
-        deal_id:
-          type: string
-          description: Deal it refers to.
-          nullable: true
-        contact_id:
-          type: string
-          description: Contact it refers to.
-          nullable: true
-        company_id:
-          type: string
-          description: Company it refers to.
-          nullable: true
-        created_at:
-          type: string
-          description: Creation time (UTC).
-        url:
-          type: string
-          description: Absolute URL of this activity.
-      required:
-      - id
-      - activity_type
-      - note
-      - deal_id
-      - contact_id
-      - company_id
-      - created_at
-      - url
-      description: Something that happened with a contact, company or deal — a note, a call, a meeting.
-    ListaDeliveryEvent:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/DeliveryEvent'
-          description: Every record in the collection.
-      required:
-      - items
-      description: A complete, unpaginated collection — used where the set is bounded by design.
-    DeliveryEvent:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Event ID.
-        event_type:
-          type: string
-          description: What SES reported.
-        occurred_at:
-          type: string
-          description: When SES says it happened (UTC).
-        detail:
-          type: object
-          description: Normalized detail for this event type, without recipient PII.
-      required:
-      - id
-      - event_type
-      - occurred_at
-      - detail
-      description: A normalized SES feedback event. Open and Click are ADDITIVE — they never overwrite delivery state.
     PlanoX402:
       type: object
       properties:
@@ -6122,30 +5952,63 @@ components:
       - faucet
       - wallets
       description: x402 payment configuration in force. Comes from `planPublic` and is the same across the products.
-    Deletion:
+    Dispatch:
       type: object
       properties:
-        id:
+        queued:
+          type: boolean
+          description: Whether a Queue message was produced.
+        job_id:
           type: string
-          description: Deletion request ID.
-          nullable: true
-        status:
-          type: string
-          description: Where the request stands.
-        scheduled_for:
-          type: string
-          description: When erasure runs, after the grace period (UTC).
-          nullable: true
-        requested_by:
-          type: string
-          description: Who scheduled it.
+          description: Dispatch job ID, when one was created.
           nullable: true
       required:
-      - id
-      - status
-      - scheduled_for
-      - requested_by
-      description: A scheduled tenant erasure. It waits seven days, and what survives is pseudonymous financial and audit evidence only.
+      - queued
+      - job_id
+      description: What actually happened to the queue message behind this send.
+    ListaTemplateVersion:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/TemplateVersion'
+          description: Every record in the collection.
+      required:
+      - items
+      description: A complete, unpaginated collection — used where the set is bounded by design.
+    PageContactImport:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactImport'
+          description: The records on this page.
+        next_cursor:
+          type: string
+          description: Cursor for the next page; null when there are no more.
+          nullable: true
+      required:
+      - items
+      - next_cursor
+      description: Cursor-paginated listing. A null cursor means this was the last page.
+    PageAudience:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Audience'
+          description: The records on this page.
+        next_cursor:
+          type: string
+          description: Cursor for the next page; null when there are no more.
+          nullable: true
+      required:
+      - items
+      - next_cursor
+      description: Cursor-paginated listing. A null cursor means this was the last page.
     Invitation:
       type: object
       properties:
@@ -6173,99 +6036,397 @@ components:
       - role
       - expires_at
       description: An invitation into an existing organization. The token is revealed once, at creation, and never listed again.
-    ListaTemplateVersion:
+    PageImportError:
       type: object
       properties:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/TemplateVersion'
-          description: Every record in the collection.
+            $ref: '#/components/schemas/ImportError'
+          description: The records on this page.
+        next_cursor:
+          type: string
+          description: Cursor for the next page; null when there are no more.
+          nullable: true
       required:
       - items
-      description: A complete, unpaginated collection — used where the set is bounded by design.
-    Marketing:
+      - next_cursor
+      description: Cursor-paginated listing. A null cursor means this was the last page.
+    BillingCatalog:
       type: object
       properties:
-        marketing_enabled:
+        version:
+          type: string
+          description: Catalog version, so a client can tell prices changed.
+        trial:
+          type: object
+          description: What a new organization gets for free.
+        pass:
+          type: object
+          description: 'The paid pass: what it grants and what it costs.'
+        topup:
+          type: object
+          description: 'One-off send top-up: size and price.'
+        checkout_live:
           type: boolean
-          description: Whether marketing may be sent to this contact right now.
-        basis:
+          description: Whether live checkout is enabled. While false, a purchase returns an x402 challenge.
+        global_recipient_hard_cap:
+          type: integer
+          description: Real recipients per month across the whole platform. This always prevails.
+        auto_renew:
+          type: boolean
+          description: Always false — nothing here renews by itself.
+      required:
+      - version
+      - trial
+      - pass
+      - topup
+      - checkout_live
+      - global_recipient_hard_cap
+      - auto_renew
+      description: Plans and prices, versioned. Nothing here auto-renews — a pass or a top-up is bought once and runs out.
+    PageContact:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Contact'
+          description: The records on this page.
+        next_cursor:
           type: string
-          description: Why sending is allowed.
-          nullable: true
-        source:
-          type: string
-          description: Where the consent came from, e.g. a signup form.
-          nullable: true
-        captured_at:
-          type: string
-          description: When consent was captured (UTC).
-          nullable: true
-        unsubscribed_at:
-          type: string
-          description: When the contact unsubscribed; null when they never did.
+          description: Cursor for the next page; null when there are no more.
           nullable: true
       required:
-      - marketing_enabled
-      - basis
-      - source
-      - captured_at
-      - unsubscribed_at
-      description: Consent and preference for one contact. Recording consent NEVER restores a previous unsubscribe — that asymmetry is the point.
-    Stage:
+      - items
+      - next_cursor
+      description: Cursor-paginated listing. A null cursor means this was the last page.
+    Deal:
       type: object
       properties:
         id:
           type: string
-          description: Stage ID.
+          description: Deal ID.
+        title:
+          type: string
+          description: What the deal is.
         pipeline_id:
           type: string
-          description: Pipeline this stage belongs to.
-        name:
+          description: Pipeline the deal lives in.
+        stage_id:
           type: string
-          description: Stage name, e.g. `Proposal`.
-        position:
+          description: Current stage.
+        status:
+          type: string
+          description: Where it stands.
+        value_minor:
           type: integer
-          description: Order within the pipeline, lowest first.
-        probability:
-          type: integer
-          description: Chance of winning at this stage, 0 to 100.
+          description: Value in the currency's minor unit — cents, not dollars.
+          nullable: true
+        currency:
+          type: string
+          description: ISO 4217 code for `value_minor`.
+          nullable: true
+        contact_id:
+          type: string
+          description: Main contact on the deal.
+          nullable: true
+        company_id:
+          type: string
+          description: Company on the deal.
+          nullable: true
+        created_at:
+          type: string
+          description: Creation time (UTC).
+        updated_at:
+          type: string
+          description: Last change (UTC).
           nullable: true
         url:
           type: string
-          description: Absolute URL of this stage.
+          description: Absolute URL of this deal.
       required:
       - id
+      - title
       - pipeline_id
-      - name
-      - position
-      - probability
+      - stage_id
+      - status
+      - value_minor
+      - currency
+      - contact_id
+      - company_id
+      - created_at
+      - updated_at
       - url
-      description: One step of a pipeline. Stages belong to a pipeline and are addressed under it.
-    TemplatePreview:
+      description: An opportunity moving through a pipeline. Money is stored in minor units to avoid float rounding.
+    TemplateExport:
       type: object
       properties:
+        template_id:
+          type: string
+          description: ID of the exported template.
+        version:
+          type: integer
+          description: Exported version number.
         subject:
           type: string
-          description: Subject with variables applied.
+          description: Subject at that version.
         html:
           type: string
-          description: Rendered HTML.
+          description: Compiled HTML.
         text:
           type: string
           description: Plain-text alternative.
-        warnings:
-          type: array
-          items:
-            type: string
-          description: What was stripped or would not render — active content, forms, unsafe URLs.
+        mjml:
+          type: string
+          description: MJML source of the compiled blocks.
+        content_hash:
+          type: string
+          description: Hash identifying the version.
       required:
+      - template_id
+      - version
       - subject
       - html
       - text
-      - warnings
-      description: A draft compiled and rendered safely, without publishing anything.
+      - mjml
+      - content_hash
+      description: The latest published version in every form it exists.
+    ListaDataExport:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/DataExport'
+          description: Every record in the collection.
+      required:
+      - items
+      description: A complete, unpaginated collection — used where the set is bounded by design.
+    Delivery:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Delivery ID.
+        status:
+          type: string
+          description: Delivery state, authoritative in D1.
+        domain_id:
+          type: string
+          description: Domain it was sent from.
+        template_id:
+          type: string
+          description: Template used.
+          nullable: true
+        template_version:
+          type: integer
+          description: Immutable template version used.
+          nullable: true
+        ses_message_id:
+          type: string
+          description: SES MessageId, for correlating with AWS.
+          nullable: true
+        created_at:
+          type: string
+          description: When it was queued (UTC).
+      required:
+      - id
+      - status
+      - domain_id
+      - template_id
+      - template_version
+      - ses_message_id
+      - created_at
+      description: One queued message. It never carries the recipient address or the body — that is deliberate, not an omission.
+    Capacity:
+      type: object
+      properties:
+        remaining:
+          type: integer
+          description: Sends still available to this organization.
+        global_remaining:
+          type: integer
+          description: Sends still available across the whole platform this month.
+        hard_cap:
+          type: integer
+          description: The global monthly cap on real recipients. Nothing raises it.
+      required:
+      - remaining
+      - global_remaining
+      - hard_cap
+      description: What is left to send. The bootstrap global cap always prevails over any tenant allowance.
+    Activity:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Activity ID.
+        activity_type:
+          type: string
+          description: What kind of activity it was, e.g. `note`, `call`, `meeting`.
+        note:
+          type: string
+          description: The text of the activity.
+        deal_id:
+          type: string
+          description: Deal it refers to.
+          nullable: true
+        contact_id:
+          type: string
+          description: Contact it refers to.
+          nullable: true
+        company_id:
+          type: string
+          description: Company it refers to.
+          nullable: true
+        created_at:
+          type: string
+          description: Creation time (UTC).
+        url:
+          type: string
+          description: Absolute URL of this activity.
+      required:
+      - id
+      - activity_type
+      - note
+      - deal_id
+      - contact_id
+      - company_id
+      - created_at
+      - url
+      description: Something that happened with a contact, company or deal — a note, a call, a meeting.
+    PageCamelCampaign:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Campaign'
+          description: The records on this page.
+        nextCursor:
+          type: string
+          description: Cursor for the next page; null when there are no more.
+          nullable: true
+      required:
+      - items
+      - nextCursor
+      description: The same listing with the cursor in camelCase. Older resources ship it this way and the name is kept because changing it would break clients already reading it.
+    TemplateVersion:
+      type: object
+      properties:
+        version:
+          type: integer
+          description: Version number, increasing.
+        content_hash:
+          type: string
+          description: Hash of the compiled content; it is the version's identity.
+        subject:
+          type: string
+          description: Subject at this version.
+        published_at:
+          type: string
+          description: Publication time (UTC).
+      required:
+      - version
+      - content_hash
+      - subject
+      - published_at
+      description: A published version. Immutable and identified by the hash of its content — republishing identical content does not create a new one.
+    PreferenceToken:
+      type: object
+      properties:
+        api_url:
+          type: string
+          description: Machine-readable preference endpoint.
+        preferences_url:
+          type: string
+          description: Human preference page.
+        unsubscribe_url:
+          type: string
+          description: RFC 8058 one-click unsubscribe endpoint.
+        marketing_headers:
+          type: object
+          description: '`List-Unsubscribe` and `List-Unsubscribe-Post`, ready to add to the message.'
+      required:
+      - api_url
+      - preferences_url
+      - unsubscribe_url
+      - marketing_headers
+      description: Signed URLs for the preference centre and one-click unsubscribe, plus the headers to put in the message.
+    Send:
+      type: object
+      properties:
+        delivery:
+          allOf:
+          - $ref: '#/components/schemas/Delivery'
+          description: The delivery record.
+        capacity:
+          allOf:
+          - $ref: '#/components/schemas/Capacity'
+          description: What is left after this send.
+        dispatch:
+          allOf:
+          - $ref: '#/components/schemas/Dispatch'
+          description: The queue work behind it.
+        replayed:
+          type: boolean
+          description: True when this was a replay of an earlier identical request.
+      required:
+      - delivery
+      - capacity
+      - dispatch
+      - replayed
+      description: The result of queueing one message. `replayed` true means an equivalent Idempotency-Key already existed and NO second message was produced.
+    PagePipeline:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pipeline'
+          description: The records on this page.
+        next_cursor:
+          type: string
+          description: Cursor for the next page; null when there are no more.
+          nullable: true
+      required:
+      - items
+      - next_cursor
+      description: Cursor-paginated listing. A null cursor means this was the last page.
+    ImportError:
+      type: object
+      properties:
+        row:
+          type: integer
+          description: 1-based row number in the uploaded CSV.
+        code:
+          type: string
+          description: Why it was rejected, e.g. `invalid_email`.
+        message:
+          type: string
+          description: The reason in a sentence.
+      required:
+      - row
+      - code
+      - message
+      description: One rejected row, addressed by line number so it can be fixed in the source file.
+    PageStage:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Stage'
+          description: The records on this page.
+        next_cursor:
+          type: string
+          description: Cursor for the next page; null when there are no more.
+          nullable: true
+      required:
+      - items
+      - next_cursor
+      description: Cursor-paginated listing. A null cursor means this was the last page.
     Domain:
       type: object
       properties:
@@ -6308,112 +6469,59 @@ components:
       - last_observed_at
       - created_at
       description: A sending domain. State is only ever what was OBSERVED at SES and DNS — this product does not infer it.
-    PageCamelAuditEvent:
+    ListaDelivery:
       type: object
       properties:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/AuditEvent'
-          description: The records on this page.
-        nextCursor:
-          type: string
-          description: Cursor for the next page; null when there are no more.
-          nullable: true
+            $ref: '#/components/schemas/Delivery'
+          description: Every record in the collection.
       required:
       - items
-      - nextCursor
-      description: The same listing with the cursor in camelCase. Older resources ship it this way and the name is kept because changing it would break clients already reading it.
-    Audience:
+      description: A complete, unpaginated collection — used where the set is bounded by design.
+    Deletion:
       type: object
       properties:
         id:
           type: string
-          description: Audience ID.
-        name:
-          type: string
-          description: Audience name.
-        kind:
-          type: string
-          description: How membership is decided.
-        filter:
-          type: object
-          description: The saved filter, for `saved_segment`. Only allowlisted fields are accepted.
+          description: Deletion request ID.
           nullable: true
-        member_count:
-          type: integer
-          description: Contacts currently in the audience.
-          nullable: true
-        created_at:
+        status:
           type: string
-          description: Creation time (UTC).
+          description: Where the request stands.
+        scheduled_for:
+          type: string
+          description: When erasure runs, after the grace period (UTC).
+          nullable: true
+        requested_by:
+          type: string
+          description: Who scheduled it.
+          nullable: true
       required:
       - id
-      - name
-      - kind
-      - filter
-      - member_count
-      - created_at
-      description: 'Who a campaign goes to: a static list or a saved segment with an allowlisted filter.'
-    Operations:
-      type: object
-      properties:
-        alerts:
-          type: array
-          items:
-            type: object
-          description: Current alerts, each with a kind, a severity and what to do.
-        billing:
-          type: object
-          description: Quota position at the time of the observation.
-        capacity:
-          type: object
-          description: Conservative SES and SNS capacity observations.
-      required:
-      - alerts
-      - billing
-      - capacity
-      description: Operational alerts for the organization — DLQ, backlog, worker and SNS failures, reputation, paused sending, quota and SES/SNS cost capacity. Never contains recipient PII.
-    TemplateExport:
-      type: object
-      properties:
-        template_id:
-          type: string
-          description: ID of the exported template.
-        version:
-          type: integer
-          description: Exported version number.
-        subject:
-          type: string
-          description: Subject at that version.
-        html:
-          type: string
-          description: Compiled HTML.
-        text:
-          type: string
-          description: Plain-text alternative.
-        mjml:
-          type: string
-          description: MJML source of the compiled blocks.
-        content_hash:
-          type: string
-          description: Hash identifying the version.
-      required:
-      - template_id
-      - version
-      - subject
-      - html
-      - text
-      - mjml
-      - content_hash
-      description: The latest published version in every form it exists.
-    PageDeal:
+      - status
+      - scheduled_for
+      - requested_by
+      description: A scheduled tenant erasure. It waits seven days, and what survives is pseudonymous financial and audit evidence only.
+    ListaDomain:
       type: object
       properties:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/Deal'
+            $ref: '#/components/schemas/Domain'
+          description: Every record in the collection.
+      required:
+      - items
+      description: A complete, unpaginated collection — used where the set is bounded by design.
+    PageTask:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
           description: The records on this page.
         next_cursor:
           type: string
@@ -6423,22 +6531,6 @@ components:
       - items
       - next_cursor
       description: Cursor-paginated listing. A null cursor means this was the last page.
-    PageCamelCampaign:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/Campaign'
-          description: The records on this page.
-        nextCursor:
-          type: string
-          description: Cursor for the next page; null when there are no more.
-          nullable: true
-      required:
-      - items
-      - nextCursor
-      description: The same listing with the cursor in camelCase. Older resources ship it this way and the name is kept because changing it would break clients already reading it.
     Template:
       type: object
       properties:
@@ -6486,37 +6578,31 @@ components:
       - latest_version
       - updated_at
       description: An email template as a draft. Published versions are immutable and live in their own resource.
-    Send:
+    MessagingSettings:
       type: object
       properties:
-        delivery:
-          allOf:
-          - $ref: '#/components/schemas/Delivery'
-          description: The delivery record.
-        capacity:
-          allOf:
-          - $ref: '#/components/schemas/Capacity'
-          description: What is left after this send.
-        dispatch:
-          allOf:
-          - $ref: '#/components/schemas/Dispatch'
-          description: The queue work behind it.
-        replayed:
-          type: boolean
-          description: True when this was a replay of an earlier identical request.
+        timezone:
+          type: string
+          description: IANA timezone used to schedule campaigns, e.g. `America/Sao_Paulo`.
+        marketing_state:
+          type: string
+          description: Whether marketing may go out.
+        paused_reason:
+          type: string
+          description: Why marketing was paused, when it was.
+          nullable: true
       required:
-      - delivery
-      - capacity
-      - dispatch
-      - replayed
-      description: The result of queueing one message. `replayed` true means an equivalent Idempotency-Key already existed and NO second message was produced.
-    PageStage:
+      - timezone
+      - marketing_state
+      - paused_reason
+      description: Timezone and marketing pause state. A reputation or SES tenant risk pauses marketing automatically, and resuming requires a healthy observation first.
+    PageCompany:
       type: object
       properties:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/Stage'
+            $ref: '#/components/schemas/Company'
           description: The records on this page.
         next_cursor:
           type: string
@@ -6526,60 +6612,84 @@ components:
       - items
       - next_cursor
       description: Cursor-paginated listing. A null cursor means this was the last page.
-    ContactImport:
+    PageDeal:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Deal'
+          description: The records on this page.
+        next_cursor:
+          type: string
+          description: Cursor for the next page; null when there are no more.
+          nullable: true
+      required:
+      - items
+      - next_cursor
+      description: Cursor-paginated listing. A null cursor means this was the last page.
+    AuditEvent:
       type: object
       properties:
         id:
           type: string
-          description: Import ID.
-        status:
+          description: Event ID.
+        action:
           type: string
-          description: Where the import stands.
-        rows:
-          type: integer
-          description: Rows found in the CSV.
-        accepted:
-          type: integer
-          description: Rows that will be imported.
-        rejected:
-          type: integer
-          description: Rows rejected, with reasons in the errors listing.
-        basis:
+          description: What happened, e.g. `api_key.created`.
+        actor_user_id:
           type: string
-          description: Declared consent basis for every row.
-        file_id:
+          description: Who did it; null when the actor was a key or the system.
+          nullable: true
+        target:
           type: string
-          description: Stored file, downloadable for seven days.
+          description: What it happened to.
+          nullable: true
+        metadata:
+          type: object
+          description: Extra context for this action. Never contains recipient PII.
+        created_at:
+          type: string
+          description: When it happened (UTC).
+      required:
+      - id
+      - action
+      - actor_user_id
+      - target
+      - metadata
+      - created_at
+      description: One append-only record of something that happened in the organization. Audit is never rewritten.
+    Audience:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Audience ID.
+        name:
+          type: string
+          description: Audience name.
+        kind:
+          type: string
+          description: How membership is decided.
+        filter:
+          type: object
+          description: The saved filter, for `saved_segment`. Only allowlisted fields are accepted.
+          nullable: true
+        member_count:
+          type: integer
+          description: Contacts currently in the audience.
           nullable: true
         created_at:
           type: string
-          description: Upload time (UTC).
+          description: Creation time (UTC).
       required:
       - id
-      - status
-      - rows
-      - accepted
-      - rejected
-      - basis
-      - file_id
+      - name
+      - kind
+      - filter
+      - member_count
       - created_at
-      description: A CSV import of contacts, with the consent declaration that made it legal to import them.
-    PageSuppression:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/Suppression'
-          description: The records on this page.
-        next_cursor:
-          type: string
-          description: Cursor for the next page; null when there are no more.
-          nullable: true
-      required:
-      - items
-      - next_cursor
-      description: Cursor-paginated listing. A null cursor means this was the last page.
+      description: 'Who a campaign goes to: a static list or a saved segment with an allowlisted filter.'
     PageActivity:
       type: object
       properties:
@@ -6587,116 +6697,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Activity'
-          description: The records on this page.
-        next_cursor:
-          type: string
-          description: Cursor for the next page; null when there are no more.
-          nullable: true
-      required:
-      - items
-      - next_cursor
-      description: Cursor-paginated listing. A null cursor means this was the last page.
-    Membership:
-      type: object
-      properties:
-        organization_id:
-          type: string
-          description: The organization.
-        user_id:
-          type: string
-          description: The member.
-        role:
-          type: string
-          description: What the member may do.
-        created_at:
-          type: string
-          description: When the membership started (UTC).
-      required:
-      - organization_id
-      - user_id
-      - role
-      - created_at
-      description: One person's place in one organization.
-    PagePipeline:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/Pipeline'
-          description: The records on this page.
-        next_cursor:
-          type: string
-          description: Cursor for the next page; null when there are no more.
-          nullable: true
-      required:
-      - items
-      - next_cursor
-      description: Cursor-paginated listing. A null cursor means this was the last page.
-    Delivery:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Delivery ID.
-        status:
-          type: string
-          description: Delivery state, authoritative in D1.
-        domain_id:
-          type: string
-          description: Domain it was sent from.
-        template_id:
-          type: string
-          description: Template used.
-          nullable: true
-        template_version:
-          type: integer
-          description: Immutable template version used.
-          nullable: true
-        ses_message_id:
-          type: string
-          description: SES MessageId, for correlating with AWS.
-          nullable: true
-        created_at:
-          type: string
-          description: When it was queued (UTC).
-      required:
-      - id
-      - status
-      - domain_id
-      - template_id
-      - template_version
-      - ses_message_id
-      - created_at
-      description: One queued message. It never carries the recipient address or the body — that is deliberate, not an omission.
-    PreferenceToken:
-      type: object
-      properties:
-        api_url:
-          type: string
-          description: Machine-readable preference endpoint.
-        preferences_url:
-          type: string
-          description: Human preference page.
-        unsubscribe_url:
-          type: string
-          description: RFC 8058 one-click unsubscribe endpoint.
-        marketing_headers:
-          type: object
-          description: '`List-Unsubscribe` and `List-Unsubscribe-Post`, ready to add to the message.'
-      required:
-      - api_url
-      - preferences_url
-      - unsubscribe_url
-      - marketing_headers
-      description: Signed URLs for the preference centre and one-click unsubscribe, plus the headers to put in the message.
-    PageContact:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/Contact'
           description: The records on this page.
         next_cursor:
           type: string

@@ -88,21 +88,6 @@ paths:
       - Me
 components:
   schemas:
-    Profile:
-      type: object
-      properties:
-        display_name:
-          type: string
-          description: Name shown in the interface.
-          nullable: true
-        locale:
-          type: string
-          description: Preferred language, e.g. `en` or `pt-br`.
-          nullable: true
-      required:
-      - display_name
-      - locale
-      description: Personal preferences. They belong to the person, not to any organization.
     User:
       type: object
       properties:
@@ -138,6 +123,21 @@ components:
       - sending_domain
       - created_at
       description: A tenant. Every piece of customer data in this product is scoped to exactly one.
+    Profile:
+      type: object
+      properties:
+        display_name:
+          type: string
+          description: Name shown in the interface.
+          nullable: true
+        locale:
+          type: string
+          description: Preferred language, e.g. `en` or `pt-br`.
+          nullable: true
+      required:
+      - display_name
+      - locale
+      description: Personal preferences. They belong to the person, not to any organization.
   securitySchemes:
     bearerAuth:
       type: http

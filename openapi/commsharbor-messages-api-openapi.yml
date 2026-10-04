@@ -84,61 +84,6 @@ paths:
       - Messages
 components:
   schemas:
-    Dispatch:
-      type: object
-      properties:
-        queued:
-          type: boolean
-          description: Whether a Queue message was produced.
-        job_id:
-          type: string
-          description: Dispatch job ID, when one was created.
-          nullable: true
-      required:
-      - queued
-      - job_id
-      description: What actually happened to the queue message behind this send.
-    Capacity:
-      type: object
-      properties:
-        remaining:
-          type: integer
-          description: Sends still available to this organization.
-        global_remaining:
-          type: integer
-          description: Sends still available across the whole platform this month.
-        hard_cap:
-          type: integer
-          description: The global monthly cap on real recipients. Nothing raises it.
-      required:
-      - remaining
-      - global_remaining
-      - hard_cap
-      description: What is left to send. The bootstrap global cap always prevails over any tenant allowance.
-    Send:
-      type: object
-      properties:
-        delivery:
-          allOf:
-          - $ref: '#/components/schemas/Delivery'
-          description: The delivery record.
-        capacity:
-          allOf:
-          - $ref: '#/components/schemas/Capacity'
-          description: What is left after this send.
-        dispatch:
-          allOf:
-          - $ref: '#/components/schemas/Dispatch'
-          description: The queue work behind it.
-        replayed:
-          type: boolean
-          description: True when this was a replay of an earlier identical request.
-      required:
-      - delivery
-      - capacity
-      - dispatch
-      - replayed
-      description: The result of queueing one message. `replayed` true means an equivalent Idempotency-Key already existed and NO second message was produced.
     Delivery:
       type: object
       properties:
@@ -175,6 +120,61 @@ components:
       - ses_message_id
       - created_at
       description: One queued message. It never carries the recipient address or the body — that is deliberate, not an omission.
+    Dispatch:
+      type: object
+      properties:
+        queued:
+          type: boolean
+          description: Whether a Queue message was produced.
+        job_id:
+          type: string
+          description: Dispatch job ID, when one was created.
+          nullable: true
+      required:
+      - queued
+      - job_id
+      description: What actually happened to the queue message behind this send.
+    Send:
+      type: object
+      properties:
+        delivery:
+          allOf:
+          - $ref: '#/components/schemas/Delivery'
+          description: The delivery record.
+        capacity:
+          allOf:
+          - $ref: '#/components/schemas/Capacity'
+          description: What is left after this send.
+        dispatch:
+          allOf:
+          - $ref: '#/components/schemas/Dispatch'
+          description: The queue work behind it.
+        replayed:
+          type: boolean
+          description: True when this was a replay of an earlier identical request.
+      required:
+      - delivery
+      - capacity
+      - dispatch
+      - replayed
+      description: The result of queueing one message. `replayed` true means an equivalent Idempotency-Key already existed and NO second message was produced.
+    Capacity:
+      type: object
+      properties:
+        remaining:
+          type: integer
+          description: Sends still available to this organization.
+        global_remaining:
+          type: integer
+          description: Sends still available across the whole platform this month.
+        hard_cap:
+          type: integer
+          description: The global monthly cap on real recipients. Nothing raises it.
+      required:
+      - remaining
+      - global_remaining
+      - hard_cap
+      description: What is left to send. The bootstrap global cap always prevails over any tenant allowance.
   securitySchemes:
     bearerAuth:
       type: http

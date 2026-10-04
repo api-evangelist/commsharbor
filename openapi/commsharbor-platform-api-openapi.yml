@@ -711,6 +711,71 @@ components:
       - items
       - next_cursor
       description: Cursor-paginated listing. A null cursor means this was the last page.
+    Lead:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Lead ID.
+        email:
+          type: string
+          description: Contact email for the lead.
+        name:
+          type: string
+          description: Who to talk to.
+        company_name:
+          type: string
+          description: Name of the prospective organization.
+          nullable: true
+        source:
+          type: string
+          description: Where the lead came from, e.g. `manual`.
+          nullable: true
+        stage:
+          type: string
+          description: Where the lead is in our own funnel, e.g. `new`.
+        organization_id:
+          type: string
+          description: The organization this lead became, once it converted.
+          nullable: true
+        created_at:
+          type: string
+          description: Creation time (UTC).
+        updated_at:
+          type: string
+          description: Last change (UTC).
+          nullable: true
+        url:
+          type: string
+          description: Absolute URL of this lead.
+      required:
+      - id
+      - email
+      - name
+      - company_name
+      - source
+      - stage
+      - organization_id
+      - created_at
+      - updated_at
+      - url
+      description: A prospective ORGANIZATION in the platform CRM. This is our own pipeline about tenants — it is not tenant data, and it is only reachable with an explicit platform grant.
+    PagePlatformActivity:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlatformActivity'
+          description: The records on this page.
+        next_cursor:
+          type: string
+          description: Cursor for the next page; null when there are no more.
+          nullable: true
+      required:
+      - items
+      - next_cursor
+      description: Cursor-paginated listing. A null cursor means this was the last page.
     PlatformTask:
       type: object
       properties:
@@ -801,71 +866,6 @@ components:
       - created_at
       - url
       description: Something that happened with a platform lead — our note about a prospective tenant.
-    Lead:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Lead ID.
-        email:
-          type: string
-          description: Contact email for the lead.
-        name:
-          type: string
-          description: Who to talk to.
-        company_name:
-          type: string
-          description: Name of the prospective organization.
-          nullable: true
-        source:
-          type: string
-          description: Where the lead came from, e.g. `manual`.
-          nullable: true
-        stage:
-          type: string
-          description: Where the lead is in our own funnel, e.g. `new`.
-        organization_id:
-          type: string
-          description: The organization this lead became, once it converted.
-          nullable: true
-        created_at:
-          type: string
-          description: Creation time (UTC).
-        updated_at:
-          type: string
-          description: Last change (UTC).
-          nullable: true
-        url:
-          type: string
-          description: Absolute URL of this lead.
-      required:
-      - id
-      - email
-      - name
-      - company_name
-      - source
-      - stage
-      - organization_id
-      - created_at
-      - updated_at
-      - url
-      description: A prospective ORGANIZATION in the platform CRM. This is our own pipeline about tenants — it is not tenant data, and it is only reachable with an explicit platform grant.
-    PagePlatformActivity:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/PlatformActivity'
-          description: The records on this page.
-        next_cursor:
-          type: string
-          description: Cursor for the next page; null when there are no more.
-          nullable: true
-      required:
-      - items
-      - next_cursor
-      description: Cursor-paginated listing. A null cursor means this was the last page.
   securitySchemes:
     bearerAuth:
       type: http
