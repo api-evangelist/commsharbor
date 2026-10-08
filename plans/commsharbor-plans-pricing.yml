@@ -46,3 +46,32 @@ plans:
       sends: 10000
     requires: an active Pass
     detail: Additional sends on top of an active pass.
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - free
+  - subscription
+  units: []
+  plans:
+  - name: Trial
+    access: other
+    model: free
+    model_how: derived
+    units: []
+    periods:
+    - other
+  - name: Pass
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods:
+    - other
+  - name: Top-up
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods:
+    - other
