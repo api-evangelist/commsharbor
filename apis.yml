@@ -578,6 +578,8 @@ x-generated:
   confidence: 97
   at: '2026-09-05T11:49:20.514Z'
 common:
+- type: RateLimits
+  url: rate-limits/commsharbor-rate-limits.yml
 - type: Pricing
   url: https://commsharbor.com/api/billing
 - type: CapabilityMap
