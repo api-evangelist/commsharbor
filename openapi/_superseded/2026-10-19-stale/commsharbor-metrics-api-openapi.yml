@@ -1,0 +1,85 @@
+openapi: 3.2.0
+info:
+  title: CommsHarbor Metrics API
+  version: 2d690e87
+  description: CommsHarbor API. Organization identity is explicit and tenant-scoped.
+servers:
+- url: https://commsharbor.com
+tags:
+- name: Metrics
+paths:
+  /api/metrics:
+    get:
+      operationId: get_api_metrics
+      summary: Last-7-day metrics for the operator dashboard; with the token, payments come…
+      description: 'Without credentials it returns product usage: deliveries per day and organization totals. With `METRICS_TOKEN` as Bearer it adds `payments` — x402 settled on Base mainnet only.
+
+        Returns: { app, today, today_visits, today_contacts?, days, usage, accounts, financeiro?, payments? }'
+      security: []
+      parameters:
+      - name: Authorization
+        in: header
+        required: false
+        schema:
+          type: string
+        description: '`Bearer <METRICS_TOKEN>` to include the financial block; a wrong token is 401.'
+      responses:
+        '200':
+          description: '{ app, today, today_visits, today_contacts?, days, usage, accounts, financeiro?, payments? }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Metricas'
+        '401':
+          description: Wrong operator token.
+        '503':
+          description: Worker without METRICS_TOKEN configured.
+      tags:
+      - Metrics
+components:
+  schemas:
+    Metricas:
+      type: object
+      properties:
+        app:
+          type: string
+          description: Product name.
+        today:
+          type: string
+          description: Reference day (UTC, YYYY-MM-DD).
+        today_visits:
+          type: integer
+          description: Interface visits counted today.
+        today_contacts:
+          type: integer
+          description: 'Contact messages today. Only with `METRICS_TOKEN`: contact counts never leave without the token.'
+        days:
+          type: array
+          items:
+            type: object
+          description: One row per day of the window, with each metric's count.
+        usage:
+          type: object
+          description: '`entregas`: deliveries per day — real product usage, not catalog load.'
+        accounts:
+          type: object
+          description: '`organizacoes`: total organizations registered.'
+        financeiro:
+          type: object
+          description: 'Day aggregate: `hoje_usd`, `hoje_count`, `rede`. Only with `METRICS_TOKEN`: money never leaves without the token; the full series is `payments`.'
+        payments:
+          type: object
+          description: x402 financial summary; METRICS_TOKEN only.
+      required:
+      - app
+      - today
+      - today_visits
+      - days
+      - usage
+      - accounts
+      description: 7-day operator dashboard. `payments` only appears with the token and only on Base mainnet.
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Human session or scoped organization API key. Organization identity remains explicit.

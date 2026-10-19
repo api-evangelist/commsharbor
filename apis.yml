@@ -96,37 +96,6 @@ apis:
     url: rate-limits/commsharbor-rate-limits.yml
   - type: X-APIsJson
     url: https://commsharbor.com/apis.json
-- aid: commsharbor:commsharbor-aws-api
-  name: CommsHarbor Aws API
-  description: The Aws API from CommsHarbor — 1 operation(s) for aws.
-  humanURL: https://commsharbor.com/api/
-  tags:
-  - AWS
-  tags_raw:
-  - Aws
-  properties:
-  - type: OpenAPI
-    url: openapi/commsharbor-aws-api-openapi.yml
-  - type: Documentation
-    url: https://commsharbor.com/api/
-  - type: LLMsTxt
-    url: https://commsharbor.com/llms.txt
-  - type: LLMsTxt
-    url: https://commsharbor.com/llms-full.txt
-  - type: ToolCrosswalk
-    url: mcp/commsharbor-tool-crosswalk.yml
-  - type: ErrorCatalog
-    url: errors/commsharbor-problem-types.yml
-  - type: DataModel
-    url: data-model/commsharbor-data-model.yml
-  - type: Sandbox
-    url: sandbox/commsharbor-sandbox.yml
-  - type: Webhooks
-    url: asyncapi/commsharbor-webhooks.yml
-  - type: RateLimits
-    url: rate-limits/commsharbor-rate-limits.yml
-  - type: X-APIsJson
-    url: https://commsharbor.com/apis.json
 - aid: commsharbor:commsharbor-billing-api
   name: CommsHarbor Billing API
   description: The Billing API from CommsHarbor — 1 operation(s) for billing.
@@ -272,35 +241,6 @@ apis:
     url: rate-limits/commsharbor-rate-limits.yml
   - type: X-APIsJson
     url: https://commsharbor.com/apis.json
-- aid: commsharbor:commsharbor-invitations-api
-  name: CommsHarbor Invitations API
-  description: The Invitations API from CommsHarbor — 1 operation(s) for invitations.
-  humanURL: https://commsharbor.com/api/
-  tags:
-  - Invitations
-  properties:
-  - type: OpenAPI
-    url: openapi/commsharbor-invitations-api-openapi.yml
-  - type: Documentation
-    url: https://commsharbor.com/api/
-  - type: LLMsTxt
-    url: https://commsharbor.com/llms.txt
-  - type: LLMsTxt
-    url: https://commsharbor.com/llms-full.txt
-  - type: ToolCrosswalk
-    url: mcp/commsharbor-tool-crosswalk.yml
-  - type: ErrorCatalog
-    url: errors/commsharbor-problem-types.yml
-  - type: DataModel
-    url: data-model/commsharbor-data-model.yml
-  - type: Sandbox
-    url: sandbox/commsharbor-sandbox.yml
-  - type: Webhooks
-    url: asyncapi/commsharbor-webhooks.yml
-  - type: RateLimits
-    url: rate-limits/commsharbor-rate-limits.yml
-  - type: X-APIsJson
-    url: https://commsharbor.com/apis.json
 - aid: commsharbor:commsharbor-mcp-api
   name: CommsHarbor MCP API
   description: The Mcp API from CommsHarbor — 1 operation(s) for mcp.
@@ -341,37 +281,6 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/commsharbor-me-api-openapi.yml
-  - type: Documentation
-    url: https://commsharbor.com/api/
-  - type: LLMsTxt
-    url: https://commsharbor.com/llms.txt
-  - type: LLMsTxt
-    url: https://commsharbor.com/llms-full.txt
-  - type: ToolCrosswalk
-    url: mcp/commsharbor-tool-crosswalk.yml
-  - type: ErrorCatalog
-    url: errors/commsharbor-problem-types.yml
-  - type: DataModel
-    url: data-model/commsharbor-data-model.yml
-  - type: Sandbox
-    url: sandbox/commsharbor-sandbox.yml
-  - type: Webhooks
-    url: asyncapi/commsharbor-webhooks.yml
-  - type: RateLimits
-    url: rate-limits/commsharbor-rate-limits.yml
-  - type: X-APIsJson
-    url: https://commsharbor.com/apis.json
-- aid: commsharbor:commsharbor-messages-api
-  name: CommsHarbor Messages API
-  description: The Messages API from CommsHarbor — 1 operation(s) for messages.
-  humanURL: https://commsharbor.com/api/
-  tags:
-  - Message
-  tags_raw:
-  - Messages
-  properties:
-  - type: OpenAPI
-    url: openapi/commsharbor-messages-api-openapi.yml
   - type: Documentation
     url: https://commsharbor.com/api/
   - type: LLMsTxt
@@ -510,15 +419,15 @@ apis:
     url: rate-limits/commsharbor-rate-limits.yml
   - type: X-APIsJson
     url: https://commsharbor.com/apis.json
-- aid: commsharbor:commsharbor-preferences-api
-  name: CommsHarbor Preferences API
-  description: The Preferences API from CommsHarbor — 2 operation(s) for preferences.
+- aid: commsharbor:commsharbor-well-known-api
+  name: CommsHarbor .well Known API
+  description: The .well Known API from CommsHarbor — 1 operation(s) for .well known.
   humanURL: https://commsharbor.com/api/
   tags:
-  - Preferences
+  - .well Known
   properties:
   - type: OpenAPI
-    url: openapi/commsharbor-preferences-api-openapi.yml
+    url: openapi/commsharbor-well-known-api-openapi.yml
   - type: Documentation
     url: https://commsharbor.com/api/
   - type: LLMsTxt
@@ -539,15 +448,392 @@ apis:
     url: rate-limits/commsharbor-rate-limits.yml
   - type: X-APIsJson
     url: https://commsharbor.com/apis.json
-- aid: commsharbor:commsharbor-well-known-api
-  name: CommsHarbor .well Known API
-  description: The .well Known API from CommsHarbor — 1 operation(s) for .well known.
+- aid: commsharbor:commsharbor-account-api
+  name: CommsHarbor Account API
+  description: The Account API from CommsHarbor — 8 operation(s) for account.
   humanURL: https://commsharbor.com/api/
   tags:
-  - .well Known
+  - Account
   properties:
   - type: OpenAPI
-    url: openapi/commsharbor-well-known-api-openapi.yml
+    url: openapi/commsharbor-account-api-openapi.yml
+  - type: Documentation
+    url: https://commsharbor.com/api/
+  - type: LLMsTxt
+    url: https://commsharbor.com/llms.txt
+  - type: LLMsTxt
+    url: https://commsharbor.com/llms-full.txt
+  - type: ToolCrosswalk
+    url: mcp/commsharbor-tool-crosswalk.yml
+  - type: ErrorCatalog
+    url: errors/commsharbor-problem-types.yml
+  - type: DataModel
+    url: data-model/commsharbor-data-model.yml
+  - type: Sandbox
+    url: sandbox/commsharbor-sandbox.yml
+  - type: Webhooks
+    url: asyncapi/commsharbor-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/commsharbor-rate-limits.yml
+  - type: X-APIsJson
+    url: https://commsharbor.com/apis.json
+- aid: commsharbor:commsharbor-agent-json-api
+  name: CommsHarbor Agent.json API
+  description: The Agent.json API from CommsHarbor — 1 operation(s) for agent.json.
+  humanURL: https://commsharbor.com/api/
+  tags:
+  - Agent.json
+  properties:
+  - type: OpenAPI
+    url: openapi/commsharbor-agent-json-api-openapi.yml
+  - type: Documentation
+    url: https://commsharbor.com/api/
+  - type: LLMsTxt
+    url: https://commsharbor.com/llms.txt
+  - type: LLMsTxt
+    url: https://commsharbor.com/llms-full.txt
+  - type: ToolCrosswalk
+    url: mcp/commsharbor-tool-crosswalk.yml
+  - type: ErrorCatalog
+    url: errors/commsharbor-problem-types.yml
+  - type: DataModel
+    url: data-model/commsharbor-data-model.yml
+  - type: Sandbox
+    url: sandbox/commsharbor-sandbox.yml
+  - type: Webhooks
+    url: asyncapi/commsharbor-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/commsharbor-rate-limits.yml
+  - type: X-APIsJson
+    url: https://commsharbor.com/apis.json
+- aid: commsharbor:commsharbor-contact-api
+  name: CommsHarbor Contact API
+  description: The Contact API from CommsHarbor — 1 operation(s) for contact.
+  humanURL: https://commsharbor.com/api/
+  tags:
+  - Contact
+  properties:
+  - type: OpenAPI
+    url: openapi/commsharbor-contact-api-openapi.yml
+  - type: Documentation
+    url: https://commsharbor.com/api/
+  - type: LLMsTxt
+    url: https://commsharbor.com/llms.txt
+  - type: LLMsTxt
+    url: https://commsharbor.com/llms-full.txt
+  - type: ToolCrosswalk
+    url: mcp/commsharbor-tool-crosswalk.yml
+  - type: ErrorCatalog
+    url: errors/commsharbor-problem-types.yml
+  - type: DataModel
+    url: data-model/commsharbor-data-model.yml
+  - type: Sandbox
+    url: sandbox/commsharbor-sandbox.yml
+  - type: Webhooks
+    url: asyncapi/commsharbor-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/commsharbor-rate-limits.yml
+  - type: X-APIsJson
+    url: https://commsharbor.com/apis.json
+- aid: commsharbor:commsharbor-email-api
+  name: CommsHarbor Email API
+  description: The Email API from CommsHarbor — 2 operation(s) for email.
+  humanURL: https://commsharbor.com/api/
+  tags:
+  - Email
+  properties:
+  - type: OpenAPI
+    url: openapi/commsharbor-email-api-openapi.yml
+  - type: Documentation
+    url: https://commsharbor.com/api/
+  - type: LLMsTxt
+    url: https://commsharbor.com/llms.txt
+  - type: LLMsTxt
+    url: https://commsharbor.com/llms-full.txt
+  - type: ToolCrosswalk
+    url: mcp/commsharbor-tool-crosswalk.yml
+  - type: ErrorCatalog
+    url: errors/commsharbor-problem-types.yml
+  - type: DataModel
+    url: data-model/commsharbor-data-model.yml
+  - type: Sandbox
+    url: sandbox/commsharbor-sandbox.yml
+  - type: Webhooks
+    url: asyncapi/commsharbor-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/commsharbor-rate-limits.yml
+  - type: X-APIsJson
+    url: https://commsharbor.com/apis.json
+- aid: commsharbor:commsharbor-email-check-api
+  name: CommsHarbor Email Check API
+  description: The Email Check API from CommsHarbor — 2 operation(s) for email check.
+  humanURL: https://commsharbor.com/api/
+  tags:
+  - Email Check
+  properties:
+  - type: OpenAPI
+    url: openapi/commsharbor-email-check-api-openapi.yml
+  - type: Documentation
+    url: https://commsharbor.com/api/
+  - type: LLMsTxt
+    url: https://commsharbor.com/llms.txt
+  - type: LLMsTxt
+    url: https://commsharbor.com/llms-full.txt
+  - type: ToolCrosswalk
+    url: mcp/commsharbor-tool-crosswalk.yml
+  - type: ErrorCatalog
+    url: errors/commsharbor-problem-types.yml
+  - type: DataModel
+    url: data-model/commsharbor-data-model.yml
+  - type: Sandbox
+    url: sandbox/commsharbor-sandbox.yml
+  - type: Webhooks
+    url: asyncapi/commsharbor-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/commsharbor-rate-limits.yml
+  - type: X-APIsJson
+    url: https://commsharbor.com/apis.json
+- aid: commsharbor:commsharbor-erro-cliente-api
+  name: CommsHarbor Erro Cliente API
+  description: The Erro Cliente API from CommsHarbor — 1 operation(s) for erro cliente.
+  humanURL: https://commsharbor.com/api/
+  tags:
+  - Erro Cliente
+  properties:
+  - type: OpenAPI
+    url: openapi/commsharbor-erro-cliente-api-openapi.yml
+  - type: Documentation
+    url: https://commsharbor.com/api/
+  - type: LLMsTxt
+    url: https://commsharbor.com/llms.txt
+  - type: LLMsTxt
+    url: https://commsharbor.com/llms-full.txt
+  - type: ToolCrosswalk
+    url: mcp/commsharbor-tool-crosswalk.yml
+  - type: ErrorCatalog
+    url: errors/commsharbor-problem-types.yml
+  - type: DataModel
+    url: data-model/commsharbor-data-model.yml
+  - type: Sandbox
+    url: sandbox/commsharbor-sandbox.yml
+  - type: Webhooks
+    url: asyncapi/commsharbor-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/commsharbor-rate-limits.yml
+  - type: X-APIsJson
+    url: https://commsharbor.com/apis.json
+- aid: commsharbor:commsharbor-funil-api
+  name: CommsHarbor Funil API
+  description: The Funil API from CommsHarbor — 3 operation(s) for funil.
+  humanURL: https://commsharbor.com/api/
+  tags:
+  - Funil
+  properties:
+  - type: OpenAPI
+    url: openapi/commsharbor-funil-api-openapi.yml
+  - type: Documentation
+    url: https://commsharbor.com/api/
+  - type: LLMsTxt
+    url: https://commsharbor.com/llms.txt
+  - type: LLMsTxt
+    url: https://commsharbor.com/llms-full.txt
+  - type: ToolCrosswalk
+    url: mcp/commsharbor-tool-crosswalk.yml
+  - type: ErrorCatalog
+    url: errors/commsharbor-problem-types.yml
+  - type: DataModel
+    url: data-model/commsharbor-data-model.yml
+  - type: Sandbox
+    url: sandbox/commsharbor-sandbox.yml
+  - type: Webhooks
+    url: asyncapi/commsharbor-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/commsharbor-rate-limits.yml
+  - type: X-APIsJson
+    url: https://commsharbor.com/apis.json
+- aid: commsharbor:commsharbor-guest-api
+  name: CommsHarbor Guest API
+  description: The Guest API from CommsHarbor — 1 operation(s) for guest.
+  humanURL: https://commsharbor.com/api/
+  tags:
+  - Guest
+  properties:
+  - type: OpenAPI
+    url: openapi/commsharbor-guest-api-openapi.yml
+  - type: Documentation
+    url: https://commsharbor.com/api/
+  - type: LLMsTxt
+    url: https://commsharbor.com/llms.txt
+  - type: LLMsTxt
+    url: https://commsharbor.com/llms-full.txt
+  - type: ToolCrosswalk
+    url: mcp/commsharbor-tool-crosswalk.yml
+  - type: ErrorCatalog
+    url: errors/commsharbor-problem-types.yml
+  - type: DataModel
+    url: data-model/commsharbor-data-model.yml
+  - type: Sandbox
+    url: sandbox/commsharbor-sandbox.yml
+  - type: Webhooks
+    url: asyncapi/commsharbor-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/commsharbor-rate-limits.yml
+  - type: X-APIsJson
+    url: https://commsharbor.com/apis.json
+- aid: commsharbor:commsharbor-pagamento-api
+  name: CommsHarbor Pagamento API
+  description: The Pagamento API from CommsHarbor — 1 operation(s) for pagamento.
+  humanURL: https://commsharbor.com/api/
+  tags:
+  - Pagamento
+  properties:
+  - type: OpenAPI
+    url: openapi/commsharbor-pagamento-api-openapi.yml
+  - type: Documentation
+    url: https://commsharbor.com/api/
+  - type: LLMsTxt
+    url: https://commsharbor.com/llms.txt
+  - type: LLMsTxt
+    url: https://commsharbor.com/llms-full.txt
+  - type: ToolCrosswalk
+    url: mcp/commsharbor-tool-crosswalk.yml
+  - type: ErrorCatalog
+    url: errors/commsharbor-problem-types.yml
+  - type: DataModel
+    url: data-model/commsharbor-data-model.yml
+  - type: Sandbox
+    url: sandbox/commsharbor-sandbox.yml
+  - type: Webhooks
+    url: asyncapi/commsharbor-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/commsharbor-rate-limits.yml
+  - type: X-APIsJson
+    url: https://commsharbor.com/apis.json
+- aid: commsharbor:commsharbor-partners-api
+  name: CommsHarbor Partners API
+  description: The Partners API from CommsHarbor — 1 operation(s) for partners.
+  humanURL: https://commsharbor.com/api/
+  tags:
+  - Partners
+  properties:
+  - type: OpenAPI
+    url: openapi/commsharbor-partners-api-openapi.yml
+  - type: Documentation
+    url: https://commsharbor.com/api/
+  - type: LLMsTxt
+    url: https://commsharbor.com/llms.txt
+  - type: LLMsTxt
+    url: https://commsharbor.com/llms-full.txt
+  - type: ToolCrosswalk
+    url: mcp/commsharbor-tool-crosswalk.yml
+  - type: ErrorCatalog
+    url: errors/commsharbor-problem-types.yml
+  - type: DataModel
+    url: data-model/commsharbor-data-model.yml
+  - type: Sandbox
+    url: sandbox/commsharbor-sandbox.yml
+  - type: Webhooks
+    url: asyncapi/commsharbor-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/commsharbor-rate-limits.yml
+  - type: X-APIsJson
+    url: https://commsharbor.com/apis.json
+- aid: commsharbor:commsharbor-pricing-api
+  name: CommsHarbor Pricing API
+  description: The Pricing API from CommsHarbor — 1 operation(s) for pricing.
+  humanURL: https://commsharbor.com/api/
+  tags:
+  - Pricing
+  properties:
+  - type: OpenAPI
+    url: openapi/commsharbor-pricing-api-openapi.yml
+  - type: Documentation
+    url: https://commsharbor.com/api/
+  - type: LLMsTxt
+    url: https://commsharbor.com/llms.txt
+  - type: LLMsTxt
+    url: https://commsharbor.com/llms-full.txt
+  - type: ToolCrosswalk
+    url: mcp/commsharbor-tool-crosswalk.yml
+  - type: ErrorCatalog
+    url: errors/commsharbor-problem-types.yml
+  - type: DataModel
+    url: data-model/commsharbor-data-model.yml
+  - type: Sandbox
+    url: sandbox/commsharbor-sandbox.yml
+  - type: Webhooks
+    url: asyncapi/commsharbor-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/commsharbor-rate-limits.yml
+  - type: X-APIsJson
+    url: https://commsharbor.com/apis.json
+- aid: commsharbor:commsharbor-realtime-api
+  name: CommsHarbor Realtime API
+  description: The Realtime API from CommsHarbor — 1 operation(s) for realtime.
+  humanURL: https://commsharbor.com/api/
+  tags:
+  - Realtime
+  properties:
+  - type: OpenAPI
+    url: openapi/commsharbor-realtime-api-openapi.yml
+  - type: Documentation
+    url: https://commsharbor.com/api/
+  - type: LLMsTxt
+    url: https://commsharbor.com/llms.txt
+  - type: LLMsTxt
+    url: https://commsharbor.com/llms-full.txt
+  - type: ToolCrosswalk
+    url: mcp/commsharbor-tool-crosswalk.yml
+  - type: ErrorCatalog
+    url: errors/commsharbor-problem-types.yml
+  - type: DataModel
+    url: data-model/commsharbor-data-model.yml
+  - type: Sandbox
+    url: sandbox/commsharbor-sandbox.yml
+  - type: Webhooks
+    url: asyncapi/commsharbor-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/commsharbor-rate-limits.yml
+  - type: X-APIsJson
+    url: https://commsharbor.com/apis.json
+- aid: commsharbor:commsharbor-visitor-api
+  name: CommsHarbor Visitor API
+  description: The Visitor API from CommsHarbor — 1 operation(s) for visitor.
+  humanURL: https://commsharbor.com/api/
+  tags:
+  - Visitor
+  properties:
+  - type: OpenAPI
+    url: openapi/commsharbor-visitor-api-openapi.yml
+  - type: Documentation
+    url: https://commsharbor.com/api/
+  - type: LLMsTxt
+    url: https://commsharbor.com/llms.txt
+  - type: LLMsTxt
+    url: https://commsharbor.com/llms-full.txt
+  - type: ToolCrosswalk
+    url: mcp/commsharbor-tool-crosswalk.yml
+  - type: ErrorCatalog
+    url: errors/commsharbor-problem-types.yml
+  - type: DataModel
+    url: data-model/commsharbor-data-model.yml
+  - type: Sandbox
+    url: sandbox/commsharbor-sandbox.yml
+  - type: Webhooks
+    url: asyncapi/commsharbor-webhooks.yml
+  - type: RateLimits
+    url: rate-limits/commsharbor-rate-limits.yml
+  - type: X-APIsJson
+    url: https://commsharbor.com/apis.json
+- aid: commsharbor:commsharbor-vitrine-api
+  name: CommsHarbor Vitrine API
+  description: The Vitrine API from CommsHarbor — 4 operation(s) for vitrine.
+  humanURL: https://commsharbor.com/api/
+  tags:
+  - Vitrine
+  properties:
+  - type: OpenAPI
+    url: openapi/commsharbor-vitrine-api-openapi.yml
   - type: Documentation
     url: https://commsharbor.com/api/
   - type: LLMsTxt

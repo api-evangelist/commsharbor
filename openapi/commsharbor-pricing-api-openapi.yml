@@ -1,0 +1,140 @@
+openapi: 3.2.0
+info:
+  title: CommsHarbor Pricing API
+  version: 1d751aaf
+  description: Manage domain email, mailboxes, aliases and durable jobs. Each call uses its organization's identity.
+servers:
+- url: https://commsharbor.com
+tags:
+- name: Pricing
+paths:
+  /api/pricing:
+    get:
+      operationId: pricing
+      summary: Read monthly email packages and purchase entry points
+      description: 'Returns: { currency, country, brl_per_usd, price_is_estimate, billing_currency, interval, auto_renew, cancellation, paid_access, trial_days, trial, plans, checkout_live, on_demand_activation, product, pricing, billing, api_index }'
+      security: []
+      parameters:
+      - name: lingua
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - en
+          - pt
+        description: Selected language. Without it, use the shared request language policy.
+      responses:
+        '200':
+          description: '{ currency, country, brl_per_usd, price_is_estimate, billing_currency, interval, auto_renew, cancellation, paid_access, trial_days, trial, plans, checkout_live, on_demand_activation, product, pricing, billing, api_index }'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  currency:
+                    type: string
+                    description: 'Display currency: BRL only for Portuguese and country BR from the trusted origin. Otherwise USD, including unknown country.'
+                  country:
+                    type: string
+                    description: Country supplied by the trusted origin, or empty when unknown. A query or client header cannot set it.
+                  brl_per_usd:
+                    type: number
+                    description: Configured reference exchange rate. This is not your card issuer's exchange rate.
+                  price_is_estimate:
+                    type: boolean
+                    description: True for USD display prices. Card charges use billing_currency and billing_price_cents.
+                  billing_currency:
+                    type: string
+                    description: BRL. The current subscription provider charges Brazilian reais.
+                  interval:
+                    type: string
+                    description: Monthly billing.
+                  auto_renew:
+                    type: boolean
+                    description: Monthly automatic renewal until cancellation.
+                  cancellation:
+                    type: string
+                    description: Cancellation stops future charges.
+                  paid_access:
+                    type: string
+                    description: Access lasts until the end of the paid period.
+                  trial_days:
+                    type: integer
+                    description: Zero. There is no automatic trial conversion.
+                  trial:
+                    type: object
+                    description: 'Free receive-only trial for `days` (7) days, once per organization: storage_mb 1024 shared across unlimited mailboxes (mailboxes null), one domain, smtp_send false, no card and no automatic renewal (`expires` true). After it ends, writes without a paid plan answer 402 `email_trial_expired`. activation_ready is true only after native quota and protocol proof. Activation uses the organization trial route. A paid subscription enables sending only after backend confirmation.'
+                  plans:
+                    type: array
+                    items:
+                      type: object
+                    description: Three packages with price_cents in display currency, billing_price_cents in BRL, domains, mailboxes, mailbox_gb, email_storage_gb, files_gb, aliases, features and on_demand.
+                  checkout_live:
+                    type: boolean
+                    description: Whether new real subscriptions are open.
+                  on_demand_activation:
+                    type: string
+                    description: Agree scope and activation date before charging for on-demand services.
+                  product:
+                    type: string
+                    description: CommsHarbor.
+                  pricing:
+                    type: string
+                    description: Current package catalog URL.
+                  billing:
+                    type: string
+                    description: Monthly subscription offer catalog URL.
+                  api_index:
+                    type: string
+                    description: API catalog URL.
+                required:
+                - currency
+                - country
+                - brl_per_usd
+                - price_is_estimate
+                - billing_currency
+                - interval
+                - auto_renew
+                - cancellation
+                - paid_access
+                - trial_days
+                - trial
+                - plans
+                - checkout_live
+                - on_demand_activation
+                - product
+                - pricing
+                - billing
+                - api_index
+      tags:
+      - Pricing
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Use an organisation API key (`mmk_…`) for permitted work in that organisation. Account operations require the shared account session. Paid routes accept a global credit token (`cred_…`). Monthly purchases require a recent human session.
+    globalAccount:
+      type: apiKey
+      in: cookie
+      name: __Host-mm-auth
+      description: Global session in the product's HttpOnly cookie; writes require exact Origin and X-CSRF-Token.
+    contaChaveApi:
+      type: http
+      scheme: bearer
+      bearerFormat: mmk_…
+      description: 'Account API key: `Authorization: Bearer mmk_…` or `X-Api-Key: mmk_…`. Created on the account page (API keys), valid only in the product where it was created; it acts as the account (or the organization that owns it).'
+    carteiraAgente:
+      type: http
+      scheme: bearer
+      bearerFormat: mmw_…
+      description: 'Wallet credential of an agent without an account (`Authorization: Bearer mmw_…`, 30 days, this product only): POST /api/auth/wallet/agent/start, sign the message with the wallet, POST /api/auth/wallet/agent/token. The owner is `x402:<address>`.'
+x-service-info:
+  categories:
+  - email
+  - mailbox-management
+  docs:
+    homepage: https://commsharbor.com/
+    apiReference: https://commsharbor.com/developers
+    llms: https://commsharbor.com/llms.txt

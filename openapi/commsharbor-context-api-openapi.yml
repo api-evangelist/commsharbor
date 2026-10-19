@@ -1,8 +1,8 @@
 openapi: 3.2.0
 info:
   title: CommsHarbor Context API
-  version: 2d690e87
-  description: CommsHarbor API. Organization identity is explicit and tenant-scoped.
+  version: 1d751aaf
+  description: Manage domain email, mailboxes, aliases and durable jobs. Each call uses its organization's identity.
 servers:
 - url: https://commsharbor.com
 tags:
@@ -11,10 +11,10 @@ paths:
   /api/context:
     get:
       operationId: commsharbor_context
-      summary: Resolve which organization and role the current credential is acting as
-      description: 'Read this before a write when you are not certain which tenant is active. Guessing is how data lands in the wrong organization.
+      summary: Resolve which organization and role the current session or API key is acting as
+      description: 'Read this before a write when you are not certain which tenant is active. Guessing is how data lands in the wrong organization. An organization API key answers `kind: api_key` with its scopes.
 
-        Returns: { kind, organizationId, userId?, email?, sessionId?, role?, organization?, apiKeyId?, scopes? }'
+        Returns: { kind, organizationId, userId, sessionId, apiKeyId, scopes, role, organization }'
       security:
       - bearerAuth: []
       parameters:
@@ -23,20 +23,22 @@ paths:
         required: true
         schema:
           type: string
-        description: Which organization to act in. Required with a human session; an API key determines its own and rejects a conflicting value.
+        description: 'Which organization to act in; required with a session. The shared account checks, on every request, that you belong to it and that CommsHarbor is enabled for it. An organization API key opens only its own organization: send that ID, or omit the header.'
       responses:
         '200':
-          description: '{ kind, organizationId, userId?, email?, sessionId?, role?, organization?, apiKeyId?, scopes? }'
+          description: '{ kind, organizationId, userId, sessionId, apiKeyId, scopes, role, organization }'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Identity'
         '401':
-          description: No session, no API key, or the credential does not resolve to this organization.
+          description: No signed-in session, or the API key is invalid or revoked (`invalid_api_key`); an old `ch_…` key answers `api_key_retired`.
         '403':
-          description: The identity is valid but lacks the required role or scope for this operation.
+          description: The session or key lacks the permission this operation needs (an API key never reaches billing, erasure, exports or the audit trail), an account key was used where an organization key is needed (`organization_key_required`), or an owner/admin has no second factor (`organization_mfa_required`).
         '404':
-          description: The resource does not exist in this organization. Another tenant's ID answers the same 404 — the API never confirms that it exists elsewhere.
+          description: The organization is not available to this session or key (no membership, CommsHarbor is not enabled for it, or the key belongs to another organization), or the resource does not exist in it. Another tenant's ID answers the same 404 — the API never confirms that it exists elsewhere.
+        '503':
+          description: The shared account is unavailable.
       tags:
       - Context
 components:
@@ -47,38 +49,73 @@ components:
         kind:
           type: string
           description: How the identity was resolved.
+          enum:
+          - session
+          - api_key
         organizationId:
           type: string
           description: The active organization.
         userId:
           type: string
-          description: The person, when a session is in play.
-        email:
-          type: string
-          description: The person's e-mail, on a session.
+          description: The person's shared-account ID (session only).
         sessionId:
           type: string
-          description: Session identifier, on a session.
-        role:
-          type: string
-          description: Role inside that organization; sessions only.
-        organization:
-          type: object
-          description: '`{ id, name, slug }` of the active organization; sessions only.'
+          description: Session identifier (session only).
         apiKeyId:
           type: string
-          description: Which key answered, on an API key.
+          description: The organization API key's ID (API key only).
         scopes:
           type: array
           items:
             type: string
-          description: Granted scopes; present on an API key, which carries its own narrower set.
+          description: 'What the API key may do (API key only): the work permissions, never billing, erasure, exports or audit.'
+        role:
+          type: string
+          description: Role inside that organization, from the shared account; null with an API key.
+          nullable: true
+          enum:
+          - owner
+          - admin
+          - member
+          - null
+        organization:
+          type: object
+          description: '`{ id, name }` of the active organization; `name` is null with an API key.'
       required:
       - kind
       - organizationId
-      description: Who the current credential resolves to. Read this before a write when you are not sure which organization is active.
+      - userId
+      - sessionId
+      - apiKeyId
+      - scopes
+      - role
+      - organization
+      description: Who the current session or API key resolves to. Read this before a write when you are not sure which organization is active.
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
-      description: Human session or scoped organization API key. Organization identity remains explicit.
+      description: Use an organisation API key (`mmk_…`) for permitted work in that organisation. Account operations require the shared account session. Paid routes accept a global credit token (`cred_…`). Monthly purchases require a recent human session.
+    globalAccount:
+      type: apiKey
+      in: cookie
+      name: __Host-mm-auth
+      description: Global session in the product's HttpOnly cookie; writes require exact Origin and X-CSRF-Token.
+    contaChaveApi:
+      type: http
+      scheme: bearer
+      bearerFormat: mmk_…
+      description: 'Account API key: `Authorization: Bearer mmk_…` or `X-Api-Key: mmk_…`. Created on the account page (API keys), valid only in the product where it was created; it acts as the account (or the organization that owns it).'
+    carteiraAgente:
+      type: http
+      scheme: bearer
+      bearerFormat: mmw_…
+      description: 'Wallet credential of an agent without an account (`Authorization: Bearer mmw_…`, 30 days, this product only): POST /api/auth/wallet/agent/start, sign the message with the wallet, POST /api/auth/wallet/agent/token. The owner is `x402:<address>`.'
+x-service-info:
+  categories:
+  - email
+  - mailbox-management
+  docs:
+    homepage: https://commsharbor.com/
+    apiReference: https://commsharbor.com/developers
+    llms: https://commsharbor.com/llms.txt

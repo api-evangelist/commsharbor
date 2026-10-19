@@ -1,8 +1,8 @@
 openapi: 3.2.0
 info:
   title: CommsHarbor Okf API
-  version: 2d690e87
-  description: CommsHarbor API. Organization identity is explicit and tenant-scoped.
+  version: 1d751aaf
+  description: Manage domain email, mailboxes, aliases and durable jobs. Each call uses its organization's identity.
 servers:
 - url: https://commsharbor.com
 tags:
@@ -20,6 +20,8 @@ paths:
         required: true
         schema:
           type: string
+        description: '`index.md`, `sobre.md`, `api.md` or `faq.md`.'
+        example: index.md
       responses:
         '200':
           description: '`text/markdown`. Start at `/okf/index.md`, which lists the bundle.'
@@ -32,4 +34,27 @@ components:
     bearerAuth:
       type: http
       scheme: bearer
-      description: Human session or scoped organization API key. Organization identity remains explicit.
+      description: Use an organisation API key (`mmk_…`) for permitted work in that organisation. Account operations require the shared account session. Paid routes accept a global credit token (`cred_…`). Monthly purchases require a recent human session.
+    globalAccount:
+      type: apiKey
+      in: cookie
+      name: __Host-mm-auth
+      description: Global session in the product's HttpOnly cookie; writes require exact Origin and X-CSRF-Token.
+    contaChaveApi:
+      type: http
+      scheme: bearer
+      bearerFormat: mmk_…
+      description: 'Account API key: `Authorization: Bearer mmk_…` or `X-Api-Key: mmk_…`. Created on the account page (API keys), valid only in the product where it was created; it acts as the account (or the organization that owns it).'
+    carteiraAgente:
+      type: http
+      scheme: bearer
+      bearerFormat: mmw_…
+      description: 'Wallet credential of an agent without an account (`Authorization: Bearer mmw_…`, 30 days, this product only): POST /api/auth/wallet/agent/start, sign the message with the wallet, POST /api/auth/wallet/agent/token. The owner is `x402:<address>`.'
+x-service-info:
+  categories:
+  - email
+  - mailbox-management
+  docs:
+    homepage: https://commsharbor.com/
+    apiReference: https://commsharbor.com/developers
+    llms: https://commsharbor.com/llms.txt

@@ -1,0 +1,59 @@
+openapi: 3.2.0
+info:
+  title: CommsHarbor Health API
+  version: 2d690e87
+  description: CommsHarbor API. Organization identity is explicit and tenant-scoped.
+servers:
+- url: https://commsharbor.com
+tags:
+- name: Health
+paths:
+  /api/health:
+    get:
+      operationId: commsharbor_health
+      summary: Read liveness, environment and the commit currently deployed
+      description: 'Smoke tests wait for their own commit to appear here instead of racing edge propagation.
+
+        Returns: { ok, app, build, environment, timestamp }'
+      security: []
+      responses:
+        '200':
+          description: '{ ok, app, build, environment, timestamp }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Health'
+      tags:
+      - Health
+components:
+  schemas:
+    Health:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          description: Always true when the Worker answers.
+        app:
+          type: string
+          description: Product name.
+        build:
+          type: string
+          description: Deployed commit; CI passes the short SHA at deploy time.
+        environment:
+          type: string
+          description: Which environment answered.
+        timestamp:
+          type: string
+          description: Response time (UTC, ISO-8601).
+      required:
+      - ok
+      - app
+      - build
+      - environment
+      - timestamp
+      description: Liveness and the commit currently serving. Smoke tests wait for their own deploy here instead of racing edge propagation.
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Human session or scoped organization API key. Organization identity remains explicit.

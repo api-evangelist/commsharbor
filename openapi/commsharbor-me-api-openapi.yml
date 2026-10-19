@@ -1,8 +1,8 @@
 openapi: 3.2.0
 info:
   title: CommsHarbor Me API
-  version: 2d690e87
-  description: CommsHarbor API. Organization identity is explicit and tenant-scoped.
+  version: 1d751aaf
+  description: Manage domain email, mailboxes, aliases and durable jobs. Each call uses its organization's identity.
 servers:
 - url: https://commsharbor.com
 tags:
@@ -11,15 +11,15 @@ paths:
   /api/me:
     get:
       operationId: commsharbor_me
-      summary: Read the profile, every membership and the platform role, if any
-      description: 'This is how a client discovers which organizations it may pass in `X-Organization-Id`.
+      summary: Read the global profile and the platform role, if any
+      description: '`user.id` is the shared-account ID. Organizations are not listed here: they live in the shared account, which does not list them inside products yet — open a workspace by its ID with `GET /api/organizations/{organization_id}`.
 
-        Returns: { user{id,email}, profile{display_name,locale}, organizations[{id,name,sending_domain,created_at}], platform_role }'
+        Returns: { user{id,email}, profile{name,locale,timeZone,theme,revision}, platform_role }'
       security:
-      - bearerAuth: []
+      - globalAccount: []
       responses:
         '200':
-          description: '{ user{id,email}, profile{display_name,locale}, organizations[{id,name,sending_domain,created_at}], platform_role }'
+          description: '{ user{id,email}, profile{name,locale,timeZone,theme,revision}, platform_role }'
           content:
             application/json:
               schema:
@@ -32,12 +32,7 @@ paths:
                   profile:
                     allOf:
                     - $ref: '#/components/schemas/Profile'
-                    description: Personal preferences — they belong to the person, not to a tenant.
-                  organizations:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Organization'
-                    description: Every organization this person belongs to.
+                    description: Global MM profile — it belongs to the person, edited on the account, not to a tenant.
                   platform_role:
                     type: string
                     description: Platform role, when one was explicitly granted. Owning a tenant grants nothing here.
@@ -45,86 +40,40 @@ paths:
                 required:
                 - user
                 - profile
-                - organizations
                 - platform_role
         '401':
           description: No session, or the session expired.
-      tags:
-      - Me
-    patch:
-      operationId: commsharbor_profile_update
-      summary: Update the display name or language of the current profile
-      description: 'Returns: { display_name, locale }'
-      security:
-      - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                display_name:
-                  type: string
-                  description: Name shown in the interface.
-                locale:
-                  type: string
-                  description: Preferred language, e.g. `en` or `pt-br`.
-            example:
-              display_name: A. User
-              locale: en
-      responses:
-        '200':
-          description: '{ display_name, locale }'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Profile'
-        '400':
-          description: No updatable field in the body.
-        '401':
-          description: No session, or the session expired.
+        '503':
+          description: auth_unavailable
       tags:
       - Me
 components:
   schemas:
-    Organization:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Organization ID, used in every tenant route.
-        name:
-          type: string
-          description: Display name.
-        sending_domain:
-          type: string
-          description: Domain the organization sends from.
-          nullable: true
-        created_at:
-          type: string
-          description: Creation time (UTC, ISO-8601).
-      required:
-      - id
-      - name
-      - sending_domain
-      - created_at
-      description: A tenant. Every piece of customer data in this product is scoped to exactly one.
     Profile:
       type: object
       properties:
-        display_name:
+        name:
           type: string
-          description: Name shown in the interface.
-          nullable: true
+          description: Name shown in the interface (empty until the person sets one).
         locale:
           type: string
-          description: Preferred language, e.g. `en` or `pt-br`.
-          nullable: true
+          description: Preferred language, e.g. `pt-BR` or `en`.
+        timeZone:
+          type: string
+          description: IANA time zone, e.g. `America/Sao_Paulo`.
+        theme:
+          type: string
+          description: '`light`, `dark` or `system`.'
+        revision:
+          type: integer
+          description: Optimistic revision of the profile.
       required:
-      - display_name
+      - name
       - locale
-      description: Personal preferences. They belong to the person, not to any organization.
+      - timeZone
+      - theme
+      - revision
+      description: Global MM profile. It belongs to the person, edited on the account, not to any organization.
     User:
       type: object
       properties:
@@ -133,7 +82,7 @@ components:
           description: User ID.
         email:
           type: string
-          description: Email address confirmed by one-time code.
+          description: Email address verified by the global account.
       required:
       - id
       - email
@@ -142,4 +91,27 @@ components:
     bearerAuth:
       type: http
       scheme: bearer
-      description: Human session or scoped organization API key. Organization identity remains explicit.
+      description: Use an organisation API key (`mmk_…`) for permitted work in that organisation. Account operations require the shared account session. Paid routes accept a global credit token (`cred_…`). Monthly purchases require a recent human session.
+    globalAccount:
+      type: apiKey
+      in: cookie
+      name: __Host-mm-auth
+      description: Global session in the product's HttpOnly cookie; writes require exact Origin and X-CSRF-Token.
+    contaChaveApi:
+      type: http
+      scheme: bearer
+      bearerFormat: mmk_…
+      description: 'Account API key: `Authorization: Bearer mmk_…` or `X-Api-Key: mmk_…`. Created on the account page (API keys), valid only in the product where it was created; it acts as the account (or the organization that owns it).'
+    carteiraAgente:
+      type: http
+      scheme: bearer
+      bearerFormat: mmw_…
+      description: 'Wallet credential of an agent without an account (`Authorization: Bearer mmw_…`, 30 days, this product only): POST /api/auth/wallet/agent/start, sign the message with the wallet, POST /api/auth/wallet/agent/token. The owner is `x402:<address>`.'
+x-service-info:
+  categories:
+  - email
+  - mailbox-management
+  docs:
+    homepage: https://commsharbor.com/
+    apiReference: https://commsharbor.com/developers
+    llms: https://commsharbor.com/llms.txt

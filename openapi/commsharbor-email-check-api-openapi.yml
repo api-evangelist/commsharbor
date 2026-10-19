@@ -1,0 +1,157 @@
+openapi: 3.2.0
+info:
+  title: CommsHarbor Email Check API
+  version: 1d751aaf
+  description: Manage domain email, mailboxes, aliases and durable jobs. Each call uses its organization's identity.
+servers:
+- url: https://commsharbor.com
+tags:
+- name: Email Check
+paths:
+  /api/email-check:
+    get:
+      operationId: commsharbor_email_security_check
+      summary: Check SPF, DKIM, DMARC, MX, MTA-STS and BIMI of a domain, with a 0-100 score…
+      description: 'Public DNS only, no account and no charge. The same domain is served from memory for 10 minutes. A network can run 30 new checks per day. DKIM is looked up in common selectors only; `dkim_not_found` does not prove that no key exists. `incomplete: true` means a DNS answer failed and the score can be lower than the real one; `unread` names those parts, and a failed query never becomes a missing finding.
+
+        Returns: { domain, score, rating, findings, spf, dmarc, dkim, mx, mta_sts, bimi, unread, incomplete, checked_at, share_url, badge_url }'
+      security: []
+      parameters:
+      - name: domain
+        in: query
+        required: true
+        schema:
+          type: string
+        description: Public domain to check, such as example.com. A subdomain or URL is reduced to its registrable domain.
+      responses:
+        '200':
+          description: '{ domain, score, rating, findings, spf, dmarc, dkim, mx, mta_sts, bimi, unread, incomplete, checked_at, share_url, badge_url }'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  domain:
+                    type: string
+                    description: Registrable domain that was checked.
+                  score:
+                    type: integer
+                    description: '0 to 100: DMARC up to 40, SPF 20, DKIM 20, MX 10, MTA-STS 5 and BIMI 5.'
+                  rating:
+                    type: string
+                    description: protected (90+), good (70+), at_risk (40+) or exposed.
+                  findings:
+                    type: array
+                    items:
+                      type: object
+                    description: '`{code, severity}`, most severe first. Codes: dmarc_missing, dmarc_none, spf_plus_all, spf_missing, spf_multiple, dmarc_quarantine, dkim_not_found, spf_neutral, spf_softfail, dmarc_no_reports, mx_missing, mta_sts_missing, bimi_missing.'
+                  spf:
+                    type: object
+                    description: '`{record, ending, multiple}`: the first SPF record, its `all` ending and whether there are two.'
+                  dmarc:
+                    type: object
+                    description: '`{record, policy, reports}`: policy reject, quarantine, none or null; reports when `rua` is set.'
+                  dkim:
+                    type: object
+                    description: '`{found, checked}`: selectors with a published key and the selectors looked up.'
+                  mx:
+                    type: array
+                    items:
+                      type: string
+                    description: MX records as `priority host`.
+                  mta_sts:
+                    type: boolean
+                    description: An MTA-STS policy record exists.
+                  bimi:
+                    type: boolean
+                    description: A BIMI record exists at the default selector.
+                  unread:
+                    type: array
+                    items:
+                      type: string
+                    description: Parts whose DNS query failed (spf, dmarc, dkim, mx, mta_sts, bimi). They have no findings and no points.
+                  incomplete:
+                    type: boolean
+                    description: At least one DNS query failed.
+                  checked_at:
+                    type: string
+                    description: ISO time of the DNS reading.
+                  share_url:
+                    type: string
+                    description: Public page with this result.
+                  badge_url:
+                    type: string
+                    description: SVG badge with the score.
+                required:
+                - domain
+                - score
+                - rating
+                - findings
+                - spf
+                - dmarc
+                - dkim
+                - mx
+                - mta_sts
+                - bimi
+                - unread
+                - incomplete
+                - checked_at
+                - share_url
+                - badge_url
+        '400':
+          description: 'domain_invalid: not a public domain.'
+        '429':
+          description: 'rate_limited: 30 new checks per network per day.'
+        '503':
+          description: 'dns_unavailable: the DNS lookup failed; retry in a minute.'
+      tags:
+      - Email Check
+  /api/email-check/badge:
+    get:
+      operationId: get_api_email_check_badge
+      summary: SVG badge with the email security score of a domain, for a website or README
+      description: 'Public DNS only, no account and no charge. The same domain is served from memory for 10 minutes. A network can run 30 new checks per day. The badge does not use the network''s daily checks. An invalid domain or a failed lookup shows "unknown".
+
+        Returns: `image/svg+xml` — a 20px-high badge with the score in the colour of its rating.'
+      security: []
+      parameters:
+      - name: domain
+        in: query
+        required: true
+        schema:
+          type: string
+        description: Public domain to check, such as example.com. A subdomain or URL is reduced to its registrable domain.
+      responses:
+        '200':
+          description: '`image/svg+xml` — a 20px-high badge with the score in the colour of its rating.'
+      tags:
+      - Email Check
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Use an organisation API key (`mmk_…`) for permitted work in that organisation. Account operations require the shared account session. Paid routes accept a global credit token (`cred_…`). Monthly purchases require a recent human session.
+    globalAccount:
+      type: apiKey
+      in: cookie
+      name: __Host-mm-auth
+      description: Global session in the product's HttpOnly cookie; writes require exact Origin and X-CSRF-Token.
+    contaChaveApi:
+      type: http
+      scheme: bearer
+      bearerFormat: mmk_…
+      description: 'Account API key: `Authorization: Bearer mmk_…` or `X-Api-Key: mmk_…`. Created on the account page (API keys), valid only in the product where it was created; it acts as the account (or the organization that owns it).'
+    carteiraAgente:
+      type: http
+      scheme: bearer
+      bearerFormat: mmw_…
+      description: 'Wallet credential of an agent without an account (`Authorization: Bearer mmw_…`, 30 days, this product only): POST /api/auth/wallet/agent/start, sign the message with the wallet, POST /api/auth/wallet/agent/token. The owner is `x402:<address>`.'
+x-service-info:
+  categories:
+  - email
+  - mailbox-management
+  docs:
+    homepage: https://commsharbor.com/
+    apiReference: https://commsharbor.com/developers
+    llms: https://commsharbor.com/llms.txt

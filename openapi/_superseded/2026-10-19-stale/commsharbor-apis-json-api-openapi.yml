@@ -1,0 +1,27 @@
+openapi: 3.2.0
+info:
+  title: CommsHarbor Apis.json API
+  version: 2d690e87
+  description: CommsHarbor API. Organization identity is explicit and tenant-scoped.
+servers:
+- url: https://commsharbor.com
+tags:
+- name: Apis.json
+paths:
+  /apis.json:
+    get:
+      operationId: get_apis_json
+      summary: 'APIs.json (apisjson.org, 0.19): the index APIs.io harvests — the API, the MCP…'
+      description: 'Returns: `application/json` in the APIs.json 0.19 format: `apis[]` with `baseURL`, `humanURL` and `properties[]`.'
+      security: []
+      responses:
+        '200':
+          description: '`application/json` in the APIs.json 0.19 format: `apis[]` with `baseURL`, `humanURL` and `properties[]`.'
+      tags:
+      - Apis.json
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Human session or scoped organization API key. Organization identity remains explicit.
