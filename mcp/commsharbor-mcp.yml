@@ -58,3 +58,144 @@ tool_quality:
   scored: false
   note: Facts from the saved tools/list capture (mcp_tool_quality.py); recorded, not scored. Checks learned
     from Glimind's agent-readiness audit.
+tools:
+- name: commsharbor_health
+  description: Read deployment health and build. Smoke tests wait for their own commit to appear here
+    instead of racing edge propagation.
+- name: commsharbor_logout
+  description: Revoke the current session. Bootstrap/CSRF must belong to this browser and session. Other
+    product sessions remain active.
+- name: commsharbor_me
+  description: 'Read the current account profile and platform role. `user.id` is the shared-account ID.
+    Organizations are not listed here: they live in the shared account, which does not list them inside
+    products yet — open a workspace by its ID with `GET /api/organizations/{organization_id}`.'
+- name: commsharbor_context
+  description: 'Resolve the active organization identity. Read this before a write when you are not certain
+    which tenant is active. Guessing is how data lands in the wrong organization. An organization API
+    key answers `kind: api_key` with its scopes.'
+- name: commsharbor_organization_get
+  description: 'Open an organization by id: name, your role and the CommsHarbor plan. This is how a workspace
+    is opened. Name and role come from the shared account (null with an organization API key, which carries
+    neither); the plan is the organization''s global entitlement in CommsHarbor.'
+- name: commsharbor_audit
+  description: List tenant audit events. Audit records are never rewritten and never carry recipient PII.
+- name: commsharbor_platform_context
+  description: 'Confirm the caller''s platform role. Tenant ownership grants nothing here: platform access
+    is a separate, explicit grant.'
+- name: commsharbor_email_google_catalog
+  description: Read authorized Google metadata. This does not prove DNS ownership. Requires the owner's
+    account session; an organization key cannot authorize Google access. Requires an account session in
+    this organization. Reads site metadata only. Google access and refresh tokens remain encrypted on
+    the server.
+- name: commsharbor_email_google_connect
+  description: Start five-minute Google consent with PKCE. Return an authorization URL. Signing in does
+    not grant this access. Requires the owner's account session; an organization key cannot authorize
+    Google access. Requires an account session in this organization. Reads site metadata only. Google
+    access and refresh tokens remain encrypted on the server.
+- name: commsharbor_email_google_resolve
+  description: Resolve website addresses for up to 20 selected Analytics properties. Search Console does
+    not use this route. Requires the owner's account session; an organization key cannot authorize Google
+    access. Requires an account session in this organization. Reads site metadata only. Google access
+    and refresh tokens remain encrypted on the server.
+- name: commsharbor_email_google_disconnect
+  description: Remove this product's saved Google connection and pending consent. Existing email and service
+    resources remain intact. Requires the owner's account session; an organization key cannot authorize
+    Google access. Requires an account session in this organization. Reads site metadata only. Google
+    access and refresh tokens remain encrypted on the server.
+- name: commsharbor_email_domain_products_list
+  description: Read or associate PageAudit and HookPulse with a domain in this organization. Native product
+    access must be enabled. The private email backend confirms domain ownership in this organization.
+    Selected native products must already be enabled. Association is idempotent.
+- name: commsharbor_email_domain_products_add
+  description: Read or associate PageAudit and HookPulse with a domain in this organization. Native product
+    access must be enabled. The private email backend confirms domain ownership in this organization.
+    Selected native products must already be enabled. Association is idempotent.
+- name: commsharbor_email_workspace_snapshot
+  description: Read the current email workspace, DNS progress and recent jobs. The ID must match X-Organization-Id.
+    Membership is checked again for each snapshot and delivered event. Events contain only an opaque change
+    ID. DNS checks run in the private backend, with a 24-hour deadline and a visible resume action after
+    pause.
+- name: commsharbor_email_workspace
+  description: Read the email workspace. No guest access. Members can read. Owners, admins and organization
+    keys can manage email. The private service credential stays on the server. Mailbox passwords and message
+    content are never returned.
+- name: commsharbor_email_trial_activate
+  description: 'Start the free receive-only Trial for 7 days, once per organization: 1 GB shared storage,
+    unlimited mailboxes and no outgoing SMTP or external filter forwarding. Requires a new workspace and
+    operator-proved native quota. No guest access. Members can read. Owners, admins and organization keys
+    can manage email. The private service credential stays on the server. Mailbox passwords and message
+    content are never returned.'
+- name: commsharbor_email_domain_setup
+  description: 'Find an existing domain. Return its organization and domain IDs only when this exact caller
+    can open that organization. Otherwise return existing: null. No guest access. Members can read. Owners,
+    admins and organization keys can manage email. The private service credential stays on the server.
+    Mailbox passwords and message content are never returned.'
+- name: commsharbor_email_domain_create
+  description: Register a domain and its ownership challenge. No guest access. Members can read. Owners,
+    admins and organization keys can manage email. The private service credential stays on the server.
+    Mailbox passwords and message content are never returned.
+- name: commsharbor_email_domain_get
+  description: Read domain setup, DNS records and observed readiness. No guest access. Members can read.
+    Owners, admins and organization keys can manage email. The private service credential stays on the
+    server. Mailbox passwords and message content are never returned.
+- name: commsharbor_email_domain_verify
+  description: Queue a check of ownership, DNS and certificates. No guest access. Members can read. Owners,
+    admins and organization keys can manage email. The private service credential stays on the server.
+    Mailbox passwords and message content are never returned.
+- name: commsharbor_email_domain_assistance
+  description: Request assisted DNS setup. The durable request waits for operator activation. It does
+    not change DNS or expose a provider credential. No guest access. Members can read. Owners, admins
+    and organization keys can manage email. The private service credential stays on the server. Mailbox
+    passwords and message content are never returned.
+- name: commsharbor_email_mailbox_create
+  description: Create a mailbox within the current allowance. Trial mailboxes share 1 GB and cannot send
+    email. No guest access. Members can read. Owners, admins and organization keys can manage email. The
+    private service credential stays on the server. Mailbox passwords and message content are never returned.
+- name: commsharbor_email_mailbox_update
+  description: Change mailbox name or quota within the plan. No guest access. Members can read. Owners,
+    admins and organization keys can manage email. The private service credential stays on the server.
+    Mailbox passwords and message content are never returned.
+- name: commsharbor_email_mailbox_password
+  description: Set the mailbox password. It is encrypted for the executor and is never returned. No guest
+    access. Members can read. Owners, admins and organization keys can manage email. The private service
+    credential stays on the server. Mailbox passwords and message content are never returned.
+- name: commsharbor_email_mailbox_suspend
+  description: Suspend access while preserving mailbox data. No guest access. Members can read. Owners,
+    admins and organization keys can manage email. The private service credential stays on the server.
+    Mailbox passwords and message content are never returned.
+- name: commsharbor_email_mailbox_resume
+  description: Restore suspended mailbox access. No guest access. Members can read. Owners, admins and
+    organization keys can manage email. The private service credential stays on the server. Mailbox passwords
+    and message content are never returned.
+- name: commsharbor_email_alias_create
+  description: Create an alias to existing mailboxes in this organization. No guest access. Members can
+    read. Owners, admins and organization keys can manage email. The private service credential stays
+    on the server. Mailbox passwords and message content are never returned.
+- name: commsharbor_email_alias_update
+  description: Change the alias destinations within this organization. No guest access. Members can read.
+    Owners, admins and organization keys can manage email. The private service credential stays on the
+    server. Mailbox passwords and message content are never returned.
+- name: commsharbor_email_alias_suspend
+  description: Suspend an alias without deleting its configuration. No guest access. Members can read.
+    Owners, admins and organization keys can manage email. The private service credential stays on the
+    server. Mailbox passwords and message content are never returned.
+- name: commsharbor_email_alias_resume
+  description: Restore a suspended alias without changing its destinations. No guest access. Members can
+    read. Owners, admins and organization keys can manage email. The private service credential stays
+    on the server. Mailbox passwords and message content are never returned.
+- name: commsharbor_email_job_get
+  description: Read one durable job in this organization. No guest access. Members can read. Owners, admins
+    and organization keys can manage email. The private service credential stays on the server. Mailbox
+    passwords and message content are never returned.
+- name: commsharbor_email_service_request
+  description: Request an included service with activation on demand. No guest access. Members can read.
+    Owners, admins and organization keys can manage email. The private service credential stays on the
+    server. Mailbox passwords and message content are never returned.
+- name: commsharbor_email_security_check
+  description: 'Check whether someone can send email as a domain: SPF, DKIM in common selectors, DMARC,
+    MX, MTA-STS and BIMI, with a 0-100 score and the fixes, most severe first. Public DNS only. Free,
+    no account. The same domain is served from memory for 10 minutes. A network can run 30 new checks
+    per day. DKIM is looked up in common selectors only; `dkim_not_found` does not prove that no key exists.
+    `incomplete: true` means a DNS answer failed and the score can be lower than the real one; `unread`
+    names those parts, and a failed query never becomes a missing finding.'
+tools_count: 33
