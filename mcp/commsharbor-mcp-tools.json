@@ -5,7 +5,7 @@
   "protocol_version": "2025-06-18",
   "server_info": {
     "name": "CommsHarbor",
-    "version": "78e0bd5f"
+    "version": "58803456"
   },
   "result": {
     "tools": [
@@ -1391,6 +1391,34 @@
         },
         "annotations": {
           "title": "Commsharbor email security check",
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true
+        },
+        "securitySchemes": [
+          {
+            "type": "noauth"
+          },
+          {
+            "type": "oauth2",
+            "scopes": [
+              "mcp"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "commsharbor_brazil_email_report",
+        "title": "Commsharbor brazil email report",
+        "description": "Read the monthly Brazil email security report: how many domains of city halls, state and federal government, banks and listed companies reject fake email (DMARC p=reject) and how they end SPF. Totals only, public DNS. Free, no account. Public DNS only, read once a month. The sample is built from Brazil's open company registry (Receita Federal, the email of each active head office) and the CVM register of listed companies. Only totals: no domain is listed. A share is `count / (com_mx - dmarc.nao_lido)`; domains without MX are left out. Only the DMARC policy classifies; SPF is counted but does not change the class. `percent` rounds each group to 100 by the largest remainder, the same rule as the page.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": [],
+          "additionalProperties": false
+        },
+        "annotations": {
+          "title": "Commsharbor brazil email report",
           "readOnlyHint": true,
           "destructiveHint": false,
           "idempotentHint": true

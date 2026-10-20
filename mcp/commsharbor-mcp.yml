@@ -34,8 +34,8 @@ x-evidence:
     status: 200
 tools_file: mcp/commsharbor-mcp-tools.json
 tool_quality:
-  tool_count: 33
-  tokens_total: 6905
+  tool_count: 34
+  tokens_total: 7175
   tokens_per_tool_median: 216
   heavy_tools: []
   heavy_tool_count: 0
@@ -43,7 +43,7 @@ tool_quality:
   params_undescribed: 1
   params_described_pct: 98.7
   tools_with_undescribed_params: 1
-  tools_annotated: 33
+  tools_annotated: 34
   annotated_pct: 100.0
   state_changing_unhinted: []
   tools_missing_schema: 0
