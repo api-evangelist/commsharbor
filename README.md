@@ -1,5 +1,4 @@
-# commsharbor
-Transactional email and permission-based marketing infrastructure with tenant isolation, deliverability tracking, CRM, and multi-tenant governance. Self-describes as an agent-first HTTP API with a hosted MCP server.
+# CommsHarbor
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,3 +63,138 @@ Transactional email and permission-based marketing infrastructure with tenant is
 >
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
+
+Transactional email and permission-based marketing infrastructure with tenant isolation, deliverability tracking, CRM, and multi-tenant governance. Self-describes as an agent-first HTTP API with a hosted MCP server.
+
+**Areas:** Email · Transactional Email · Email Marketing · Communications · Messaging · Deliverability · CRM · Multi-tenant SaaS · Agent-Native · MCP · Web3 payments · x402
+
+## CommsHarbor on APIs.io
+
+Everything profiled for CommsHarbor is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/commsharbor/](https://apis.io/providers/commsharbor/)** — or go straight to one of the APIs or properties below.
+
+### APIs (18)
+
+- [CommsHarbor Apis.json API](https://apis.io/apis/commsharbor/commsharbor-apis-json-api/) — The Apis.json API from CommsHarbor — 1 operation(s) for apis.json.
+- [CommsHarbor Auth API](https://apis.io/apis/commsharbor/commsharbor-auth-api/) — The Auth API from CommsHarbor — 3 operation(s) for auth.
+- [CommsHarbor Aws API](https://apis.io/apis/commsharbor/commsharbor-aws-api/) — The Aws API from CommsHarbor — 1 operation(s) for aws.
+- [CommsHarbor Billing API](https://apis.io/apis/commsharbor/commsharbor-billing-api/) — The Billing API from CommsHarbor — 1 operation(s) for billing.
+- [CommsHarbor Comms Harbor API](https://apis.io/apis/commsharbor/commsharbor-commsharbor-api/) — The CommsHarbor API from CommsHarbor — 1 operation(s) for commsharbor.
+- [CommsHarbor Context API](https://apis.io/apis/commsharbor/commsharbor-context-api/) — The Context API from CommsHarbor — 1 operation(s) for context.
+- [CommsHarbor Credito API](https://apis.io/apis/commsharbor/commsharbor-credito-api/) — The Credito API from CommsHarbor — 1 operation(s) for credito.
+- [CommsHarbor Health API](https://apis.io/apis/commsharbor/commsharbor-health-api/) — The Health API from CommsHarbor — 1 operation(s) for health.
+- [CommsHarbor Invitations API](https://apis.io/apis/commsharbor/commsharbor-invitations-api/) — The Invitations API from CommsHarbor — 1 operation(s) for invitations.
+- [CommsHarbor MCP API](https://apis.io/apis/commsharbor/commsharbor-mcp-api/) — The Mcp API from CommsHarbor — 1 operation(s) for mcp.
+- [CommsHarbor Me API](https://apis.io/apis/commsharbor/commsharbor-me-api/) — The Me API from CommsHarbor — 1 operation(s) for me.
+- [CommsHarbor Messages API](https://apis.io/apis/commsharbor/commsharbor-messages-api/) — The Messages API from CommsHarbor — 1 operation(s) for messages.
+- [CommsHarbor Metrics API](https://apis.io/apis/commsharbor/commsharbor-metrics-api/) — The Metrics API from CommsHarbor — 1 operation(s) for metrics.
+- [CommsHarbor Okf API](https://apis.io/apis/commsharbor/commsharbor-okf-api/) — The Okf API from CommsHarbor — 1 operation(s) for okf.
+- [CommsHarbor Organizations API](https://apis.io/apis/commsharbor/commsharbor-organizations-api/) — The Organizations API from CommsHarbor — 70 operation(s) for organizations.
+- [CommsHarbor Platform API](https://apis.io/apis/commsharbor/commsharbor-platform-api/) — The Platform API from CommsHarbor — 7 operation(s) for platform.
+- [CommsHarbor Preferences API](https://apis.io/apis/commsharbor/commsharbor-preferences-api/) — The Preferences API from CommsHarbor — 2 operation(s) for preferences.
+- [CommsHarbor .well Known API](https://apis.io/apis/commsharbor/commsharbor-well-known-api/) — The .well Known API from CommsHarbor — 1 operation(s) for .well known.
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### AsyncAPI (1)
+
+Event-driven and webhook contracts.
+
+- [Commsharbor Webhooks](https://apis.io/asyncapis/commsharbor/commsharbor-webhooks/)
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [mcp](https://apis.io/servers/commsharbor/mcp/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Commsharbor Openapi Overlay](https://apis.io/overlays/commsharbor/commsharbor-openapi-overlay/)
+
+#### Security (3)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Commsharbor Authentication](https://apis.io/security/commsharbor/commsharbor-authentication/)
+- [Commsharbor Domain Security](https://apis.io/security/commsharbor/commsharbor-domain-security/)
+- [Commsharbor Vulnerability Disclosure](https://apis.io/security/commsharbor/commsharbor-vulnerability-disclosure/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Commsharbor Plans Pricing](https://apis.io/plans/commsharbor/commsharbor-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Commsharbor Rate Limits](https://apis.io/rate-limits/commsharbor/commsharbor-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://commsharbor.com)
+- [Pricing](https://commsharbor.com/api/billing)
+- [Terms of service](https://commsharbor.com/terms)
+- [Privacy policy](https://commsharbor.com/privacy)
+
+## API Evangelist rating
+
+**Kin Score 48.5** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 66.7 |
+| Contract quality | 57.1 |
+| Contract governance | 4.5 |
+| Operational transparency | 50.0 |
+| Developer ergonomics | 30.4 |
+| Access clarity | 69.7 |
+
+**Agent readiness 42.5** — agent-ready (gated down from agent-native)
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | documented (partial credit) |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | verified |
+| Error Semantics | derived (partial credit) |
+| OpenAPI Examples | partial |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | yes |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | yes |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | partial |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 27.7** — Payments
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/commsharbor/](https://apis.io/providers/commsharbor/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for CommsHarbor: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/commsharbor/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
