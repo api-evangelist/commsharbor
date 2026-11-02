@@ -1,0 +1,99 @@
+# Pricing transcribed from the provider's own page — see provenance. Numbers are quoted, not derived.
+generated: '2026-10-28'
+method: searched
+source: https://commsharbor.com/api/billing
+sources:
+- https://commsharbor.com/api/billing
+provenance:
+  tool: engine/economics/harvest_pricing.py
+  run: 20261028T161713
+  grounding: every price_text was found verbatim in the fetched page text
+audience: business-product
+pricing_basis: tiered-subscription
+delivery:
+  delivery: managed
+  method: page
+  read: '2026-10-28'
+published: true
+note: 'JSON billing endpoint rendered as HTML. Prices given in cents with USD currency and estimate flag
+  (price_is_estimate true, brl_per_usd 5.5); billing currency BRL. On-demand services: ''Scope and activation
+  date are agreed before charging for on-demand services.'''
+plan_count: 4
+currency: USD
+plans:
+- name: Trial
+  price_text: '"price_cents": 0'
+  price: 0
+  currency: USD
+  period: month
+  unit: plan
+  included_quota: '7 days, 1 domain, 1 GB mailbox, features: webmail, imap, contacts, calendar, tasks,
+    management_api; card_required false'
+- name: Basic
+  price_text: '"price_cents": 162'
+  price: 162
+  currency: USD
+  period: month
+  unit: cents per month
+  included_quota: 1 domain, 3 mailboxes, 30 GB mailbox, 15 aliases, 90 GB email storage; billing_price_cents
+    890 (BRL)
+- name: Professional
+  price_text: '"price_cents": 962'
+  price: 962
+  currency: USD
+  period: month
+  unit: cents per month
+  included_quota: 5 domains, 10 mailboxes, 50 GB mailbox, 100 GB files, 100 aliases, 500 GB email storage;
+    billing_price_cents 5290 (BRL)
+  overage: 'on_demand: migration'
+- name: Enterprise
+  price_text: '"price_cents": 17235'
+  price: 17235
+  currency: USD
+  period: month
+  unit: cents per month
+  included_quota: 25 domains, 100 mailboxes, 100 GB mailbox, 1000 GB files, 1000 aliases, 10000 GB email
+    storage; billing_price_cents 94790 (BRL)
+  overage: 'on_demand: migration, chat, meetings, documents, shared_mailboxes, bookings, scheduled_send,
+    signatures'
+x-canonical:
+  generated: '2026-11-01'
+  vocabulary: engine/economics/plans-canonical.yml
+  models:
+  - free
+  - hybrid
+  - subscription
+  units: []
+  plans:
+  - name: Trial
+    access: other
+    model: free
+    model_how: derived
+    units:
+    - other
+    periods:
+    - month
+  - name: Basic
+    access: other
+    model: subscription
+    model_how: derived
+    units:
+    - other
+    periods:
+    - month
+  - name: Professional
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - other
+    periods:
+    - month
+  - name: Enterprise
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - other
+    periods:
+    - month
