@@ -2,6 +2,25 @@ name: CommsHarbor
 description: Transactional email and permission-based marketing infrastructure with tenant isolation, deliverability
   tracking, CRM, and multi-tenant governance. Self-describes as an agent-first HTTP API with a hosted MCP server.
 url: https://raw.githubusercontent.com/api-evangelist/commsharbor/refs/heads/main/apis.yml
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  gated: none
+  gated_source:
+  - onboarding
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  - rate-limits
+  - security
+  - sandbox
+  generated: '2026-11-02'
+  method: derived
 image: https://commsharbor.com/icon.svg
 created: '2026-09-05'
 modified: '2026-09-05'
