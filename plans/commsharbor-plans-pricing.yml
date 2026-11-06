@@ -57,13 +57,14 @@ plans:
   overage: 'on_demand: migration, chat, meetings, documents, shared_mailboxes, bookings, scheduled_send,
     signatures'
 x-canonical:
-  generated: '2026-11-02'
+  generated: '2026-11-06'
   vocabulary: engine/economics/plans-canonical.yml
   models:
   - free
   - hybrid
   - subscription
-  units: []
+  units:
+  - period
   plans:
   - name: Trial
     access: other
@@ -78,7 +79,7 @@ x-canonical:
     model: subscription
     model_how: derived
     units:
-    - other
+    - period
     periods:
     - month
   - name: Professional
@@ -86,7 +87,7 @@ x-canonical:
     model: hybrid
     model_how: derived
     units:
-    - other
+    - period
     periods:
     - month
   - name: Enterprise
@@ -94,6 +95,6 @@ x-canonical:
     model: hybrid
     model_how: derived
     units:
-    - other
+    - period
     periods:
     - month

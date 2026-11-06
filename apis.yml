@@ -19,7 +19,7 @@ accessModel:
   - rate-limits
   - security
   - sandbox
-  generated: '2026-11-02'
+  generated: '2026-11-06'
   method: derived
 image: https://commsharbor.com/icon.svg
 created: '2026-09-05'
